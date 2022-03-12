@@ -1,17 +1,13 @@
 <template>
   <div class="flex justify-center bg-gradient-to-r from-blue-400 to-yellow-400 items-center h-screen">
-    <Login />
+    <router-link to="/login">Login</router-link>
   </div>
 </template>
 
 <script>
-import Login from './components/Login.vue'
 
 export default {
   name: 'App',
-  components: {
-    Login,
-  }
 }
 </script>
 
