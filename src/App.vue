@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center bg-blue-800 items-center h-screen">
+  <div class="flex justify-center bg-gradient-to-r from-blue-400 to-yellow-400 items-center h-screen">
     <Login />
   </div>
 </template>
