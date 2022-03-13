@@ -9,7 +9,7 @@
                 </svg>
                 <label for="email">Email</label>
             </div>
-            <input class="inline-block w-full bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="email" type="email" placeholder="Enter your email">
+            <input class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="email" type="email" placeholder="Enter your email">
         </div>
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
@@ -18,7 +18,7 @@
                 </svg>
                 <label for="password">Password</label>
             </div>
-            <input class="inline-block w-full bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password">
+            <input class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password">
         </div>
         <button class="block rounded-md bg-yellow-500 hover:bg-yellow-600 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Login</button>
         <a class="text-sm text-yellow-500 hover:text-yellow-600 transition ease-linear m-5" href="#">Or Sign Up</a>
