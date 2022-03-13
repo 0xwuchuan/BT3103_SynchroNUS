@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-4/6 w-10/12 md:w-5/12 lg:w-3/12"> 
+  <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-4/6 w-10/12 md:w-5/12 lg:w-4/12"> 
     <h1 class="text-3xl font-bold mt-10">Create an account</h1>
     <form class="flex flex-col justify-center items-center w-full" @submit.prevent="signup">
         <div class="flex flex-col items-left w-10/12 m-3">

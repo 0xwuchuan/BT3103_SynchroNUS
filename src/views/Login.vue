@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-3/5 w-10/12 md:w-5/12 lg:w-3/12"> 
-    <h1 class="text-3xl font-bold my-10">Login into SynchroNUS</h1>
+  <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-3/5 w-10/12 md:w-5/12 lg:w-4/12"> 
+    <h1 class="text-3xl font-bold my-10">Login</h1>
     <form class="flex flex-col justify-center items-center w-full" @submit.prevent="login">
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
@@ -20,7 +20,7 @@
             </div>
             <input v-model="password" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password">
         </div>
-        <button class="block rounded-md bg-yellow-500 hover:bg-yellow-600 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Login</button>
+        <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Login</button>
         <router-link class="text-sm text-yellow-500 hover:text-yellow-600 transition ease-linear m-5" to="/signup">Or Sign Up</router-link>
         <router-link class="text-sm text-gray-400 hover:text-gray-600 transition ease-linear m-6" to="/resetpass">Forgot password?</router-link>
     </form>
