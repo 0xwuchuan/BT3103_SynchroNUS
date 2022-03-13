@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-4/6 w-10/12 md:w-5/12 lg:w-3/12"> 
     <h1 class="text-3xl font-bold mt-10">Create an account</h1>
-    <form class="flex flex-col justify-center items-center w-full" @submit.prevent="Signup">
+    <form class="flex flex-col justify-center items-center w-full" @submit.prevent="signup">
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-1 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -9,7 +9,7 @@
                 </svg>
                 <label for="email">Email</label>
             </div>
-            <input class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="email" type="email" placeholder="Enter your NUS email">
+            <input v-model="email" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="email" type="email" placeholder="Enter your NUS email">
         </div>
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
@@ -18,7 +18,7 @@
                 </svg>
                 <label for="password">Password</label>
             </div>
-            <input class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password">
+            <input v-model="password" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password">
         </div>
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
@@ -56,13 +56,50 @@
             </div>
         </div>
         <button class="block rounded-md bg-yellow-500 hover:bg-yellow-600 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Get Started</button>
-        <a class="text-sm text-yellow-500 hover:text-yellow-600 transition ease-linear m-5" href="#">Already have an account? Login here</a>
+        <router-link class="text-sm text-yellow-500 hover:text-yellow-600 transition ease-linear m-5" to="/login">Already have an account? Login here</router-link>
     </form>
   </div>
 </template>
 
 <script>
+import firebaseApp from '../firebase.js'
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+
+
+// import router from '../router/index'
+
+const auth = getAuth(firebaseApp);
+
 export default {
-name: "Signup"
+    name: "Signup",
+    data() {
+        return {
+            email: "",
+            password: "",
+        }
+    },
+    methods: {
+        test() {
+            console.log(this.email);
+            console.log(this.password);
+        },
+        signup() {
+            createUserWithEmailAndPassword(auth, this.email, this.password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log(user);
+                sendEmailVerification(user);
+                // router.push('/')
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+                // ..
+            });
+        }
+    },
 }
 </script>
