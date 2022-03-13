@@ -53,7 +53,7 @@ export default {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user);
-                router.push('/')
+                router.push('/test')
                 // ...
             })
             .catch((error) => {
