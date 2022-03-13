@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-4/6 w-10/12 md:w-5/12 lg:w-4/12"> 
+    <Nav />
+  <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-100"> 
     <h1 class="text-3xl font-bold mt-10">Create an account</h1>
     <form class="flex flex-col justify-center items-center w-full" @submit.prevent="signup">
         <div class="flex flex-col items-left w-10/12 m-3">
@@ -9,7 +10,7 @@
                 </svg>
                 <label for="email">Email</label>
             </div>
-            <input v-model="email" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="email" type="email" placeholder="Enter your NUS email">
+            <input v-model="email" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="email" placeholder="Enter your NUS email" id="email" required>
         </div>
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
@@ -18,7 +19,7 @@
                 </svg>
                 <label for="password">Password</label>
             </div>
-            <input v-model="password" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password">
+            <input v-model="password" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password" required>
         </div>
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
@@ -27,7 +28,7 @@
                 </svg>
                 <label for="cfmPassword">Confirm Password</label>
             </div>
-            <input class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Confirm your password" id="cfmPassword">
+            <input class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Confirm your password" id="cfmPassword" required>
         </div>
         <div class="flex flex-row items-left w-10/12 m-3">
             <div class="flex flex-col w-1/4 m-1">
@@ -52,26 +53,27 @@
             </div>
             <div class="flex flex-col w-2/4 m-1">
                 <label for="teleHandle">Telegram Handle</label>
-                <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text">
+                <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" required>
             </div>
         </div>
-        <button class="block rounded-md bg-yellow-500 hover:bg-yellow-600 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Get Started</button>
-        <router-link class="text-sm text-yellow-500 hover:text-yellow-600 transition ease-linear m-5" to="/login">Already have an account? Login here</router-link>
+        <button class="block rounded-md bg-secondary hover:bg-yellow-500 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Get Started</button>
+        <router-link class="text-sm text-secondary hover:text-yellow-500 transition ease-linear m-5" to="/login">Already have an account? Login here</router-link>
     </form>
   </div>
 </template>
 
 <script>
-import firebaseApp from '../firebase.js'
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import Nav from "../components/Nav.vue"
+import {auth} from '../firebase.js'
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import router from '../router/index'
 
-
-// import router from '../router/index'
-
-const auth = getAuth(firebaseApp);
 
 export default {
     name: "Signup",
+    components: {
+        Nav
+    },
     data() {
         return {
             email: "",
@@ -90,7 +92,7 @@ export default {
                 const user = userCredential.user;
                 console.log(user);
                 sendEmailVerification(user);
-                // router.push('/')
+                router.push('/test')
                 // ...
             })
             .catch((error) => {
