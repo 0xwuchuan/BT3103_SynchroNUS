@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-4/6 w-10/12 md:w-5/12 lg:w-3/12"> 
     <h1 class="text-3xl font-bold mt-10">Create an account</h1>
-    <form class="flex flex-col justify-center items-center w-full" @submit.prevent="Login">
+    <form class="flex flex-col justify-center items-center w-full" @submit.prevent="Signup">
         <div class="flex flex-col items-left w-10/12 m-3">
             <div class="flex flex-row items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-1 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -63,6 +63,6 @@
 
 <script>
 export default {
-    name: "Register"
+name: "Signup"
 }
 </script>
