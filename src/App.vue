@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center bg-gradient-to-r from-primary to-secondary items-center h-screen">
+  <div class="bg-gradient-to-r from-primary to-secondary items-center h-screen">
     <router-view/>
   </div>
 </template>
