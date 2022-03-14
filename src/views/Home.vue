@@ -1,13 +1,32 @@
 <template>
   <Nav />
-  Welcome to SynchroNUS, <router-link to="/login">Login here </router-link>
+  <div>
+    <p class="text-white text-3xl">Events will be displayed here</p>
+  </div>
+
 </template>
 
 <script>
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from '../firebase';
+
 import Nav from '../components/Nav'
+
 
 export default {
     name: "Home",
-    components: {Nav}
+    components: {Nav},
+    data() {
+        return {
+            user: false,
+        }
+    },
+    mounted() {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
+    },
 }
 </script>

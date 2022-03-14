@@ -56,7 +56,7 @@ export default {
                 // Signed in 
                 const user = userCredential.user;
                 console.log(user);
-                router.push({ name:'test', params: {isLoggedIn: true} })
+                router.push('/')
                 // ...
             })
             .catch((error) => {
