@@ -1,276 +1,61 @@
 <template>
-<html style="font-size: 16px;">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <meta name="keywords" content="INTUITIVE, Post 6 Headline, Post 5 Headline, Post 4 Headline, Post 3 Headline, Post 2 Headline, Post 1 Headline">
-    <meta name="description" content="">
-    <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>Home</title>
-    <link rel="stylesheet" href="nicepage.css" media="screen">
-    <link rel="stylesheet" href="Home.css" media="screen">
-    
-    <meta name="generator" content="Nicepage 4.6.5, nicepage.com">
-    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
-    
-
-    <meta name="theme-color" content="#478ac9">
-    <meta property="og:title" content="Home">
-    <meta property="og:type" content="website">
-  </head>
-  <body class="u-body u-xl-mode">
+    <Nav />
+    <div class="flex flex-col justify-center items-center h-5/6">
+      <p class="text-white text-3xl">Events will be displayed here</p>
+    </div>
     <ul>
       <li v-for="event in EventList"   :key="event.tit">
         <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
       </li>
     </ul>
-    <section class="u-align-left u-clearfix u-gradient u-section-1" id="carousel_d3c0">
-      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1"><!--blog--><!--blog_options_json--><!--{"type":"Recent","source":"","tags":"","count":""}--><!--/blog_options_json-->
-        <div class="u-blog u-expanded-width u-blog-1">
-          <div class="u-repeater u-repeater-1"><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-1"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-1">
-                  <router-link class="u-post-header-link" to="/page1"><!--blog_post_header_content-->Gym Session@UHC<!--/blog_post_header_content--></router-link>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/gym-sessionuhc.html"><!--blog_post_image-->
-                  <img src="../assets/58159270-01.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-1" data-image-width="150" data-image-height="100"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-2"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-1"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-2"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-3">
-                  <router-link class="u-post-header-link" to="/page1"><!--blog_post_header_content-->NUS HackStack Hackathon 2022<!--/blog_post_header_content--></router-link>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/nus-hackstack-hackathon-2022.html"><!--blog_post_image-->
-                  <img src="../assets/5-0.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-2"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-4"><!--blog_post_content_content-->Searching for group of 5 for NUS HackStack Hackathon 2022.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-2"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-3"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-5">
-                  <a class="u-post-header-link" href="blog/post-3.html"><!--blog_post_header_content-->Post 4 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post-3.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-3"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-6"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-3"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-4"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-7">
-                  <a class="u-post-header-link" href="blog/post-2.html"><!--blog_post_header_content-->Post 3 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post-2.html"><!--blog_post_image-->
-                  <img src="../assets/4.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-4"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-8"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-4"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-5"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-9">
-                  <a class="u-post-header-link" href="blog/post-1.html"><!--blog_post_header_content-->Post 2 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post-1.html"><!--blog_post_image-->
-                  <img src="../assets/3.12.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-5"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-10"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-5"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-6"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-11">
-                  <a class="u-post-header-link" href="blog/post.html"><!--blog_post_header_content-->Post 1 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-6"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-12"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-6"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-7"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-13">
-                  <router-link class="u-post-header-link" to="/page1"><!--blog_post_header_content-->Gym Session@UHC<!--/blog_post_header_content--></router-link>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/gym-sessionuhc.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-7"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-14"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-7"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-8"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-15">
-                  <a class="u-post-header-link" href="blog/nus-hackstack-hackathon-2022.html"><!--blog_post_header_content-->NUS HackStack Hackathon 2022<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/nus-hackstack-hackathon-2022.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-8"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-16"><!--blog_post_content_content-->Searching for group of 5 for NUS HackStack Hackathon 2022.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-8"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-9"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-17">
-                  <a class="u-post-header-link" href="blog/post-3.html"><!--blog_post_header_content-->Post 4 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post-3.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-9"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-18"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-9"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-10"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-19">
-                  <a class="u-post-header-link" href="blog/post-2.html"><!--blog_post_header_content-->Post 3 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post-2.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-10"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-20"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-10"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-11"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-21">
-                  <a class="u-post-header-link" href="blog/post-1.html"><!--blog_post_header_content-->Post 2 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post-1.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-11"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-22"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-11"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post--><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-12"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-23">
-                  <a class="u-post-header-link" href="blog/post.html"><!--blog_post_header_content-->Post 1 Headline<!--/blog_post_header_content--></a>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="blog/post.html"><!--blog_post_image-->
-                  <img src="../assets/2.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-12"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-24"><!--blog_post_content_content-->Sample small text. Lorem ipsum dolor sit amet.<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-12"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->Sun Mar 13 2022<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post-->
-          </div>
-        </div><!--/blog-->
-      </div>
-    </section>
-    <section class="u-clearfix u-section-2" id="sec-23b5">
-      <div class="u-clearfix u-sheet u-sheet-1">
-        <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
-          <div class="u-layout">
-            <div class="u-layout-row">
-              <div class="u-container-style u-image u-layout-cell u-size-30 u-image-1" data-image-width="400" data-image-height="265">
-                <div class="u-container-layout u-container-layout-1"></div>
-              </div>
-              <div class="u-align-center u-container-style u-layout-cell u-size-30 u-layout-cell-2">
-                <div class="u-container-layout u-valign-middle u-container-layout-2">
-                  <h2 class="u-text u-text-default u-text-1">Sample Headline</h2>
-                  <p class="u-text u-text-2">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
     
-    
-    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-f334"><div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
-      </div></footer>
-    <section class="u-backlink u-clearfix u-grey-80">
-      <a class="u-link" href="https://nicepage.com/website-templates" target="_blank">
-        <span>Website Templates</span>
-      </a>
-      <p class="u-text">
-        <span>created with</span>
-      </p>
-      <a class="u-link" href="" target="_blank">
-        <span>Website Builder Software</span>
-      </a>. 
-    </section>
-  </body>
-</html>
 </template>
 <script>
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from '../firebase';
 import Event from '@/components/Event.vue'
-  export default {
+import Nav from '../components/Nav'
 
-    components:{
-      Event
-    },
-    data() {
-      return {
-        EventList: [
-        {
-          tit: "Gym Session@UHC",
-          description: "testing",
-          date: "19 Mar 2022",
-          link: "www.google.com",
-          imgUrl: "58159270-01.jpeg"
-        },
-        {
-          tit: "NUS HackStack Hackathon",
-          description: "hackerman",
-          date: "20 Mar 2022",
-          link: "www.google.com",
-          imgUrl: "58159270-01.jpeg"
-        }
+export default {
+  name: "Home",
+  components:{
+    Event, Nav
+  },
+  data() {
+    return {
+      EventList: [
+      {
+        tit: "Gym Session@UHC",
+        description: "testing",
+        date: "19 Mar 2022",
+        link: "www.google.com",
+        imgUrl: "58159270-01.jpeg"
+      },
+      {
+        tit: "NUS HackStack Hackathon",
+        description: "hackerman",
+        date: "20 Mar 2022",
+        link: "www.google.com",
+        imgUrl: "58159270-01.jpeg"
+      },
+      ],
+      user: false
+      
 
-        ]
-        
-
-      }
     }
+  },
+  mounted() {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
+    },
 
-  }
+}
 </script>
+
+
 
 
 <style scoped>
@@ -910,3 +695,4 @@ import Event from '@/components/Event.vue'
   width: 100%
 }
 </style>
+

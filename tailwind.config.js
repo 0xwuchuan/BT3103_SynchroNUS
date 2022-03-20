@@ -3,14 +3,24 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-      primary: '#214168',
-      secondary: '#EF8354'
-    }
-  },
+        primary: "#214168",
+        secondary: "#EF8354",
+      },
+      spacing: {
+        100: "30rem",
+        104: "38rem",
+      },
+    },
     fontFamily: {
       sans: ["Roboto"],
     },
-    
   },
   plugins: [],
+  variants: {
+    extend: {
+      opacity: ["disabled"],
+      cursor: ["disabled"],
+      backgroundColor: ["disabled"],
+    },
+  },
 };
