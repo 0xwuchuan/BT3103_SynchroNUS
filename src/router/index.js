@@ -46,7 +46,7 @@ const routes = [
     component: ResetPassword,
   },
   {
-    path: "/notif",
+    path: "/notifications",
     name: "NotifsPage",
     component: NotifsPage,
   },
