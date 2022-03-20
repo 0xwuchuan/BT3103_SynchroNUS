@@ -1,26 +1,25 @@
 <template>
-    <section class="u-align-left u-clearfix u-gradient u-section-1" id="carousel_d3c0">
-      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1"><!--blog--><!--blog_options_json--><!--{"type":"Recent","source":"","tags":"","count":""}--><!--/blog_options_json-->
-        <div class="u-blog u-expanded-width u-blog-1">
-          <div class="u-repeater u-repeater-1"><!--blog_post-->
-            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
-              <div class="u-container-layout u-similar-container u-container-layout-1"><!--blog_post_header-->
-                <h2 class="u-blog-control u-text u-text-1">
-                  <router-link class="u-post-header-link" to="/page1"><!--blog_post_header_content-->{{ tit }}<!--/blog_post_header_content--></router-link>
-                </h2><!--/blog_post_header-->
-                <a class="u-post-header-link" href="{{ link }}"><!--blog_post_image-->
-                  <img src= "../assets/58159270-01.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-1" data-image-width="150" data-image-height="100"><!--/blog_post_image-->
-                </a><!--blog_post_content-->
-                <div class="u-blog-control u-post-content u-text u-text-2"><!--blog_post_content_content-->{{ description }}<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
-                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-1"><!--blog_post_metadata_date-->
-                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->{{ date }}<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
-                </div><!--/blog_post_metadata-->
-              </div>
-            </div><!--/blog_post-->
-          </div>
-        </div>
+
+    <div class="inline-block w-full p-4">
+      <a :href="link" class="c-card block bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden">
+      <div class="relative pb-48 overflow-hidden">
+          <img class="absolute inset-0 h-full w-full object-cover" src="https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="">
       </div>
-    </section>
+      <div class="p-4">
+          <span class="inline-block px-2 py-1 leading-none bg-orange-200 text-orange-800 rounded-full font-semibold uppercase tracking-wide text-xs">Highlight</span>
+          <h2 class="mt-2 mb-2  font-bold">{{ tit }}</h2>
+          <p class="text-sm">{{ description }}</p>
+          <div class="mt-3 flex items-center">
+              <button class="inline-block bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="authentication-modal">
+                    Join
+              </button>
+          </div>
+      </div>
+      <div class="p-4 flex items-center text-sm text-gray-600">
+          <span class="ml-2">{{ date }}</span>
+      </div>
+  </a>
+  </div>
 </template>
 
 <script>
