@@ -7,6 +7,7 @@ import ResetPassword from "../views/ResetPassword.vue";
 import Page1 from "../views/Page1.vue";
 import Event from "../components/Event.vue";
 import Landing from "../views/Landing.vue";
+import CommentTest from "../views/CommentTest.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
 
@@ -42,6 +43,11 @@ const routes = [
     path: "/resetpass",
     name: "ResetPassword",
     component: ResetPassword,
+  },
+  {
+    path: "/testpage-comments",
+    name: "CommentTest",
+    component: CommentTest,
   },
   {
     path: "/profile",
