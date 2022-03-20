@@ -104,7 +104,7 @@ hr {
 .comments-outside {
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
   margin: 0 auto;
-  max-width: 600px;
+  max-width: 10000px;
 }
 
 .comments-header {

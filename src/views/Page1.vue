@@ -54,9 +54,11 @@
                 </div>
               </div>
             </div>
+            <CommentSection/>
           </div>
         </div>
       </div>
+      
     </section>
     
     
@@ -79,8 +81,13 @@
 </template>
 
 <script>
-export default {
+import CommentSection from '@/components/CommentSection.vue';
 
+export default {
+    name: "Page1",
+    components: {
+        CommentSection
+    }
 }
 </script>
 
