@@ -1,7 +1,7 @@
 <template>
     <Nav />
     <div class="flex flex-col justify-start h-5/6 ml-10 p-5">
-        <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-5/6 w-5/12 p-5">
+        <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-100 p-5">
             <h1 class="text-3xl font-semibold pl-3">Create a new Event</h1>
             <form class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
                 <div class="flex flex-col items-left w-full m-3">
