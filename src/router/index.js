@@ -4,6 +4,7 @@ import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import Landing from "../views/Landing.vue";
+import NotifsPage from "../views/NotifsPage.vue";
 import { auth } from "../firebase";
 
 const routes = [
@@ -31,6 +32,11 @@ const routes = [
     path: "/resetpass",
     name: "ResetPassword",
     component: ResetPassword,
+  },
+  {
+    path: "/notif",
+    name: "NotifsPage",
+    component: NotifsPage,
   },
 ];
 
