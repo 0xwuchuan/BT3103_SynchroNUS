@@ -1,13 +1,13 @@
 <template>
     <Nav />
     <div class="flex flex-col justify-center items-center h-5/6">
-      <p class="text-white text-3xl">Events will be displayed here</p>
-    </div>
-    <div class="flex-row">
+      <div class="flex-row">
       <div v-for="event in EventList" :key="event.tit" class="inline-block">
         <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
       </div>
+      </div>
     </div>
+    
      
     
 </template>
