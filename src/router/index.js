@@ -1,13 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { auth } from "../firebase";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import ResetPassword from "../views/ResetPassword.vue";
+import Page1 from "../views/Page1.vue";
+import Event from "../components/Event.vue";
 import Landing from "../views/Landing.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
 
-import { auth } from "../firebase";
+import CreateEvent from "../views/CreateEvent.vue";
 
 const routes = [
   {
@@ -24,6 +27,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
   },
   {
     path: "/signup",
@@ -44,6 +52,21 @@ const routes = [
     path: "/created",
     name: "Created",
     component: Created,
+  },
+  {
+    path: "/page1",
+    name: "Page1",
+    component: Page1,
+  },
+  {
+    path: "/event",
+    name: "Event",
+    component: Event,
+  },
+  {
+    path: "/create",
+    name: "CreateEvent",
+    component: CreateEvent,
   },
 ];
 

@@ -1,6 +1,6 @@
 <template>
     <Nav />
-    <div class="flex flex-col justify-center items-center h-screen">
+    <div class="flex flex-col justify-center items-center h-5/6">
         <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-100 w-10/12 md:w-100"> 
             <h1 class="text-3xl font-bold my-10">Login</h1>
             <form class="flex flex-col justify-center items-center w-full" @submit.prevent="login">

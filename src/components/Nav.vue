@@ -1,5 +1,5 @@
 <template>
-    <nav class="fixed w-full top-0 p-5 flex justify-between">
+    <nav class="sticky w-full top-0 p-5 flex justify-between">
         <router-link v-if="user" class="text-xl" to="/home">
             <img class="w-72" src="../assets/3.1.png" alt="Logo">
         </router-link>
