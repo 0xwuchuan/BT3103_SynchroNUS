@@ -1,6 +1,6 @@
 <template>
   <Nav />
-  <div class="flex flex-col justify-center items-center h-screen">
+  <div class="flex flex-col justify-center items-center h-5/6">
     <p class="text-white text-3xl">Events will be displayed here</p>
   </div>
 

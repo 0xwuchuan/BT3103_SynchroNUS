@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { auth } from "../firebase";
+
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import Landing from "../views/Landing.vue";
-import { auth } from "../firebase";
+import CreateEvent from "../views/CreateEvent.vue";
 
 const routes = [
   {
@@ -31,6 +33,11 @@ const routes = [
     path: "/resetpass",
     name: "ResetPassword",
     component: ResetPassword,
+  },
+  {
+    path: "/create",
+    name: "CreateEvent",
+    component: CreateEvent,
   },
 ];
 
