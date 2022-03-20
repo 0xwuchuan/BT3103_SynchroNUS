@@ -3,11 +3,12 @@
     <div class="flex flex-col justify-center items-center h-5/6">
       <p class="text-white text-3xl">Events will be displayed here</p>
     </div>
-    <ul>
-      <li v-for="event in EventList"   :key="event.tit">
+    <div class="flex-row">
+      <div v-for="event in EventList" :key="event.tit" class="inline-block">
         <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
-      </li>
-    </ul>
+      </div>
+    </div>
+     
     
 </template>
 <script>
@@ -28,7 +29,7 @@ export default {
         tit: "Gym Session@UHC",
         description: "testing",
         date: "19 Mar 2022",
-        link: "www.google.com",
+        link: "page1",
         imgUrl: "58159270-01.jpeg"
       },
       {
