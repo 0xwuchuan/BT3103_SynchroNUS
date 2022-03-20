@@ -1,23 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
-import Home from "../views/Test.vue"
 import ResetPassword from "../views/ResetPassword.vue";
+import Home from "../views/Home.vue";
+import Page1 from "../views/Page1.vue";
+import Event from "../components/Event.vue"
 import { auth } from "../firebase";
 
 const routes = [
-  {
-    path: "/test",
-    name: "test",
-    component: Home,
-    meta: {
-      requiresAuth: true
-    }
-  },
+  
   {
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
   },
   {
     path: "/signup",
@@ -29,6 +29,16 @@ const routes = [
     name: "ResetPassword",
     component: ResetPassword,
   },
+  {
+    path: "/page1",
+    name: "Page1",
+    component: Page1,
+  },
+  {
+    path: "/event",
+    name: "Event",
+    component: Event
+  }
 ];
 
 const router = createRouter({
