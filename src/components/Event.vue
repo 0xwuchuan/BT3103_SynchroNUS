@@ -1,61 +1,42 @@
 <template>
-    <Nav />
-    <div class="flex flex-col justify-center items-center h-5/6">
-      <p class="text-white text-3xl">Events will be displayed here</p>
-    </div>
-    <ul>
-      <li v-for="event in EventList"   :key="event.tit">
-        <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
-      </li>
-    </ul>
-    
+    <section class="u-align-left u-clearfix u-gradient u-section-1" id="carousel_d3c0">
+      <div class="u-clearfix u-sheet u-valign-middle u-sheet-1"><!--blog--><!--blog_options_json--><!--{"type":"Recent","source":"","tags":"","count":""}--><!--/blog_options_json-->
+        <div class="u-blog u-expanded-width u-blog-1">
+          <div class="u-repeater u-repeater-1"><!--blog_post-->
+            <div class="u-blog-post u-container-style u-opacity u-opacity-65 u-radius-18 u-repeater-item u-shape-round u-white">
+              <div class="u-container-layout u-similar-container u-container-layout-1"><!--blog_post_header-->
+                <h2 class="u-blog-control u-text u-text-1">
+                  <router-link class="u-post-header-link" to="/page1"><!--blog_post_header_content-->{{ tit }}<!--/blog_post_header_content--></router-link>
+                </h2><!--/blog_post_header-->
+                <a class="u-post-header-link" href="{{ link }}"><!--blog_post_image-->
+                  <img src= "../assets/58159270-01.jpeg" alt="" class="u-blog-control u-expanded-width u-image u-image-default u-image-1" data-image-width="150" data-image-height="100"><!--/blog_post_image-->
+                </a><!--blog_post_content-->
+                <div class="u-blog-control u-post-content u-text u-text-2"><!--blog_post_content_content-->{{ description }}<!--/blog_post_content_content--></div><!--/blog_post_content--><!--blog_post_metadata-->
+                <div class="u-blog-control u-metadata u-text-grey-40 u-metadata-1"><!--blog_post_metadata_date-->
+                  <span class="u-meta-date u-meta-icon"><!--blog_post_metadata_date_content-->{{ date }}<!--/blog_post_metadata_date_content--></span><!--/blog_post_metadata_date-->
+                </div><!--/blog_post_metadata-->
+              </div>
+            </div><!--/blog_post-->
+          </div>
+        </div>
+      </div>
+    </section>
 </template>
-<script>
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase';
-import Event from '@/components/Event.vue'
-import Nav from '../components/Nav'
 
-export default {
-  name: "Home",
-  components:{
-    Event, Nav
-  },
-  data() {
-    return {
-      EventList: [
-      {
-        tit: "Gym Session@UHC",
-        description: "testing",
-        date: "19 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      {
-        tit: "NUS HackStack Hackathon",
-        description: "hackerman",
-        date: "20 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      ],
-      user: false
-      
+<script>
+  export default {
+    name: 'Event',
+    props: {
+      tit: { required: true, type: String },
+      img: {required: false},//maybe set default img
+      description: {required: true, type: String},
+      date: {required: true, type: String},
+      link: {required: true},
+      imageUrl: {required: false}
 
     }
-  },
-  mounted() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-            }
-        })
-    },
-
-}
+  }
 </script>
-
-
 
 
 <style scoped>
@@ -695,4 +676,3 @@ export default {
   width: 100%
 }
 </style>
-
