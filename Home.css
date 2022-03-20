@@ -1,66 +1,5 @@
-<template>
-    <Nav />
-    <div class="flex flex-col justify-center items-center h-5/6">
-      <p class="text-white text-3xl">Events will be displayed here</p>
-    </div>
-    <ul>
-      <li v-for="event in EventList"   :key="event.tit">
-        <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
-      </li>
-    </ul>
-    
-</template>
-<script>
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase';
-import Event from '@/components/Event.vue'
-import Nav from '../components/Nav'
-
-export default {
-  name: "Home",
-  components:{
-    Event, Nav
-  },
-  data() {
-    return {
-      EventList: [
-      {
-        tit: "Gym Session@UHC",
-        description: "testing",
-        date: "19 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      {
-        tit: "NUS HackStack Hackathon",
-        description: "hackerman",
-        date: "20 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      ],
-      user: false
-      
-
-    }
-  },
-  mounted() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-            }
-        })
-    },
-
-}
-</script>
-
-
-
-
-<style scoped>
  .u-section-1 {
-  background-image: linear-gradient(to right, #4c7397, #ff7e5b);
+  background-image: linear-gradient(to left, #4c7397, #ff7e5b);
 }
 
 .u-section-1 .u-sheet-1 {
@@ -242,7 +181,7 @@ export default {
 
 .u-section-1 .u-image-7 {
   height: 140px;
-  background-image: url("../assets/58159270-01-7.jpeg");
+  background-image: url("images/58159270-01-7.jpeg");
   background-position: 50% 50%;
   margin: 20px auto 0 0;
 }
@@ -269,7 +208,7 @@ export default {
 
 .u-section-1 .u-image-8 {
   height: 140px;
-  background-image: url("../assets/5-0-8.jpeg");
+  background-image: url("images/5-0-8.jpeg");
   background-position: 50% 50%;
   margin: 20px auto 0 0;
 }
@@ -296,7 +235,7 @@ export default {
 
 .u-section-1 .u-image-9 {
   height: 140px;
-  background-image: url("../assets/2.jpeg");
+  background-image: url("images/2.jpeg");
   background-position: 50% 50%;
   margin: 20px auto 0 0;
 }
@@ -323,7 +262,7 @@ export default {
 
 .u-section-1 .u-image-10 {
   height: 140px;
-  background-image: url("../assets/4.jpeg");
+  background-image: url("images/4.jpeg");
   background-position: 50% 50%;
   margin: 20px auto 0 0;
 }
@@ -350,7 +289,7 @@ export default {
 
 .u-section-1 .u-image-11 {
   height: 140px;
-  background-image: url("../assets/3.12.jpeg");
+  background-image: url("images/3.jpeg");
   background-position: 50% 50%;
   margin: 20px auto 0 0;
 }
@@ -377,7 +316,7 @@ export default {
 
 .u-section-1 .u-image-12 {
   height: 140px;
-  background-image: url("../assets/2.jpeg");
+  background-image: url("images/2.jpeg");
   background-position: 50% 50%;
   margin: 20px auto 0 0;
 }
@@ -689,10 +628,3 @@ export default {
     min-height: 239px;
   }
 }
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
-</style>
-
