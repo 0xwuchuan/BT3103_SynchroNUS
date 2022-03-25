@@ -1,9 +1,5 @@
 <template>
     <Nav />
-<<<<<<< Updated upstream
-    <div class="flex flex-col justify-center items-center h-5/6">
-      <p class="text-white text-3xl">Events will be displayed here</p>
-=======
 
     <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
         <div v-if="isLoading" >
@@ -23,7 +19,6 @@
             />
             </div>
         </div>
->>>>>>> Stashed changes
     </div>
     <ul>
       <li v-for="event in EventList"   :key="event.tit">

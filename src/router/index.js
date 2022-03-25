@@ -11,6 +11,7 @@ import NotifsPage from "../views/NotifsPage.vue";
 import CommentTest from "../views/CommentTest.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
+import EventPage from "../views/EventPage.vue";
 
 import CreateEvent from "../views/CreateEvent.vue";
 
@@ -66,15 +67,14 @@ const routes = [
     component: Created,
   },
   {
-<<<<<<< Updated upstream
     path: "/page1",
     name: "Page1",
     component: Page1,
-=======
+  },
+  {
     path: "/eventpage/:id",
     name: "EventPage",
     component: EventPage,
->>>>>>> Stashed changes
   },
   {
     path: "/event",
