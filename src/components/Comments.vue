@@ -23,7 +23,9 @@
             />
             <button class="reply--button" @click.prevent="submitComment">Send</button>
         </div>
+        
     </div>
+    
 </template>
 
 <script>
@@ -51,6 +53,7 @@ import singleComment from './SingleComment'
 </script>
 
 <style scoped>
+
 .comments {
     margin-top: 20px;
     padding: 20px;
