@@ -1,7 +1,29 @@
 <template>
     <Nav />
+<<<<<<< Updated upstream
     <div class="flex flex-col justify-center items-center h-5/6">
       <p class="text-white text-3xl">Events will be displayed here</p>
+=======
+
+    <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
+        <div v-if="isLoading" >
+            <!-- Skeleton Loader -->
+            <div v-for="template in 9" :key="template" class="inline-block w-100">
+                <SkeletonEvent />
+            </div>
+        </div>
+        <div v-else class="flex flex-row flex-wrap">
+            <div v-for="event in EventList" :key="event.title" class="inline-block w-100">
+            <Event
+                :title="event.title"
+                :description="event.description"
+                :date="event.postDate"
+                :link="'eventpage/' + event.id"
+                :imageUrl="event.imageUrl"
+            />
+            </div>
+        </div>
+>>>>>>> Stashed changes
     </div>
     <ul>
       <li v-for="event in EventList"   :key="event.tit">

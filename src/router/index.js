@@ -66,9 +66,15 @@ const routes = [
     component: Created,
   },
   {
+<<<<<<< Updated upstream
     path: "/page1",
     name: "Page1",
     component: Page1,
+=======
+    path: "/eventpage/:id",
+    name: "EventPage",
+    component: EventPage,
+>>>>>>> Stashed changes
   },
   {
     path: "/event",
