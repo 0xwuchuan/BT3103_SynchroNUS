@@ -1,66 +1,91 @@
 <template>
     <Nav />
-    <div class="flex flex-col justify-center items-center h-5/6">
-      <div class="flex-row">
-      <div v-for="event in EventList" :key="event.tit" class="inline-block">
-        <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
-      </div>
-      </div>
+
+    <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
+        <div v-if="isLoading" >
+            <!-- Skeleton Loader -->
+            <div v-for="template in 9" :key="template" class="inline-block w-100">
+                <SkeletonEvent />
+            </div>
+        </div>
+        <div v-else class="flex flex-row flex-wrap">
+            <div v-for="event in EventList" :key="event.title" class="inline-block w-100">
+            <Event
+                :title="event.title"
+                :description="event.description"
+                :date="event.postDate"
+                :link="page1"
+                :imageUrl="event.imageUrl"
+            />
+            </div>
+        </div>
     </div>
-    
-     
-    
+
+    <router-link to="/create" class="flex items-center justify-center fixed bottom-10 right-10 text-black border-2 border-black font-bold rounded-full h-32 w-32 ">Create Event</router-link>
 </template>
+
 <script>
+import {
+  getFirestore,
+  query,
+  orderBy,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase';
-import Event from '@/components/Event.vue'
-import Nav from '../components/Nav'
+import { auth, firebaseApp } from "../firebase";
+import Event from "@/components/Event.vue";
+import SkeletonEvent from "@/components/SkeletonEvent.vue"
+import Nav from "../components/Nav";
+
+const db = getFirestore(firebaseApp);
 
 export default {
   name: "Home",
-  components:{
-    Event, Nav
+  components: {
+    Event,
+    Nav,
+    SkeletonEvent
   },
   data() {
     return {
-      EventList: [
-      {
-        tit: "Gym Session@UHC",
-        description: "testing",
-        date: "19 Mar 2022",
-        link: "page1",
-        imgUrl: "58159270-01.jpeg"
-      },
-      {
-        tit: "NUS HackStack Hackathon",
-        description: "hackerman",
-        date: "20 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      ],
-      user: false
-      
-
-    }
+      EventList: [],
+      user: false,
+      isLoading: true,
+      page1: "event"
+    };
   },
   mounted() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-            }
-        })
-    },
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+      }
+    });
 
-}
+    this.getEventsByDate();
+  },
+  methods: {
+    async getEventsByDate() {
+      const eventRef = collection(db, "events");
+      const q = query(eventRef, orderBy("postDate"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        let eventInfo = doc.data();
+        eventInfo.id = doc.id;
+        console.log(eventInfo);
+        this.EventList.push(eventInfo);
+      });
+      this.isLoading = false;
+    },
+  },
+};
 </script>
 
 
 
 
 <style scoped>
- .u-section-1 {
+.u-section-1 {
   background-image: linear-gradient(to right, #4c7397, #ff7e5b);
 }
 
@@ -74,7 +99,9 @@ export default {
 }
 
 .u-section-1 .u-repeater-1 {
-  grid-template-columns: calc(33.3333% - 6.66667px) calc(33.3333% - 6.66667px) calc(33.3333% - 6.66667px);
+  grid-template-columns: calc(33.3333% - 6.66667px) calc(33.3333% - 6.66667px) calc(
+      33.3333% - 6.66667px
+    );
   grid-gap: 10px 10px;
   min-height: 778px;
   grid-auto-columns: calc(33.3333% - 6.66667px);
@@ -594,7 +621,8 @@ export default {
   .u-section-1 .u-text-23 {
     font-size: 1.5rem;
   }
-}.u-section-2 .u-sheet-1 {
+}
+.u-section-2 .u-sheet-1 {
   min-height: 500px;
 }
 
@@ -693,7 +721,7 @@ export default {
 .sticky {
   position: fixed;
   top: 0;
-  width: 100%
+  width: 100%;
 }
 </style>
 
