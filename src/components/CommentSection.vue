@@ -16,11 +16,22 @@
       </div>
       <div class="comments">
         <div :class="['custom-scrollbar', 'comments-wrapper']">
-          <single-comment
+          <div
             v-for="comment in comments"
             :comment="comments"
             :key="comment.id"
-          ></single-comment>
+          >
+            <div class="comment">
+              <div class="avatar">
+                <img :src="comment.avatar" alt="" />
+              </div>
+              <div class="text">
+                <a class="username" href="#">@{{ comment.user }}</a>
+                <form>{{ comment.text }}</form>
+              </div>
+
+            </div>
+          </div>
         </div>
         <hr />
         <br />
@@ -56,7 +67,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { auth, firebaseApp } from "../firebase";
-import SingleComment from "@/components/SingleComment.vue";
+//import SingleComment from "@/components/SingleComment.vue";
 
 const db = getFirestore(firebaseApp);
 const current_user = auth.currentUser;
@@ -64,7 +75,7 @@ const current_user = auth.currentUser;
 export default {
   name: "CommentSection",
   components: {
-    SingleComment,
+    //SingleComment,
   },
   data() {
     return {
@@ -96,9 +107,9 @@ export default {
     async submitComment() {
       const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
-        //id: 1,
+        id: 1,
         user: current_user.uid, //.displayName (better option)
-        avatar: current_user.photoURL,
+        avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
       })
         .then((data) => {
@@ -116,6 +127,42 @@ export default {
 </script>
 
 <style>
+.comment {
+  display: flex;
+  padding: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+  color: #333;
+  background-color: #f2f2f2;
+  border-radius: 30px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.comment .avatar {
+  align-self: flex-start;
+}
+
+.comment .avatar > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  align-self: start;
+}
+
+.comment .text {
+  text-align: left;
+  margin-left: 5px;
+}
+
+.comment .text span {
+  margin-left: 5px;
+}
+
+.comment .text .username {
+  font-weight: bold;
+  color: #333;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
