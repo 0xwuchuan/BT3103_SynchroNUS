@@ -4,8 +4,8 @@
       <img :src="comment.avatar" alt="" />
     </div>
     <div class="text">
-      <a class="username" href="#">@{{ comment.user }}</a
-      ><span>{{ comment.text }}</span>
+      <a class="username" href="#">@{{ user }}</a
+      ><form>{{ text }}</form>
     </div>
   </div>
 </template>
@@ -13,6 +13,12 @@
 <script>
 export default {
   name: "singleComment",
+  data() {
+      return {
+          text : "123",
+          user : "",
+      }
+  },
   props: ["comment"],
 };
 </script>

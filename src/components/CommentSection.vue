@@ -18,7 +18,7 @@
         <div :class="['custom-scrollbar', 'comments-wrapper']">
           <single-comment
             v-for="comment in comments"
-            :comment="comment"
+            :comment="comments"
             :key="comment.id"
           ></single-comment>
         </div>
@@ -29,6 +29,7 @@
             <img :src="current_user.avatar" alt="" />
           </div>
           <input
+            id="comment-text"
             type="text"
             v-model.trim="reply"
             class="reply--text"
@@ -47,7 +48,13 @@
 </template>
 
 <script>
-import { getFirestore, doc, collection, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  collection,
+  setDoc,
+  getDocs,
+} from "firebase/firestore";
 import { auth, firebaseApp } from "../firebase";
 import SingleComment from "@/components/SingleComment.vue";
 
@@ -55,7 +62,7 @@ const db = getFirestore(firebaseApp);
 const current_user = auth.currentUser;
 
 export default {
-  name: "app",
+  name: "CommentSection",
   components: {
     SingleComment,
   },
@@ -70,27 +77,40 @@ export default {
         avatar: "http://via.placeholder.com/100x100/a74848",
         user: "user",
       },
-      comments: [
-        {
-          id: 1,
-          user: "user1",
-          avatar: "http://via.placeholder.com/100x100/a74848",
-          text: "insert comments here",
-        },
-      ],
+      comments: [],
     };
   },
+  created() {
+    this.getComments();
+  },
   methods: {
+    async getComments() {
+      const querySnapshot = await getDocs(collection(db, "comments"));
+      const comments = this.comments
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        comments.push({...doc.data(), id : doc.id})
+        console.log({...doc.data(), id: doc.id});
+      });
+    },
     async submitComment() {
-      const commentRef = doc(collection(db, "comments"));
+      const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
+        //id: 1,
         user: current_user.uid, //.displayName (better option)
         avatar: current_user.photoURL,
         text: this.reply,
-      });
-      console.log(setComment);
+      })
+        .then((data) => {
+          console.log(data);
+          console.log("comment stored");
+          console.log(setComment);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      document.getElementById("comment-text").value = "";
     },
-
   },
 };
 </script>
