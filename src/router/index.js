@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import ResetPassword from "../views/ResetPassword.vue";
-import Page1 from "../views/Page1.vue";
+import EventPage from "../views/EventPage.vue";
 import Event from "../components/Event.vue";
 import Landing from "../views/Landing.vue";
 import NotifsPage from "../views/NotifsPage.vue";
@@ -46,7 +46,7 @@ const routes = [
     component: ResetPassword,
   },
   {
-    path: "/notif",
+    path: "/notifications",
     name: "NotifsPage",
     component: NotifsPage,
   },
@@ -66,9 +66,9 @@ const routes = [
     component: Created,
   },
   {
-    path: "/page1",
-    name: "Page1",
-    component: Page1,
+    path: "/event",
+    name: "EventPage",
+    component: EventPage,
   },
   {
     path: "/event",
