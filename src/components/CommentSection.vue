@@ -38,7 +38,7 @@
             @keyup.enter="submitComment"
           />
           <button class="reply--button" @click.prevent="submitComment">
-            Send
+            Comment
           </button>
         </div>
       </div>
@@ -47,7 +47,12 @@
 </template>
 
 <script>
+import { getFirestore, doc, collection, setDoc } from "firebase/firestore";
+import { auth, firebaseApp } from "../firebase";
 import SingleComment from "@/components/SingleComment.vue";
+
+const db = getFirestore(firebaseApp);
+const current_user = auth.currentUser;
 
 export default {
   name: "app",
@@ -72,30 +77,20 @@ export default {
           avatar: "http://via.placeholder.com/100x100/a74848",
           text: "insert comments here",
         },
-        {
-          id: 2,
-          user: "user2",
-          avatar: "http://via.placeholder.com/100x100/2d58a7",
-          text: "where will the event be held",
-        },
-        {
-          id: 3,
-          user: "user3",
-          avatar: "http://via.placeholder.com/100x100/36846e",
-          text: "can i join?",
-        },
       ],
     };
   },
   methods: {
-    submitComment: function (reply) {
-      this.comments.push({
-        id: this.comments.length + 1,
-        user: this.current_user.user,
-        avatar: this.current_user.avatar,
-        text: reply,
+    async submitComment() {
+      const commentRef = doc(collection(db, "comments"));
+      const setComment = await setDoc(commentRef, {
+        user: current_user.uid, //.displayName (better option)
+        avatar: current_user.photoURL,
+        text: this.reply,
       });
+      console.log(setComment);
     },
+
   },
 };
 </script>
@@ -229,7 +224,7 @@ hr {
   margin-right: 10px;
   border: 0;
   color: #333;
-  width: 100%;
+  width: 90%;
   outline: 0;
   background-color: transparent;
   box-shadow: none;
@@ -262,9 +257,6 @@ hr {
   font-size: 15px;
   line-height: 1.5;
   border-radius: 30px;
-  transition: color 0.25s ease-in-out, background-color 0.25s ease-in-out,
-    border-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out,
-    right 0.25s ease-in-out;
   outline: 0;
 }
 
