@@ -29,7 +29,8 @@
                 <a class="username" href="#">@{{ comment.user }}</a>
                 <form>{{ comment.text }}</form>
               </div>
-
+              <button id="editComment">Edit</button>
+              <button id="deleteComment">Delete</button>
             </div>
           </div>
         </div>
@@ -67,16 +68,13 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { auth, firebaseApp } from "../firebase";
-//import SingleComment from "@/components/SingleComment.vue";
 
 const db = getFirestore(firebaseApp);
 const current_user = auth.currentUser;
 
 export default {
   name: "CommentSection",
-  components: {
-    //SingleComment,
-  },
+  components: {},
   data() {
     return {
       reply: "",
@@ -97,11 +95,10 @@ export default {
   methods: {
     async getComments() {
       const querySnapshot = await getDocs(collection(db, "comments"));
-      const comments = this.comments
+      const comments = this.comments;
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        comments.push({...doc.data(), id : doc.id})
-        console.log({...doc.data(), id: doc.id});
+        comments.push({ ...doc.data(), id: doc.id });
+        console.log({ ...doc.data(), id: doc.id });
       });
     },
     async submitComment() {
@@ -161,6 +158,17 @@ export default {
 .comment .text .username {
   font-weight: bold;
   color: #333;
+}
+#editComment {
+  position: relative;
+  left: 490px;
+  top: 12px;
+}
+
+#deleteComment {
+  position: relative;
+  left: 500px;
+  top: 12px;
 }
 
 #app {
