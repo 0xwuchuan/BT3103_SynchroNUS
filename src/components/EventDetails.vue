@@ -59,8 +59,6 @@ export default {
       id: {required:true}
     },
     mounted(){
-      
-      
       async function display(eventid){
         let documents = await getDocs(collection(db,String(eventid)))
           var description = documents.description;

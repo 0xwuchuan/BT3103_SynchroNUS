@@ -1,7 +1,7 @@
 <template>
     <Nav />
     <EventDetails 
-    :id="this.id"
+        :id="this.id"
     />
     <CommentSection />
 </template>
@@ -28,7 +28,7 @@ export default {
     const route = useRoute();
     console.warn("route",route.params);
     this.id = route.params.id;
-    
+    console.log(this.profile);
   }
 }
 </script>
