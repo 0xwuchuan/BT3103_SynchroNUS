@@ -20,6 +20,7 @@
                 maxlength="250"
                 required
                 @keyup.enter="submitComment"
+
             />
             <button class="reply--button" @click.prevent="submitComment">Send</button>
         </div>
@@ -28,29 +29,62 @@
 
 <script>
 import singleComment from './SingleComment'
-    export default {
+// import { firebaseApp, auth } from '../firebase.js'
+// import { getFirestore } from "firebase/firestore"
+// import { doc, setDoc } from "firebase/firestore";
+
+
+// const db = getFirestore(firebaseApp);
+
+export default {
         name: 'comments',
         components: {
             singleComment
         },
+
+        mounted() {
+            this.$root.$on('Comments', () => {
+                this.submitComment()
+            })
+        },
         data() {
             return {
-                reply: ''
+                reply: '',
             }
         },
         methods: {
             submitComment() {
+                
+                
+                // this.user = auth.currentUser.displayName;
+
                 if(this.reply != '') {
                     this.$emit('submit-comment', this.reply);
                     this.reply = '';
+                    /*try{
+                        const docRef = setDoc(doc(db, String(this.user), this.reply), {
+                        username: this.user,
+                        content: this.reply
+                        })
+                        console.log(docRef)
+                        this.user = this.reply = ""
+                        this.$emit("added")
+                    }
+                    catch(error) {
+                        console.error("Error commenting: ", error);
+                    }*/
                 }
+
+                // else alert("Invalid")
+                
             }
         },
-        props: ['comments', 'current_user', 'comments_wrapper_classes']
-    }
+    props: ['comments', 'current_user', 'comments_wrapper_classes']
+}
+    
 </script>
 
-<style scoped>
+<style>
 .comments {
     margin-top: 20px;
     padding: 20px;

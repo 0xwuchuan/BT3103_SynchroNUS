@@ -6,6 +6,9 @@
         <router-link v-else class="text-xl" to="/">
             <img class="w-72" src="../assets/3.1.png" alt="Logo">
         </router-link>
+        <router-link class="notif" to="/notifications">
+            <img class="absolute right-10 object-scale-down w-16" src="../assets/notif.png" alt="Notif">
+        </router-link>
         <div>
             <button class="rounded-full py-2 px-4 border-2 border-black" v-if="user" @click="signout">Sign out</button>
         </div>

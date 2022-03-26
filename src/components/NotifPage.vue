@@ -1,7 +1,22 @@
 <template>
-  <div class="notifs">
-    <Notif/>
-  </div>
+
+<div class="flex flex-col justify-center items-center max-h-fit max-w-fit">
+  <h1 class="text-3xl font-bold mt-10 text-white items-center max-w-fit mr-96">Notifications</h1>   
+    <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit">
+      <div class="notifs">
+      <Notif/>
+      <div :class="notif_wrapper">
+      <single-notif
+        v-for="notif in notifs"
+                :notif="notif"
+                :key="notif.id"
+      ></single-notif>
+      </div>
+      </div>
+    </div>
+</div>
+
+
 </template>
 
 <script>
@@ -10,8 +25,8 @@
 // import { collection, getDocs } from "firebase/firestore";
 // import { getAuth } from "firebase/auth";
 import Notif from './Notif'
-// import { getFirestore } from "firebase/firestore"
-// import { auth } from '../firebase';
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from '../firebase';
 // import VueNotifications from 'vue-notification';
 
 export default {
@@ -20,6 +35,32 @@ export default {
     components: {
       Notif
     },
+
+    data() {
+        return {
+            notifs: [
+              {
+                text: "notif 1",
+              },
+              {
+                text: "notif 2",
+              },
+
+            ]
+        }
+    },
+
+    mounted() {
+
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                this.user = user;
+            }
+        })
+    },
+
+
+    
 
     /*data () {
         return {
@@ -31,9 +72,7 @@ export default {
         const db = getFirestore(firebaseApp);
         const auth = getAuth();*/
         
-        
-    
-
+      
     /*methods : {
         async commentHandler(){
             var user = auth.currentUser.email;
@@ -55,8 +94,13 @@ export default {
 </script>
 
 <style scoped>
+
+
 .notifs{
   padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 85px;
+  padding-right: 85px;
   position: static;
   bottom: 0;
   right: 0;
