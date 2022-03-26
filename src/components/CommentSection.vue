@@ -29,8 +29,15 @@
                 <a class="username" href="#">@{{ comment.user }}</a>
                 <form>{{ comment.text }}</form>
               </div>
-              <button id="editComment">Edit</button>
-              <button id="deleteComment">Delete</button>
+              <button id="editComment" @click.prevent="editComment(comment.id)">
+                Edit
+              </button>
+              <button
+                id="deleteComment"
+                @click.prevent="deleteComment(comment.id)"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
@@ -66,6 +73,8 @@ import {
   collection,
   setDoc,
   getDocs,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { auth, firebaseApp } from "../firebase";
 
@@ -89,7 +98,7 @@ export default {
       comments: [],
     };
   },
-  created() {
+  mounted() {
     this.getComments();
   },
   methods: {
@@ -104,7 +113,7 @@ export default {
     async submitComment() {
       const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
-        id: 1,
+        //id: 1,
         user: current_user.uid, //.displayName (better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
@@ -118,6 +127,18 @@ export default {
           console.log(error);
         });
       document.getElementById("comment-text").value = "";
+    },
+    async editComment(id) {
+      const commentRef = doc(db, "comments", id);
+      await updateDoc(commentRef, {
+        text: "edited comment",
+      });
+      console.log("comment has been edited");
+    },
+    async deleteComment(id) {
+      confirm("Your comment will be deleted");
+      await deleteDoc(doc(db, "comments", id));
+      console.log("comment has been deleted");
     },
   },
 };
@@ -161,13 +182,13 @@ export default {
 }
 #editComment {
   position: relative;
-  left: 490px;
+  left: 445px;
   top: 12px;
 }
 
 #deleteComment {
   position: relative;
-  left: 500px;
+  left: 455px;
   top: 12px;
 }
 
