@@ -29,7 +29,7 @@
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-3">Health</a>
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-4">GYm</a>
                             <p class="u-align-center u-text u-text-3" id = "info">{{ id }}<br>Location:<br>Expiry Date:<br>
-                                <br>Looking for gym buddies&nbsp;
+                                <br>{{ this.description }}
                             </p>
                             <a href="https://nicepage.com/joomla-templates" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">Register for Event</a>
                             </div>
@@ -45,14 +45,14 @@
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { collection, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
     name: "EventDetails",
     data() {
       return {
-        eventid: ''
+        description: ''
       }
     },
     props: {
@@ -60,18 +60,18 @@ export default {
     },
     mounted(){
       async function display(eventid){
-        let documents = await getDocs(collection(db,String(eventid)))
-          var description = documents.description;
-          var postDate = documents.postDate;
-          var expiryDate = documents.expiryDate;
-        document.getElementById("info").innerHTML = (`<p class="u-align-center u-text u-text-3" id = "info">Date of Event: ${{ postDate }}<br>Location:<br>Expiry Date: ${{ expiryDate }}<br>
-                                <br>${{ description }}&nbsp;
-                            </p>`)
+        let eventRef = doc(db, "events", eventid)
+        let eventSnap = await getDoc(eventRef)
+        if (eventSnap.exists()) {
+            console.log("Document data:", eventSnap.data());
+        } else {
+        // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
       }
-      if (this.eventid){
-        console.log(this.eventid)
-        var eventid = this.eventid;
-        display(eventid)
+      if (this.id){
+        console.log(this.id)
+        display(this.id)
       }
     }
     

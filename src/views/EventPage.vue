@@ -1,9 +1,11 @@
 <template>
     <Nav />
-    <EventDetails 
+    <div>
+        <EventDetails 
         :id="this.id"
-    />
-    <CommentSection />
+        />
+        <CommentSection />
+    </div>
 </template>
 
 <script>

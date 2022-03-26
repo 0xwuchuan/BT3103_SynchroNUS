@@ -40,7 +40,7 @@
                 <div class="flex flex-row items-left w-10/12 m-3">
                     <div class="flex flex-col w-1/4 m-1">
                         <label for="gender">Gender</label>
-                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="gender" required>
+                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" v-model="gender" required>
                             <option disabled selected value="">Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="flex flex-col w-1/4 m-1">
                         <label for="year">Year</label>
-                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="year" required>
+                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" v-model="year" required>
                             <option disabled selected value="">Year</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="flex flex-col w-2/4 m-1">
                         <label for="teleHandle">Telegram Handle</label>
-                        <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" id="teleHandle" required>
+                        <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" v-model="teleHandle" required>
                     </div>
                 </div>
                 <button class="block rounded-md bg-secondary hover:bg-yellow-500 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="button" v-on:click="signup()">Get Started</button>
@@ -89,6 +89,11 @@ export default {
         return {
             email: "",
             password: "",
+            name: "",
+            gender: "",
+            year: "",
+            teleHandle: ""
+
         }
     },
     methods: {
@@ -115,15 +120,11 @@ export default {
         // }
         async signup() {
             const auth = getAuth(); 
-            var a = document.getElementById("name").value
-            var b = document.getElementById("gender").value
-            var c = document.getElementById("year").value
-            var d = document.getElementById("teleHandle").value
             const setUser = await setDoc(doc(db, "Users", this.email), {
-                name: a,
-                gender: b,
-                year: c,
-                teleHandle: d,
+                name: this.name,
+                gender: this.gender,
+                year: this.year,
+                teleHandle: this.teleHandle,
             });
 
             createUserWithEmailAndPassword(auth, this.email, this.password)

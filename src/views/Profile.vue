@@ -1,8 +1,6 @@
 <template>
     <Nav />    
-    
     <div class="pt-10 px-10 main grid place-items-start h-screen ">
-        
         <!--card-->
         <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
             <!--profile-image-->
@@ -26,8 +24,6 @@
                 <button class="inline-block bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="popup-modal">
                     Edit
                 </button>
-
-
             <div id="popup-modal"  class="hidden overflow-y-auto overflow-x-hidden fixed right-0 left-0 top-4 z-50 justify-center items-center h-modal md:h-full md:inset-0">
             <div class="relative px-4 w-full max-w-md h-full md:h-auto">
 
@@ -73,8 +69,8 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                <div v-for="event in Upcoming" :key="event.tit" class="inline-block">
-                    <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
+                <div v-for="event in Upcoming" :key="event.title" class="inline-block w-100">
+                    <Event :tit="event.title" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
                 </div>
                 </div>
             </div>
@@ -91,8 +87,8 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                <div v-for="event in Saved" :key="event.tit" class="inline-block">
-                    <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
+                <div v-for="event in Saved" :key="event.title" class="inline-block w-100">
+                    <Event :tit = "event.title" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
                 </div>
                 </div>
             </div> 
@@ -109,8 +105,8 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                <div v-for="event in Created" :key="event.tit" class="inline-block">
-                    <Event :tit = "event.tit" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
+                <div v-for="event in Created" :key="event.title" class="inline-block w-100">
+                    <Event :tit = "event.title" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
                 </div>
                 </div>
             </div> 
@@ -152,61 +148,17 @@ export default {
       Created: 
       //query(eventsRef, where("userId", "==", String(this.user.uid)
       [
-      {
-        tit: "Gym Session@UHC",
-        description: "testing",
-        date: "19 Mar 2022",
-        link: "page1",
-        imgUrl: "58159270-01.jpeg"
-      },
-      {
-        tit: "NUS HackStack Hackathon",
-        description: "hackerman",
-        date: "20 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
+      
       ],
-      Saved: 
-      //user.saved
-      [
-      {
-        tit: "Gym Session@UHC",
-        description: "testing",
-        date: "19 Mar 2022",
-        link: "page1",
-        imgUrl: "58159270-01.jpeg"
-      },
-      {
-        tit: "NUS HackStack Hackathon",
-        description: "hackerman",
-        date: "20 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      ],
-      Upcoming:
+      Saved:[],
+      Upcoming: [],
       //user.upcoming 
       //query(eventsRef, where(String(this.user.uid) in "attendees")) 
       //- i think we decided on going through all the events to get which events have the user id in attendees but a bit inefficient eh 
-      [
-      {
-        tit: "Gym Session@UHC",
-        description: "testing",
-        date: "19 Mar 2022",
-        link: "page1",
-        imgUrl: "58159270-01.jpeg"
-      },
-      {
-        tit: "NUS HackStack Hackathon",
-        description: "hackerman",
-        date: "20 Mar 2022",
-        link: "www.google.com",
-        imgUrl: "58159270-01.jpeg"
-      },
-      ],
       //query(eventsRef, where("userId", "==", String(this.user.uid)
       user: false,
+      userVerified: false,
+      userEmail: "",
       isFullUpcoming: false,
       isFullSaved: false,
       isFullCreated: false,
@@ -220,8 +172,8 @@ export default {
                 try{
                     const auth = getAuth() 
                     onAuthStateChanged(auth, (user) => {
-                        this.fbuser = user.email
-                        this.user = user
+                        this.userEmail = user.email
+                        this.userVerified = user.emailVerified
                         resolve(user)
                     })
                 } catch (err) {
@@ -240,11 +192,9 @@ export default {
 
     async mounted() {
         this.user = await this.checkAuthStatus()    
-        console.log(this.user)
-        console.log(this.user.email)
-        const userRef = await doc(db, "Users", String(this.fbuser))
+        console.log(this.userVerified)
+        const userRef = await doc(db, "Users", String(this.userEmail))
         const userDoc = await getDoc(userRef)
-        console.log(userDoc)
     
         //this.userRef = getDocs(collection(db, "Users"))
         if (userDoc.exists()) {

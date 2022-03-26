@@ -8,12 +8,9 @@ import EventPage from "../views/EventPage.vue";
 import Event from "../components/Event.vue";
 import Landing from "../views/Landing.vue";
 import NotifsPage from "../views/NotifsPage.vue";
-
 import CommentTest from "../views/CommentTest.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
-import EventPage from "../views/EventPage.vue";
-
 import CreateEvent from "../views/CreateEvent.vue";
 
 const routes = [
@@ -66,11 +63,6 @@ const routes = [
     path: "/created",
     name: "Created",
     component: Created,
-  },
-  {
-    path: "/eventpage/:id",
-    name: "EventPage",
-    component: EventPage,
   },
   {
     path: "/eventpage/:id",
