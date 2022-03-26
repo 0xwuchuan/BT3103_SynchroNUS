@@ -1,6 +1,5 @@
 <template>
     <Nav />
-
     <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
         <div v-if="isLoading" >
             <!-- Skeleton Loader -->
@@ -14,11 +13,7 @@
                 :title="event.title"
                 :description="event.description"
                 :date="event.postDate"
-<<<<<<< HEAD
-                :link="'eventpage/' + event.id"
-=======
                 :link="'eventpage/'+event.id"
->>>>>>> main
                 :imageUrl="event.imageUrl"
             />
             </div>

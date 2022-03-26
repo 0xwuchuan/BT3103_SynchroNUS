@@ -2,8 +2,14 @@
     <Nav />
     <div class="flex flex-col justify-center items-center h-5/6">
         <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-100"> 
-            <h3 class="text-3xl font-bold mt-10">Create an account</h3>
+            <h1 class="text-3xl font-bold mt-10">Create an account</h1>
             <form class="flex flex-col justify-center items-center w-full" @submit.prevent="signup">
+                <div class="flex flex-col items-left w-10/12 m-3">
+                    <div class="flex flex-row items-center">
+                        <label for="name">Name</label>
+                    </div>
+                    <input v-model="name" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="name" placeholder="Enter your full name" id="name" required>
+                </div>
                 <div class="flex flex-col items-left w-10/12 m-3">
                     <div class="flex flex-row items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-1 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -34,8 +40,8 @@
                 <div class="flex flex-row items-left w-10/12 m-3">
                     <div class="flex flex-col w-1/4 m-1">
                         <label for="gender">Gender</label>
-                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="gender" v-model="gender" required>
-                            <option disabled selected value="">Please select your gender</option>
+                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="gender" required>
+                            <option disabled selected value="">Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
@@ -43,8 +49,8 @@
                     </div>
                     <div class="flex flex-col w-1/4 m-1">
                         <label for="year">Year</label>
-                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="year" v-model="year" required>
-                            <option disabled selected value="">Please select your year</option>
+                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="year" required>
+                            <option disabled selected value="">Year</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -54,10 +60,10 @@
                     </div>
                     <div class="flex flex-col w-2/4 m-1">
                         <label for="teleHandle">Telegram Handle</label>
-                        <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" required>
+                        <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" id="teleHandle" required>
                     </div>
                 </div>
-                <button class="block rounded-md bg-secondary hover:bg-yellow-500 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Get Started</button>
+                <button class="block rounded-md bg-secondary hover:bg-yellow-500 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="button" v-on:click="signup()">Get Started</button>
                 <router-link class="text-sm text-secondary hover:text-yellow-500 transition ease-linear m-5" to="/login">Already have an account? Login here</router-link>
             </form>
         </div>
@@ -65,10 +71,13 @@
 </template>
 
 <script>
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import {doc, setDoc} from "firebase/firestore";
 import Nav from "../components/Nav.vue"
-import {auth} from '../firebase.js'
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import router from '../router/index'
+const db = getFirestore(firebaseApp);
 
 
 export default {
@@ -87,23 +96,53 @@ export default {
             console.log(this.email);
             console.log(this.password);
         },
-        signup() {
-            createUserWithEmailAndPassword(auth, this.email, this.password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                console.log(user);
-                sendEmailVerification(user);
-                router.push('/test')
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-                // ..
+        // signup() {
+        //     createUserWithEmailAndPassword(auth, this.email, this.password)
+        //     .then((userCredential) => {
+        //         // Signed in 
+        //         const user = userCredential.user;
+        //         console.log(user);
+        //         sendEmailVerification(user);
+        //         router.push('/test')
+        //         // ...
+        //     })
+        //     .catch((error) => {
+        //         const errorCode = error.code;
+        //         const errorMessage = error.message;
+        //         console.log(errorCode, errorMessage);
+        //         // ..
+        //     });
+        // }
+        async signup() {
+            const auth = getAuth(); 
+            var a = document.getElementById("name").value
+            var b = document.getElementById("gender").value
+            var c = document.getElementById("year").value
+            var d = document.getElementById("teleHandle").value
+            const setUser = await setDoc(doc(db, "Users", this.email), {
+                name: a,
+                gender: b,
+                year: c,
+                teleHandle: d,
             });
-        }
+
+            createUserWithEmailAndPassword(auth, this.email, this.password)
+                    .then((userCredential) => {
+                        // Signed in 
+                        const user = userCredential.user;
+                        console.log(user);
+                        sendEmailVerification(user);
+                        router.push('/home')
+                        // ...
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorCode, errorMessage);
+                        // ..
+                    });
+            console.log(setUser)
+        },
     },
 }
 </script>
