@@ -3,7 +3,7 @@
     <div class="flex flex-col justify-center items-center h-5/6">
         <div class="flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-100"> 
             <h1 class="text-3xl font-bold mt-10">Create an account</h1>
-            <form class="flex flex-col justify-center items-center w-full">
+            <form class="flex flex-col justify-center items-center w-full" @submit.prevent="signup">
                 <div class="flex flex-col items-left w-10/12 m-3">
                     <div class="flex flex-row items-center">
                         <label for="name">Name</label>
