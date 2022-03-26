@@ -66,7 +66,7 @@ const routes = [
     component: Created,
   },
   {
-    path: "/event",
+    path: "/eventpage/:id",
     name: "EventPage",
     component: EventPage,
   },

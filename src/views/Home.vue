@@ -14,7 +14,7 @@
                 :title="event.title"
                 :description="event.description"
                 :date="event.postDate"
-                :link="page1"
+                :link="'eventpage/'+event.id"
                 :imageUrl="event.imageUrl"
             />
             </div>

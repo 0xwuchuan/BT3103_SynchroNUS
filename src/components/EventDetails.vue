@@ -28,7 +28,7 @@
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">Excercise</a>
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-3">Health</a>
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-4">GYm</a>
-                            <p class="u-align-center u-text u-text-3">Date of Event:<br>Location:<br>Expiry Date:<br>
+                            <p class="u-align-center u-text u-text-3" id = "info">{{ id }}<br>Location:<br>Expiry Date:<br>
                                 <br>Looking for gym buddies&nbsp;
                             </p>
                             <a href="https://nicepage.com/joomla-templates" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">Register for Event</a>
@@ -43,8 +43,40 @@
 </template>
 
 <script>
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { collection, getDocs } from "firebase/firestore";
+const db = getFirestore(firebaseApp);
+
 export default {
-    name: "EventDetails"
+    name: "EventDetails",
+    data() {
+      return {
+        eventid: ''
+      }
+    },
+    props: {
+      id: {required:true}
+    },
+    mounted(){
+      
+      
+      async function display(eventid){
+        let documents = await getDocs(collection(db,String(eventid)))
+          var description = documents.description;
+          var postDate = documents.postDate;
+          var expiryDate = documents.expiryDate;
+        document.getElementById("info").innerHTML = (`<p class="u-align-center u-text u-text-3" id = "info">Date of Event: ${{ postDate }}<br>Location:<br>Expiry Date: ${{ expiryDate }}<br>
+                                <br>${{ description }}&nbsp;
+                            </p>`)
+      }
+      if (this.eventid){
+        console.log(this.eventid)
+        var eventid = this.eventid;
+        display(eventid)
+      }
+    }
+    
 }
 </script>
 

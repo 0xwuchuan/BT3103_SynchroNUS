@@ -1,6 +1,8 @@
 <template>
     <Nav />
-    <EventDetails />
+    <EventDetails 
+    :id="this.id"
+    />
     <CommentSection />
 </template>
 
@@ -8,7 +10,7 @@
 import Nav from "../components/Nav";
 import EventDetails from "../components/EventDetails";
 import CommentSection from '@/components/CommentSection.vue';
-
+import {useRoute} from 'vue-router';
 
 export default {
   name: 'EventPage',
@@ -16,6 +18,17 @@ export default {
       Nav,
       EventDetails,
       CommentSection
+  },
+  data() {
+    return {
+      id: ''
+    }
+  },
+  mounted(){
+    const route = useRoute();
+    console.warn("route",route.params);
+    this.id = route.params.id;
+    
   }
 }
 </script>
