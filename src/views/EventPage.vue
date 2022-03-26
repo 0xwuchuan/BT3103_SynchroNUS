@@ -1,7 +1,7 @@
 <template>
     <Nav />
     <EventDetails 
-    :id="id"
+        :id="this.id"
     />
     <CommentSection />
 </template>
@@ -12,10 +12,8 @@ import EventDetails from "../components/EventDetails";
 import CommentSection from '@/components/CommentSection.vue';
 import {useRoute} from 'vue-router';
 
-
 export default {
   name: 'EventPage',
-
   components: {
       Nav,
       EventDetails,
