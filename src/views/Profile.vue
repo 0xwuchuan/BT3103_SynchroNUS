@@ -1,7 +1,7 @@
 <template>
     <Nav />    
     
-    <div class="pt-32 px-10 main grid place-items-start h-screen">
+    <div class="pt-32 px-10 main grid place-items-start h-screen ">
         
         <!--card-->
         <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">

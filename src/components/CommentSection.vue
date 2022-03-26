@@ -144,6 +144,7 @@ export default {
 };
 </script>
 
+<<<<<<< HEAD
 <style>
 .comment {
   display: flex;
@@ -202,6 +203,9 @@ export default {
   border-radius: 20px;
 }
 
+=======
+<style scoped>
+>>>>>>> main
 a {
   text-decoration: none;
 }

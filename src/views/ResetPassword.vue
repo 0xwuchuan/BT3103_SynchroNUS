@@ -2,12 +2,12 @@
     <Nav />
     <div class="flex flex-col justify-center items-center h-5/6">
         <div class="relative flex flex-col items-center bg-white rounded-lg filter drop-shadow-md h-80 w-10/12 md:w-100"> 
-            <router-link class="absolute left-0 top-0 m-11 pl-1" to="/login">
+            <router-link class="absolute left-0 top-0 m-11 pl-1 text-black" to="/login">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
             </router-link>
-            <h1 class="text-3xl font-bold my-10">Reset Password</h1>
+            <h3 class="text-3xl font-bold my-10">Reset Password</h3>
             <form class="flex flex-col justify-center items-center w-full" @submit.prevent="resetPassword">
                 <div class="flex flex-col items-left w-10/12">
                     <div class="flex flex-row items-center">

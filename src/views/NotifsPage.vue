@@ -1,29 +1,26 @@
 <!-- change to page with components -->
-
 <template>
   <Nav/>
-  <div class="flex flex-col justify-center items-center h-screen">
-    <p class="text-white text-3xl">Notifs will be displayed here</p>
-  </div>
-  <Notifs/>
+  <NotifPage/>
 
 </template>
 
 <script>
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from '../firebase';
+//import { onAuthStateChanged } from "firebase/auth";
+// import { auth } from '../firebase';
 
 import Nav from '../components/Nav'
-import Notifs from '../components/Notifs'
+import NotifPage from '../components/NotifPage'
 
 
 export default {
     name: "NotifsPage",
     components: {
         Nav,
-        Notifs,
+        NotifPage,
     },
-    data() {
+
+    /*data() {
         return {
             user: false,
         }
@@ -34,6 +31,6 @@ export default {
                 this.user = user;
             }
         })
-    },
+    },*/
 }
 </script>
