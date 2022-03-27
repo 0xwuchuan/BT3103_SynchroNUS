@@ -1,13 +1,12 @@
 <template>
-<div class="space-y-5">
-    <div
-    class="p-4 border rounded text-700 bg-50 border-900/10 w-100 object-position:left"
-    role="alert"
-    >
-    <strong class="text-sm font-medium"> User commented on your event </strong>
-    </div>
 
     <div
+    class="p-2 rounded text-700 bg-50 border-900/10 w-100">
+    
+    {{ user }} commented on your post
+    </div><hr>
+
+    <!---<div
     class="p-4 border rounded text-700 bg-50 border-900/10 w-100 object-position:left"
     role="alert"
     >
@@ -29,7 +28,7 @@
     </div>
 
 </div>
-    <!-- if commented
+    if commented
     <div class="text">
         <h5>User commented on your event</h5>
     </div>
@@ -48,48 +47,17 @@
 </template>
 
 <script>
-import {firebaseApp, auth} from '../firebase.js';
-import { getFirestore } from "firebase/firestore"
-import { collection, getDocs } from "firebase/firestore";
+
 // import { getAuth } from "firebase/auth";
 
 
 export default {
     name: 'singleNotif',
-    props: ['notif'],
-
-    mounted(){
-        const db = getFirestore(firebaseApp);
-        
-
-    async function comment(){
-        var user = auth.currentUser;
-        let z = getDocs(collection(db, user))
-
-        z.forEach((docs) => {
-            let yy = docs.data()
-            var username = (yy.username)
-            var reply = (yy.content)
-
-            var bu = document.createElement("text")
-            bu.innerHTML = username + " commented " + reply + " on your event";
-        })
-
+    props: {
+        user: {required: true, type: String},
     }
 
-    comment()
-    },
-
-    commentNotif: function(){
-        this.$root.$emit('Comments')
-        console.log("here")
-    },
-
-
-}
-
-
-
+}   
 </script>
 
 <style scoped>
