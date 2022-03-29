@@ -3,7 +3,7 @@
     <div
     class="p-2 rounded text-700 bg-50 border-900/10 w-100">
     
-    {{ user }} commented on your post
+    <b>{{ user }}</b> commented on your event: {{ text }}
     </div><hr>
 
     <!---<div
@@ -55,6 +55,7 @@ export default {
     name: 'singleNotif',
     props: {
         user: {required: true, type: String},
+        text: {required: true, type: String}
     }
 
 }   
