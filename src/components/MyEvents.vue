@@ -9,8 +9,14 @@
             <div class="container mx-auto">
                 <div class="flex">
                 <!-- TO-DO: CUTOFF at 4 events -->
-                <div v-for="event in Upcoming" :key="event.title" class="inline-block w-100">
-                    <Event :tit="event.title" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
+                <div v-for="event in userUpcoming" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="event.postDate"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                    />
                 </div>
                 </div>
             </div>
@@ -28,8 +34,14 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                <div v-for="event in Saved" :key="event.title" class="inline-block w-100">
-                    <Event :tit = "event.title" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
+                <div v-for="event in userSaved" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="event.postDate"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                    />
                 </div>
                 </div>
             </div> 
@@ -47,9 +59,15 @@
         </div>
         <div class="container mx-auto">
             <div class="flex">
-            <div v-for="event in Created" :key="event.title" class="inline-block w-100">
-                <Event :tit = "event.title" :description="event.description" :date="event.date" :link="event.link" :imageUrl="event.imageUrl"/>
-            </div>
+                <div v-for="event in userCreated" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="event.postDate"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                    />
+                </div>
             </div>
         </div> 
         <button @click="seeCreated" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
@@ -61,11 +79,13 @@
 </template>
 
 <script>
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import router from '../router/index'
 import Event from '@/components/Event.vue'
-
-
+import { doc, getDoc } from 'firebase/firestore'
+const db = getFirestore(firebaseApp);
 
 export default {
     name: 'MyEvents',
@@ -76,7 +96,6 @@ export default {
     },
     data() {
     return {
-      refreshComp: 0,
       user: false,
       userVerified: false,
       userEmail: "",
@@ -84,9 +103,9 @@ export default {
       userGender: "",
       userTeleHandle: "",
       userYear: "",
-      userUpcoming: "",
-      userSaved: "",
-      userCreated: ""
+      userUpcoming: [],
+      userSaved: [],
+      userCreated: []
     }
   },
   methods: {
@@ -126,7 +145,29 @@ export default {
         //     });
         //     return queried
         // },
-  }
+  },
+    async mounted() {
+        this.user = await this.checkAuthStatus()    
+        console.log(this.userVerified)
+        const userRef = await doc(db, "Users", String(this.userEmail))
+        const userDoc = await getDoc(userRef)
+    
+        if (userDoc.exists()) {
+            const userData = await userDoc.data();
+            console.log(userData);
+            this.userName = userData.name
+            this.userGender = userData.gender
+            this.userTeleHandle = userData.teleHandle
+            this.userYear = userData.year
+            this.userUpcoming = userData.upcoming
+            this.userSaved = userData.saved
+            this.userCreated = userData.created
+            console.log(this.userCreated)
+
+        } else {
+            console.log("No such document!");
+        }
+    }
 }
 </script>
 

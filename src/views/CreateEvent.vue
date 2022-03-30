@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {  getFirestore, doc, collection, setDoc, updateDoc, 
+import {  getFirestore, doc, collection, addDoc, updateDoc, 
     deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
@@ -71,8 +71,8 @@ export default {
     },
     methods: {
         async createEvent() {
-            const eventRef = doc(collection(db, "events"));
-            const setEvent = await setDoc(eventRef, {
+            const eventRef = collection(db, "events");
+            const setEvent = await addDoc(eventRef, {
                     userEmail: this.user.email,
                     title: this.title,
                     expiryDate: this.expiryDate,
@@ -83,17 +83,14 @@ export default {
                     comments: [],
                     participants: [],
                     requesters: []
-                }).then(async function(docRef) {
-                    const eventId = docRef.id;
-                    const userRef = doc(db, "Users", this.user.email);
-                    const updateUser = await updateDoc(userRef, {
-                        created: arrayUnion(eventId),
-                    })
-                    console.log(updateUser)
-                    this.$emit("updated")
                 })
-            console.log(setEvent)
-            
+            const userRef = doc(db, "Users", this.user.email);
+            const updateUser = updateDoc(userRef, {
+                created: arrayUnion(setEvent),
+            })
+            console.log(updateUser)
+            this.$emit("updated")
+            console.log(setEvent.id)
         },
         async editEvent(eventId) { // pass in things to edit
             const eventRef = doc(db, "events", eventId);

@@ -103,9 +103,9 @@ export default {
       userGender: "",
       userTeleHandle: "",
       userYear: "",
-    //   userUpcoming: [],
-    //   userSaved: [],
-    //   userCreated: []
+      userUpcoming: [],
+      userSaved: [],
+      userCreated: []
     }
   },
   methods: {
