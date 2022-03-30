@@ -125,6 +125,9 @@ export default {
                 gender: this.gender,
                 year: this.year,
                 teleHandle: this.teleHandle,
+                upcoming: [],
+                saved: [],
+                created: []
             });
 
             createUserWithEmailAndPassword(auth, this.email, this.password)
