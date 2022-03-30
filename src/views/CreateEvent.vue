@@ -73,7 +73,7 @@ export default {
         async createEvent() {
             const eventRef = doc(collection(db, "events"));
             const setEvent = await setDoc(eventRef, {
-                    userId: this.user.uid,
+                    userEmail: this.user.email,
                     title: this.title,
                     expiryDate: this.expiryDate,
                     location: this.location,
@@ -83,8 +83,17 @@ export default {
                     comments: [],
                     participants: [],
                     requesters: []
+                }).then(async function(docRef) {
+                    const eventId = docRef.id;
+                    const userRef = doc(db, "Users", this.user.email);
+                    const updateUser = await updateDoc(userRef, {
+                        created: arrayUnion(eventId),
+                    })
+                    console.log(updateUser)
+                    this.$emit("updated")
                 })
             console.log(setEvent)
+            
         },
         async editEvent(eventId) { // pass in things to edit
             const eventRef = doc(db, "events", eventId);
@@ -105,13 +114,20 @@ export default {
             })
             console.log(request)
         },
-        async acceptApplicant(userId, eventId) {
+        async acceptApplicant(eventId, userEmail) {
             const eventRef = doc(db, "events", eventId);
             const accept = await updateDoc(eventRef, {
-                requesters: arrayRemove(userId),
-                participants: arrayUnion(userId)
+                requesters: arrayRemove(userEmail),
+                participants: arrayUnion(userEmail)
+            })
+            const userRef = doc(db, "Users", userEmail);
+            const updateUser = await updateDoc(userRef, {
+                upcoming: arrayUnion(eventId),
+                
             })
             console.log(accept)
+            console.log(updateUser)
+            this.$emit("updated")
         }
 
     }
