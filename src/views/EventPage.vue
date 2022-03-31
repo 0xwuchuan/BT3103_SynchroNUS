@@ -26,11 +26,11 @@ export default {
       id: ''
     }
   },
-  mounted(){
+  beforeMount(){
     const route = useRoute();
     console.warn("route",route.params);
     this.id = route.params.id;
-    console.log(this.profile);
+    console.log(this.id);
   }
 }
 </script>

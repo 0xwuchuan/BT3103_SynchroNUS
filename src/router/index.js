@@ -12,6 +12,7 @@ import CommentTest from "../views/CommentTest.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
 import CreateEvent from "../views/CreateEvent.vue";
+import EditEvent from "../views/EditEvent.vue";
 
 const routes = [
   {
@@ -73,6 +74,11 @@ const routes = [
     path: "/event",
     name: "Event",
     component: Event,
+  },
+  {
+    path: "/edit/:id",
+    name: "EditEvent",
+    component: EditEvent,
   },
   {
     path: "/create",
