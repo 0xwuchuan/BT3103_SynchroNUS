@@ -3,7 +3,7 @@
     <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
         <div v-if="isLoading" >
             <!-- Skeleton Loader -->
-            <div v-for="template in 9" :key="template" class="inline-block w-100">
+            <div v-for="template in 6" :key="template" class="inline-block w-100">
                 <SkeletonEvent />
             </div>
         </div>
@@ -20,7 +20,18 @@
         </div>
     </div>
 
-    <router-link to="/create" class="flex items-center justify-center fixed bottom-10 right-10 text-black border-2 border-black font-bold rounded-full h-32 w-32 ">Create Event</router-link>
+    <router-link v-if="!isLoading" to="/create">
+        <button class="group flex items-center justify-center fixed bottom-10 right-10 rounded-lg h-16 w-64 font-mont text-lg font-bold
+            text-white bg-gray-800 hover:bg-gray-700 transition duration-75 ease-linear transform 
+            ">
+            Create An Event
+            <span class="duration-300 transform group-hover:translate-x-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </span>
+        </button>
+    </router-link>
 </template>
 
 <script>
