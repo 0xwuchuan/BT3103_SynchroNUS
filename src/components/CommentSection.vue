@@ -28,16 +28,30 @@
               <div class="text">
                 <a class="username" href="#">@{{ comment.user }}</a>
                 <form>{{ comment.text }}</form>
+                <button
+                  id="replyComment"
+                  @click.prevent="replyComment(comment.id)"
+                >
+                  <img
+                    src="@/assets/button/reply.png"
+                    height="10%"
+                    alt="Reply"
+                  />
+                </button>
+                <button
+                  id="editComment"
+                  @click.prevent="editComment(comment.id)"
+                >
+                  <img src="@/assets/button/edit.png" height="10%" alt="Edit" />
+                </button>
+                <button
+                  id="deleteComment"
+                  @click.prevent="deleteComment(comment.id)"
+                >
+                  <img src="@/assets/button/delete.png" alt="Delete" />
+                </button>
               </div>
-              <button id="editComment" @click.prevent="editComment(comment.id)">
-                Edit
-              </button>
-              <button
-                id="deleteComment"
-                @click.prevent="deleteComment(comment.id)"
-              >
-                Delete
-              </button>
+              <div class="buttons"></div>
             </div>
           </div>
         </div>
@@ -57,7 +71,11 @@
             required
             @keyup.enter="submitComment"
           />
-          <button class="reply--button" @click.prevent="submitComment">
+          <button
+            type="reset"
+            class="reply--button"
+            @click.prevent="submitComment"
+          >
             Comment
           </button>
         </div>
@@ -72,14 +90,20 @@ import {
   doc,
   collection,
   setDoc,
-  getDocs,
+  //addDoc,
+  //getDocs,
+  query,
+  orderBy,
+  serverTimestamp,
   updateDoc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { auth, firebaseApp } from "../firebase";
 
 const db = getFirestore(firebaseApp);
 const current_user = auth.currentUser;
+console.log("curr user", current_user);
 
 export default {
   name: "CommentSection",
@@ -103,20 +127,26 @@ export default {
   },
   methods: {
     async getComments() {
-      const querySnapshot = await getDocs(collection(db, "comments"));
-      const comments = this.comments;
-      querySnapshot.forEach((doc) => {
-        comments.push({ ...doc.data(), id: doc.id });
-        console.log({ ...doc.data(), id: doc.id });
+      const commentRef = collection(db, "comments");
+      const q = await query(commentRef, orderBy("commentedAt"));
+      onSnapshot(q, (snapshot) => {
+        this.comments = [];
+        const comments = this.comments;
+        snapshot.docs.forEach((doc) => {
+          comments.push({ ...doc.data(), id: doc.id });
+        });
+        console.log(comments);
       });
     },
+    
     async submitComment() {
       const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
         //id: 1,
-        user: current_user.uid, //.displayName (better option)
+        user: current_user.email,// displayName, //(better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
+        commentedAt: serverTimestamp(),
       })
         .then((data) => {
           console.log(data);
@@ -144,7 +174,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .comment {
   display: flex;
   padding: 10px;
@@ -170,6 +200,7 @@ export default {
 .comment .text {
   text-align: left;
   margin-left: 5px;
+  word-break: break-all;
 }
 
 .comment .text span {
@@ -179,17 +210,23 @@ export default {
 .comment .text .username {
   font-weight: bold;
   color: #333;
+  font-family: "Montserrat";
 }
+
+#replyComment {
+  font-size: 90%;
+}
+
 #editComment {
+  font-size: 90%;
   position: relative;
-  left: 445px;
-  top: 12px;
+  left: 750px;
 }
 
 #deleteComment {
+  font-size: 90%;
   position: relative;
-  left: 455px;
-  top: 12px;
+  left: 765px;
 }
 
 a {
@@ -222,6 +259,7 @@ hr {
   color: #333;
   min-height: 80px;
   font-size: 20px;
+  font-family: "Montserrat";
   max-width: 1000px;
   border-radius: 20px;
 }
@@ -332,6 +370,7 @@ hr {
   color: #2a629c;
   display: inline-block;
   font-weight: 400;
+  font-family: "Montserrat";
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
