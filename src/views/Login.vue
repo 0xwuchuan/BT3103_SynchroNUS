@@ -22,9 +22,9 @@
                     </div>
                     <input v-model="password" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password" required>
                 </div>
-                <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Login</button>
-                <router-link class="text-sm text-secondary hover:text-yellow-600 transition ease-linear m-5" to="/signup">Or Sign Up</router-link>
-                <router-link class="text-sm text-gray-400 hover:text-gray-600 transition ease-linear" to="/resetpass">Forgot password?</router-link>
+                <button class="block rounded-md bg-secondary hover:bg-yellow-400 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Login</button>
+                <router-link class="text-sm text-secondary hover:text-yellow-400 transition duration-100 ease-linear m-5" to="/signup">Or Sign Up</router-link>
+                <router-link class="text-sm text-gray-400 hover:text-gray-600 transition duration-100 ease-linear" to="/resetpass">Forgot password?</router-link>
             </form>
         </div>
     </div>
@@ -64,7 +64,7 @@ export default {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+                alert(errorCode, errorMessage);
                 // ..
             });
         }

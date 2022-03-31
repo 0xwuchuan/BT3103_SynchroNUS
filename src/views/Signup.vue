@@ -57,8 +57,8 @@
                         <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" required>
                     </div>
                 </div>
-                <button class="block rounded-md bg-secondary hover:bg-yellow-500 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="submit">Get Started</button>
-                <router-link class="text-sm text-secondary hover:text-yellow-500 transition ease-linear m-5" to="/login">Already have an account? Login here</router-link>
+                <button class="block rounded-md bg-secondary hover:bg-yellow-400 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10">Get Started</button>
+                <router-link class="text-sm text-secondary hover:text-yellow-400 transition duration-100 ease-linear m-5" to="/login">Already have an account? Login here</router-link>
             </form>
         </div>
     </div>
@@ -66,9 +66,12 @@
 
 <script>
 import Nav from "../components/Nav.vue"
-import {auth} from '../firebase.js'
+import { auth, firebaseApp } from '../firebase.js'
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore"; 
 import router from '../router/index'
+
+const db = getFirestore(firebaseApp);
 
 
 export default {
@@ -87,23 +90,35 @@ export default {
             console.log(this.email);
             console.log(this.password);
         },
-        signup() {
+        async signup() {
             createUserWithEmailAndPassword(auth, this.email, this.password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                console.log(user);
-                sendEmailVerification(user);
-                router.push('/test')
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-                // ..
+                    .then((userCredential) => {
+                        // Signed in 
+                        const user = userCredential.user;
+                        console.log(user);
+                        sendEmailVerification(user);
+                        router.push('/home')
+                        // ...
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert(errorCode, errorMessage);
+                        // ..
+                    });
+
+
+            const setUser = await setDoc(doc(db, "Users", this.email), {
+                name: this.name,
+                gender: this.gender,
+                year: this.year,
+                teleHandle: this.teleHandle,
             });
-        }
+
+            console.log(setUser)
+
+            
+        },
     },
 }
 </script>
