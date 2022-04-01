@@ -37,7 +37,7 @@
 
 <script>
 import {  getFirestore, doc, collection, addDoc, updateDoc, 
-    deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
+    deleteDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
 // import router from '../router/index'
@@ -84,10 +84,15 @@ export default {
                     participants: [],
                     requesters: []
                 })
+            const docRef = doc(db, "events", setEvent.id);
+            const docSnap = await getDoc(docRef);
             const userRef = doc(db, "Users", this.user.email);
+            const eventInfo = docSnap.data();
+            eventInfo.id = setEvent.id;
             const updateUser = updateDoc(userRef, {
-                created: arrayUnion(setEvent),
+                created: arrayUnion(eventInfo),
             })
+            console.log(eventInfo)
             console.log(updateUser)
             this.$emit("updated")
             console.log(setEvent.id)
@@ -120,13 +125,21 @@ export default {
                 participants: arrayUnion(userEmail)
             })
             const userRef = doc(db, "Users", userEmail);
-            const updateUser = await updateDoc(userRef, {
-                upcoming: arrayUnion(eventId),
-                
+            const userSnap = await getDoc(userRef);
+            const userName = userSnap.name
+
+
+            const docSnap = await getDoc(eventRef);
+            const eventInfo = docSnap.data();
+            eventInfo.id = eventRef.id;
+            const updateUser = updateDoc(userRef, {
+                created: arrayUnion(eventInfo),
             })
             console.log(accept)
             console.log(updateUser)
             this.$emit("updated")
+            console.log(eventRef.id)
+            alert("Accepted applicant '" + userName + "'")
         }
 
     }
