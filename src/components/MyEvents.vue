@@ -8,18 +8,17 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                <!-- TO-DO: CUTOFF at 4 events -->
-                <div v-for="event in userUpcoming" :key="event.title" class="inline-block w-100">
-                    <Event
-                        :title="event.title"
-                        :description="event.description"
-                        :date="event.postDate"
-                        :link="'eventpage/'+event.id"
-                        :imageUrl="event.imageUrl"
-                    />
+                    <div v-for="event in userUpcoming.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
+                        <Event
+                            :title="event.title"
+                            :description="event.description"
+                            :date="event.postDate"
+                            :link="'eventpage/'+event.id"
+                            :imageUrl="event.imageUrl"
+                        />
+                    </div>
                 </div>
-                </div>
-            </div>
+            </div> 
             <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
             </button>         
@@ -34,15 +33,15 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                <div v-for="event in userSaved" :key="event.title" class="inline-block w-100">
-                    <Event
-                        :title="event.title"
-                        :description="event.description"
-                        :date="event.postDate"
-                        :link="'eventpage/'+event.id"
-                        :imageUrl="event.imageUrl"
-                    />
-                </div>
+                    <div v-for="event in userSaved.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">                        
+                        <Event
+                            :title="event.title"
+                            :description="event.description"
+                            :date="event.postDate"
+                            :link="'eventpage/'+eventid"
+                            :imageUrl="event.imageUrl"
+                        />
+                    </div>
                 </div>
             </div> 
             <button @click="seeSaved" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
@@ -59,7 +58,7 @@
         </div>
         <div class="container mx-auto">
             <div class="flex">
-                <div v-for="event in userCreated" :key="event.title" class="inline-block w-100">
+                <div v-for="event in userCreated.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
                     <Event
                         :title="event.title"
                         :description="event.description"
