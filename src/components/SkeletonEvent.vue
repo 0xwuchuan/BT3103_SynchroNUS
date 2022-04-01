@@ -1,6 +1,6 @@
 <template>
   <div class="flex-shrink w-full p-4">
-        <a :href="link" class="c-card block bg-white bg-opacity-20 shadow-md rounded-lg">
+        <a class="c-card block bg-white bg-opacity-20 shadow-md rounded-lg">
             <div class="relative pb-48 overflow-hidden bg-white bg-opacity-10 "></div>
             <div class="p-4">
                 <div class="bg-orange-200 bg-opacity-20 rounded-full w-14 h-5"></div>
