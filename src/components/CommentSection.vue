@@ -138,12 +138,11 @@ export default {
         console.log(comments);
       });
     },
-    
     async submitComment() {
       const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
         //id: 1,
-        user: current_user.email,// displayName, //(better option)
+        user: "user", //current_user.email,// displayName, //(better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
@@ -156,7 +155,8 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-      document.getElementById("comment-text").value = "";
+        this.reply = "";
+      //document.getElementById("comment-text").value = "";
     },
     async editComment(id) {
       const commentRef = doc(db, "comments", id);
@@ -166,9 +166,13 @@ export default {
       console.log("comment has been edited");
     },
     async deleteComment(id) {
-      confirm("Your comment will be deleted");
-      await deleteDoc(doc(db, "comments", id));
-      console.log("comment has been deleted");
+      var toDelete = confirm("Your comment will be deleted");
+      if (toDelete == true) {
+        await deleteDoc(doc(db, "comments", id));
+        console.log("comment has been deleted");
+      } else {
+        console.log("cancel delete comment");
+      }
     },
   },
 };
