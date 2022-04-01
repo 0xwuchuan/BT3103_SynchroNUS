@@ -36,7 +36,7 @@
                 </span>
                 <div v-if="comment.edit">
                   <input
-                    id = "edit-text"
+                    id="edit-text"
                     v-model="comment.text"
                     v-on:keyup.enter="editComment(comment.id, comment.text)"
                   />
@@ -46,7 +46,11 @@
                   v-if="!comment.edit"
                   @click.prevent="replyComment(comment.id)"
                 >
-                  <img src="@/assets/button/reply.png" height="10%" alt="Reply"/>
+                  <img
+                    src="@/assets/button/reply.png"
+                    height="10%"
+                    alt="Reply"
+                  />
                 </button>
                 <button
                   id="editComment"
@@ -67,7 +71,11 @@
                   v-if="comment.edit"
                   v-on:click="comment.edit = false"
                 >
-                  <img src="@/assets/button/cross.png" height="10%" alt="Edit" />
+                  <img
+                    src="@/assets/button/cross.png"
+                    height="10%"
+                    alt="Edit"
+                  />
                 </button>
                 <button
                   id="deleteComment"
@@ -117,7 +125,7 @@ import {
   collection,
   setDoc,
   //addDoc,
-  //getDocs,
+  getDoc,
   query,
   orderBy,
   serverTimestamp,
@@ -169,7 +177,7 @@ export default {
       const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
         //id: 1,
-        user: "user", //current_user.email,// displayName, //(better option)
+        user: current_user.email,// displayName, //(better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
@@ -202,6 +210,18 @@ export default {
       } else {
         console.log("cancel delete comment");
       }
+    },
+    async replyComment(id) {
+      const commentRef = doc(db, "comments", id);
+      const commentSnap = await getDoc(commentRef);
+      console.log(commentSnap)
+
+      if (commentSnap.exists()) {
+        console.log("Comment data:", commentSnap.data());
+      } else {
+        console.log("No such comment!");
+      }
+      this.reply = "@" + commentSnap.data().user;
     },
   },
 };
