@@ -27,25 +27,51 @@
               </div>
               <div class="text">
                 <a class="username" href="#">@{{ comment.user }}</a>
-                <form>{{ comment.text }}</form>
+                <span
+                  span
+                  v-if="!comment.edit"
+                  v-on:click="editStatus(comment.id)"
+                >
+                  <form>{{ comment.text }}</form>
+                </span>
+                <div v-if="comment.edit">
+                  <input
+                    id = "edit-text"
+                    v-model="comment.text"
+                    v-on:keyup.enter="editComment(comment.id, comment.text)"
+                  />
+                </div>
                 <button
                   id="replyComment"
+                  v-if="!comment.edit"
                   @click.prevent="replyComment(comment.id)"
                 >
-                  <img
-                    src="@/assets/button/reply.png"
-                    height="10%"
-                    alt="Reply"
-                  />
+                  <img src="@/assets/button/reply.png" height="10%" alt="Reply"/>
                 </button>
                 <button
                   id="editComment"
-                  @click.prevent="editComment(comment.id)"
+                  v-if="!comment.edit"
+                  v-on:click="comment.edit = true"
                 >
                   <img src="@/assets/button/edit.png" height="10%" alt="Edit" />
                 </button>
                 <button
+                  id="saveEdit"
+                  v-if="comment.edit"
+                  v-on:click="editComment(comment.id, comment.text)"
+                >
+                  <img src="@/assets/button/tick.png" height="10%" alt="Edit" />
+                </button>
+                <button
+                  id="cancelEdit"
+                  v-if="comment.edit"
+                  v-on:click="comment.edit = false"
+                >
+                  <img src="@/assets/button/cross.png" height="10%" alt="Edit" />
+                </button>
+                <button
                   id="deleteComment"
+                  v-if="!comment.edit"
                   @click.prevent="deleteComment(comment.id)"
                 >
                   <img src="@/assets/button/delete.png" alt="Delete" />
@@ -111,6 +137,7 @@ export default {
   data() {
     return {
       reply: "",
+      edit: false,
       creator: {
         avatar: "http://via.placeholder.com/100x100/a74848",
         user: "eventCreator",
@@ -146,6 +173,7 @@ export default {
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
+        edit: false,
       })
         .then((data) => {
           console.log(data);
@@ -155,13 +183,14 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-        this.reply = "";
+      this.reply = "";
       //document.getElementById("comment-text").value = "";
     },
-    async editComment(id) {
+    async editComment(id, newText) {
       const commentRef = doc(db, "comments", id);
       await updateDoc(commentRef, {
-        text: "edited comment",
+        text: newText,
+        edit: false,
       });
       console.log("comment has been edited");
     },
@@ -227,10 +256,31 @@ export default {
   left: 750px;
 }
 
+#saveEdit {
+  font-size: 90%;
+  position: relative;
+  left: 770px;
+  top: -13px;
+}
+
+#cancelEdit {
+  font-size: 90%;
+  position: relative;
+  left: 780px;
+  top: -13px;
+}
+
 #deleteComment {
   font-size: 90%;
   position: relative;
   left: 765px;
+}
+
+#edit-text {
+  width: 500px;
+  height: 40px;
+  white-space: pre-wrap;
+  white-space: wrap;
 }
 
 a {
