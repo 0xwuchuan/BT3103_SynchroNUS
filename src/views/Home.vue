@@ -1,23 +1,38 @@
 <template>
     <Nav />
+<<<<<<< HEAD
     <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
         <div v-if="isLoading" >
+=======
+    <div class="flex flex-col h-5/6 mt-20 ml-10">
+        <div v-if="!isLoading" class="w-23/24 bg-white bg-opacity-80 rounded-lg m-4 hover:bg-opacity-100 hover:shadow-2xl transition duration-200 ease-linear">
+            <h3 class="text-2xl font-mont text-black font-bold pb-3 mx-4">Filter by tags :</h3>
+            <!-- The filter buttons -->
+            <!-- Search for filters -->
+        </div>
+        <div>
+            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+>>>>>>> 82e00ca (Layout change + Add filter bar)
             <!-- Skeleton Loader -->
-            <div v-for="template in 6" :key="template" class="inline-block w-100">
-                <SkeletonEvent />
+                <div v-for="template in 6" :key="template" class="col-span-1">
+                    <SkeletonEvent />
+                </div>
+            </div>
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+                <div v-for="event in events" :key="event.title" class="col-span-1 ">
+                <Event
+                    :title="event.title"
+                    :description="event.description"
+                    :date="getRelativeTime(event.postDate)"
+                    :link="'eventpage/'+event.id"
+                    :imageUrl="event.imageUrl"
+                    :tag="event.tag"
+                />
+                </div>
             </div>
         </div>
-        <div v-else class="flex flex-row flex-wrap">
-            <div v-for="event in EventList" :key="event.title" class="inline-block w-100">
-            <Event
-                :title="event.title"
-                :description="event.description"
-                :date="event.postDate"
-                :link="'eventpage/'+event.id"
-                :imageUrl="event.imageUrl"
-            />
-            </div>
-        </div>
+        
+        
     </div>
 
     <router-link v-if="!isLoading" to="/create">
@@ -62,7 +77,8 @@ export default {
       EventList: [],
       user: false,
       isLoading: true,
-      page1: "event"
+      page1: "event",
+      filters: []
     };
   },
   mounted() {
@@ -82,12 +98,57 @@ export default {
       querySnapshot.forEach((doc) => {
         let eventInfo = doc.data();
         eventInfo.id = doc.id;
-        console.log(eventInfo);
         this.EventList.push(eventInfo);
       });
       this.isLoading = false;
     },
+    getRelativeTime(oldTimestamp) {
+        const date = new Date();
+        const currentTimeStamp = date.getTime();
+        const seconds = Math.floor(currentTimeStamp/1000);
+        const difference = seconds - Math.floor(oldTimestamp/1000)
+        let output = ``;
+        if (difference < 60) {
+            // Less than a minute has passed:
+            output = `${difference} seconds ago`;
+        } else if (difference < 3600) {
+            // Less than an hour has passed:
+            output = `${Math.floor(difference / 60)} minutes ago`;
+        } else if (difference < 86400) {
+            // Less than a day has passed:
+            output = `${Math.floor(difference / 3600)} hours ago`;
+        } else if (difference < 2620800) {
+            // Less than a month has passed:
+            output = `${Math.floor(difference / 86400)} days ago`;
+        } else if (difference < 31449600) {
+            // Less than a year has passed:
+            output = `${Math.floor(difference / 2620800)} months ago`;
+        } else {
+            // More than a year has passed:
+            output = `${Math.floor(difference / 31449600)} years ago`;
+        }
+        return output;
+    },
+    addFilter(tag) {
+        this.filters.push(tag);
+    },
+    removeFilter(tag) {
+        const index = this.filters.indexOf(tag);
+        this.filters.splice(index, 1)
+    }
   },
+  computed: {
+      events() {
+          let events = [];
+          if (this.filters.length) {
+            for (let i = 0; i < this.filters.length; i++) {
+              events = events.concat(this.EventList.filter(event => event.tag == this.filters[i]))
+            }
+            return events;
+          }
+          return this.EventList; // if there are no filters return eventlist
+      }
+  }
 };
 </script>
 

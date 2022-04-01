@@ -1,23 +1,23 @@
 <template>
     <Nav />
     <div class="flex flex-col justify-start h-5/6 ml-10 p-5">
-        <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-104 p-5">
+        <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-108 w-10/12 md:w-104 p-5">
             <h3 class="text-3xl font-semibold pl-3">Create a new Event</h3>
             <form class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
                 <div class="flex flex-col items-left w-full m-3">
-                    <div class="flex flex-col items-left w-11/12 my-3">
+                    <div class="flex flex-col items-left w-11/12 my-2">
                         <label for="title">Title</label>
                         <input v-model="title" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" placeholder="Enter the title of your event" id="title" required>
                     </div>
-                    <div class="flex flex-col items-left w-11/12 my-3">
+                    <div class="flex flex-col items-left w-11/12 my-2">
                         <label for="date">Date</label>
                         <input v-model="expiryDate" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="date" placeholder="Enter the date of your event" id="date" required>
                     </div>
-                    <div class="flex flex-col items-left w-11/12 my-3">
+                    <div class="flex flex-col items-left w-11/12 my-2">
                         <label for="description">Description</label>
-                        <input v-model="description" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" placeholder="Enter a description of your event" id="description" required>
+                        <input v-model="description" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" placeholder="Enter a short description of your event" id="description" required>
                     </div>
-                    <div class="flex flex-row items-left w-11/12 my-3">
+                    <div class="flex flex-row items-left w-11/12 my-2">
                         <div class="flex flex-col w-2/4 m-1">
                             <label for="location">Location</label>
                             <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" id="location" v-model="location" placeholder="Location" required>
@@ -27,8 +27,21 @@
                             <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="number" id="numOfParticipants" v-model="numOfParticipants" placeholder="Participant Limit" required>
                         </div>
                     </div>
+                    <div class="flex flex-row items-left w-11/12 my-2">
+                        <div class="flex flex-col w-full m-1">
+                            <label for="tag">Tags</label>
+                            <select v-model="tag" id="tag" class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" required>
+                                <option disabled selected value="">Please select a suitable tag for your event</option>
+                                <option value="Academics">Academics</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Chill">Chill</option>
+                                <option value="Special Event">Special Event</option>
+                            </select>
+                        </div>
+                    </div>
+                    
 
-                    <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-11/12 text-lg my-3 h-10" type="submit">Create</button>
+                    <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-11/12 text-lg my-5 h-10" type="submit">Create</button>
                 </div>
             </form>
         </div>
@@ -40,7 +53,7 @@ import {  getFirestore, doc, collection, setDoc, updateDoc,
     deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
-// import router from '../router/index'
+import router from '../router/index'
 
 import Nav from "../components/Nav.vue"
 
@@ -60,6 +73,7 @@ export default {
             numOfParticipants: "",
             description: "",
             postDate: "", // current Date
+            tag: ""
         }
     },
     mounted() {
@@ -71,20 +85,27 @@ export default {
     },
     methods: {
         async createEvent() {
-            const eventRef = doc(collection(db, "events"));
-            const setEvent = await setDoc(eventRef, {
+            try {
+                const eventRef = doc(collection(db, "events"));
+                const setEvent = await setDoc(eventRef, {
                     userId: this.user.uid,
                     title: this.title,
                     expiryDate: this.expiryDate,
                     location: this.location,
                     numOfParticipants: this.numOfParticipants,
                     description: this.description,
-                    postDate: new Date().toLocaleString(),
+                    postDate: new Date().getTime(),
                     comments: [],
                     participants: [],
-                    requesters: []
+                    requesters: [],
+                    tag: this.tag
                 })
-            console.log(setEvent)
+                console.log(setEvent)
+                router.push('/home');
+            } catch (error) {
+                alert(error);
+            }
+            
         },
         async editEvent(eventId) { // pass in things to edit
             const eventRef = doc(db, "events", eventId);
@@ -112,8 +133,7 @@ export default {
                 participants: arrayUnion(userId)
             })
             console.log(accept)
-        }
-
+        },
     }
 }
 </script>
