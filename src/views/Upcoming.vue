@@ -9,7 +9,7 @@
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                    <div v-for="event in userCreated.reverse()" :key="event.title" class="inline-block w-100">
+                    <div v-for="event in userUpcoming.reverse()" :key="event.title" class="inline-block w-100">
                         <Event
                             :title="event.title"
                             :description="event.description"
@@ -19,7 +19,7 @@
                         />
                     </div>
                 </div>
-            </div>      
+            </div>     
         </div>
     </div>
 </template>

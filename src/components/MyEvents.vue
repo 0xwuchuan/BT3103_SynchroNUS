@@ -128,11 +128,11 @@ export default {
         },
 
         seeSaved() {
-            router.push('/created')
+            router.push('/saved')
         },
 
         seeUpcoming() {
-            router.push('/created')
+            router.push('/upcoming')
         },
 
         // async query(collection, attribute, condition, condition2) {
