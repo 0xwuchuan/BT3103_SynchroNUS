@@ -166,7 +166,7 @@ export default {
                 console.log("edited year")
                 this.year = null
             }
-            
+            document.getElementById('editForm').reset();
         }
   },
 
