@@ -55,7 +55,6 @@ import { auth, firebaseApp } from "../firebase";
 import CommNotif from "@/components/CommNotif.vue";
 import ReqNotif from "@/components/ReqNotif.vue";
 
-
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -68,8 +67,10 @@ export default {
 
     data() {
         return {
+            EventsByMe: [],
             CommentList: [],
             ReqList: {},
+
             user: false
         }
     },
@@ -86,27 +87,51 @@ export default {
 
     methods: {
         async notifyComments() {
-            // later have to change for the comments in the event
+            // for now this method is just taking comments from the collection itself
+            // TEMP
+            // later edit to take from if user created the event 
             const comRef = collection(db, "comments");
-            const querySnapshot = await getDocs(comRef);
-            
+            const q = query(comRef, orderBy("commentedAt"));
+            const querySnapshot = await getDocs(q);
+            // const eventRef = collection(db, "events");
+            // const eventDoc = await getDocs(eventRef);
+            // console.log(this.userEmail)
+            // eventDoc.forEach((doc) => {
+            //     let event = doc.data;
+            //     event.id = doc.id;
+            //     if (event.userEmail == this.uEmail) { // saved all events i made
+            //         this.EventsByMe.push(event.id);
+            //     }
+            // });
+
+            // check for this.userEmail ?
+
+
+            // check if changing to comment array in event --> then change method to print out the comments
             querySnapshot.forEach((doc) => {
+                // if this user made the event
                 let comInfo = doc.data();
                 comInfo.id = doc.id;
-                console.log(comInfo);
-                this.CommentList.push(comInfo);
-            });
+                // if (this.EventsByMe.includes(comInfo.eventid)) {    // if i made this event, pushes comment info
+                // console.log(comInfo);
+                    this.CommentList.push(comInfo);
+                }
+            // }
+            );
         },
 
         async getRequesters() {
+            // check backend for request --> isit just add to the array
             const eventRef = collection(db, "events");
             const q = query(eventRef, orderBy("postDate"));
             const querySnapshot = await getDocs(q);
+            console.log(this.userEmail)
             querySnapshot.forEach((doc) => {
-                // console.log(doc.user);
+                
                 let event = doc.data();
                 event.id = doc.id;
-                if (event.userId == this.user.uid) { // if this user made the event
+     
+                if (event.userEmail == this.userEmail) { // if this user made the event
                     const temp = event.title;
                     this.ReqList[temp] = event.requesters
                 // this.ReqList.push(eventInfo);
@@ -119,7 +144,6 @@ export default {
             });
             
         } 
-
         // async getRequesters() {
         //     const eventRef = collection(db, "events");
         //     const querySnapshot = await getDocs(eventRef);
