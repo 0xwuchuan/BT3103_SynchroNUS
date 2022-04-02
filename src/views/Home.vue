@@ -1,11 +1,20 @@
 <template>
     <Nav />
     <div class="flex flex-col h-5/6 mt-20 ml-10">
-        <div v-if="!isLoading" class="flex flex-row items-center w-23/24 bg-white bg-opacity-80 rounded-lg m-4 hover:bg-opacity-100 hover:shadow-2xl transition duration-200 ease-linear">
-            <h3 class="text-2xl font-mont text-black font-bold mx-4">Filter by tags :</h3>
+        <!-- Filter Bar -->
+        <SkeletonFilter v-if="isLoading"/>
+        <div v-else class="flex flex-row items-center w-23/24 bg-white bg-opacity-80 rounded-lg m-4 hover:bg-opacity-100 hover:shadow-2xl transition duration-200 ease-linear">
+            <h3 class="text-xl font-mont text-black font-bold mx-4">Filter by tags :</h3>
                 <button v-for="(tag, index) in tags" :key="tag" @click="toggleFilter(index)" :class="{'bg-primary': tag.active, 'bg-secondary': !tag.active}"   
-                    class="rounded-full px-4 py-2 mx-1 font-bold text-white shadow-md">{{ tag.name }}</button>
+                    class="flex flex-row rounded-full px-4 py-2 mx-1 font-bold text-white shadow-md hover:opacity-80">
+                    {{ tag.name }}
+                    <svg v-if="tag.active" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
         </div>
+
+        <!-- Events -->
         <div>
             <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
             <!-- Skeleton Loader -->
@@ -30,6 +39,7 @@
         
     </div>
 
+    <!-- Create Event  -->
     <router-link v-if="!isLoading" to="/create">
         <button class="group flex items-center justify-center fixed bottom-10 right-10 rounded-lg h-16 w-64 font-mont text-lg font-bold
             text-white bg-gray-800 hover:bg-gray-700 transition duration-75 ease-linear transform 
@@ -55,8 +65,10 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from "../firebase";
 import Event from "@/components/Event.vue";
-import SkeletonEvent from "@/components/SkeletonEvent.vue"
 import Nav from "@/components/Nav.vue";
+import SkeletonFilter from "@/components/SkeletonFilter.vue"
+import SkeletonEvent from "@/components/SkeletonEvent.vue"
+
 
 const db = getFirestore(firebaseApp);
 
@@ -66,14 +78,13 @@ export default {
     Event,
     Nav,
     SkeletonEvent,
-    
+    SkeletonFilter
   },
   data() {
     return {
       EventList: [],
       user: false,
       isLoading: true,
-      page1: "event",
       filters: [],
       tags: []
     };
