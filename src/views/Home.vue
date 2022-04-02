@@ -1,14 +1,6 @@
 <template>
     <Nav />
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <div class="flex flex-col justify-start h-5/6 mt-20 ml-10">
-        <div v-if="isLoading" >
-=======
-    <div class="flex flex-col h-5/6 mt-20 ml-10">
-=======
-    <div class="flex flex-col h-5/6 ml-10">
->>>>>>> 9c7f39c (Styling changes)
+    <div class="flex flex-col justify-start h-5/6 ml-10">
         <!-- Filter Bar -->
         <!-- SkeletonLoader -->
         <SkeletonFilter v-if="isLoading"/>
@@ -26,12 +18,7 @@
 
         <!-- Events -->
         <div>
-<<<<<<< HEAD
-            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
->>>>>>> 82e00ca (Layout change + Add filter bar)
-=======
             <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
->>>>>>> 9c7f39c (Styling changes)
             <!-- Skeleton Loader -->
                 <div v-for="template in 6" :key="template" class="col-span-1">
                     <SkeletonEvent />
