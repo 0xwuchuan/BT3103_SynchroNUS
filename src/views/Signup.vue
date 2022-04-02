@@ -74,6 +74,7 @@
 import { getFirestore, doc, setDoc } from "firebase/firestore"; 
 import { auth, firebaseApp } from '../firebase.js'
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore"; 
 import router from '../router/index'
 
 import Nav from "../components/Nav.vue"

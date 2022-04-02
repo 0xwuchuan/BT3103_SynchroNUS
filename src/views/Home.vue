@@ -1,6 +1,6 @@
 <template>
     <Nav />
-    <div class="flex flex-col justify-start h-5/6 ml-10">
+    <div class="flex flex-col h-5/6 ml-10">
         <!-- Filter Bar -->
         <!-- SkeletonLoader -->
         <SkeletonFilter v-if="isLoading"/>
