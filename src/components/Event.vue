@@ -9,7 +9,7 @@
                 <h3 class="mt-2 mb-2 text-2xl font-bold text-black text-opacity-80 max-h-9">{{ title }}</h3>
                 <p class="text-sm">{{ description }}</p>
                 <div class="mt-3 flex items-center">
-                    <button class="inline-block bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="authentication-modal">
+                    <button class="inline-block bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="authentication-modal">
                             Join
                     </button>
                 </div>
