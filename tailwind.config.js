@@ -31,7 +31,7 @@ module.exports = {
       opacity: ["disabled"],
       cursor: ["disabled"],
       backgroundColor: ["disabled"],
-      translate: ['group-hover']
+      translate: ['group-hover'],
     },
   },
   
