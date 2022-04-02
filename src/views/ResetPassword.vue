@@ -18,7 +18,7 @@
                     </div>
                     <input v-model="email" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" id="email" type="email" placeholder="Enter your email" required>
                 </div>
-                <button :disabled="isDisabled" class="block rounded-md bg-secondary hover:bg-yellow-400 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg mt-5 h-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-secondary" type="submit">Reset Password</button>
+                <button :disabled="isDisabled" class="block rounded-md bg-secondary hover:bg-opacity-90 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg mt-5 h-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-secondary" type="submit">Reset Password</button>
                 <p v-if="emailSent">Check your email for the password reset link!</p>
             </form>
         </div>

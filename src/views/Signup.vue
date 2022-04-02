@@ -63,8 +63,8 @@
                         <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" v-model="teleHandle" required>
                     </div>
                 </div>
-                <button class="block rounded-md bg-secondary hover:bg-yellow-400 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10">Get Started</button>
-                <router-link class="text-sm text-secondary hover:text-yellow-400 transition duration-100 ease-linear m-5" to="/login">Already have an account? Login here</router-link>
+                <button class="block rounded-md bg-secondary hover:bg-opacity-90 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10">Get Started</button>
+                <router-link class="text-sm text-secondary hover:text-opacity-90 transition duration-100 ease-linear m-5" to="/login">Already have an account? Login here</router-link>
             </form>
         </div>
     </div>
