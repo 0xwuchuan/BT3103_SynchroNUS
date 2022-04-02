@@ -80,12 +80,28 @@ export default {
                 this.user = user;
             }
         });
-
+        this.getEventsByMe();
         this.notifyComments();
         this.getRequesters();
     },
 
     methods: {
+        async getEventsByMe() {
+            const eventRef = collection(db, "events");
+            const q = await getDocs(eventRef);
+            
+            q.forEach((doc) => {
+                let event = doc.data();
+                event.id = doc.id;
+                console.log(event.id)
+                if (event.userEmail == this.user.email || event.userId == this.user.uid) { // saved all events i made
+                    this.EventsByMe.push(event.id);
+                }
+            });
+
+            console.log(this.EventsByMe.length)
+        },
+
         async notifyComments() {
             // for now this method is just taking comments from the collection itself
             // TEMP
@@ -93,30 +109,28 @@ export default {
             const comRef = collection(db, "comments");
             const q = query(comRef, orderBy("commentedAt"));
             const querySnapshot = await getDocs(q);
+
             // const eventRef = collection(db, "events");
-            // const eventDoc = await getDocs(eventRef);
-            // console.log(this.userEmail)
+            // const temp = query(eventRef)
+            // const eventDoc = await getDocs(temp);
+            
             // eventDoc.forEach((doc) => {
             //     let event = doc.data;
             //     event.id = doc.id;
-            //     if (event.userEmail == this.uEmail) { // saved all events i made
+                
+            //     if (event.userEmail == this.user.email || event.userId == this.user.uid) { // saved all events i made
             //         this.EventsByMe.push(event.id);
             //     }
             // });
-
-            // check for this.userEmail ?
-
-
             // check if changing to comment array in event --> then change method to print out the comments
             querySnapshot.forEach((doc) => {
                 // if this user made the event
                 let comInfo = doc.data();
                 comInfo.id = doc.id;
-                // if (this.EventsByMe.includes(comInfo.eventid)) {    // if i made this event, pushes comment info
-                // console.log(comInfo);
+                if (this.EventsByMe.includes(comInfo.eventid)) {    // if i made this event, pushes comment info
                     this.CommentList.push(comInfo);
                 }
-            // }
+            }
             );
         },
 
@@ -125,13 +139,13 @@ export default {
             const eventRef = collection(db, "events");
             const q = query(eventRef, orderBy("postDate"));
             const querySnapshot = await getDocs(q);
-            console.log(this.userEmail)
+            
             querySnapshot.forEach((doc) => {
                 
                 let event = doc.data();
                 event.id = doc.id;
-     
-                if (event.userEmail == this.userEmail) { // if this user made the event
+                
+                if (event.userEmail == this.user.email || event.userId == this.user.uid) { // if this user made the event
                     const temp = event.title;
                     this.ReqList[temp] = event.requesters
                 // this.ReqList.push(eventInfo);
