@@ -154,13 +154,6 @@ export default {
         }
         return output;
     },
-    addFilter(tag) {
-        this.filters.push(tag);
-    },
-    removeFilter(tag) {
-        const index = this.filters.indexOf(tag);
-        this.filters.splice(index, 1)
-    },
     async getTags() {
         const tagSnapshot = await getDocs(collection(db, "tags"));
         tagSnapshot.forEach((doc) => {
