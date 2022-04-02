@@ -1,10 +1,10 @@
 <template>
     <Nav />
     <div class="flex flex-col h-5/6 mt-20 ml-10">
-        <div v-if="!isLoading" class="w-23/24 bg-white bg-opacity-80 rounded-lg m-4 hover:bg-opacity-100 hover:shadow-2xl transition duration-200 ease-linear">
-            <h3 class="text-2xl font-mont text-black font-bold pb-3 mx-4">Filter by tags :</h3>
-            <!-- The filter buttons -->
-            <!-- Search for filters -->
+        <div v-if="!isLoading" class="flex flex-row items-center w-23/24 bg-white bg-opacity-80 rounded-lg m-4 hover:bg-opacity-100 hover:shadow-2xl transition duration-200 ease-linear">
+            <h3 class="text-2xl font-mont text-black font-bold mx-4">Filter by tags :</h3>
+                <button v-for="(tag, index) in tags" :key="tag" @click="toggleFilter(index)" :class="{'bg-primary': tag.active, 'bg-secondary': !tag.active}"   
+                    class="rounded-full px-4 py-2 mx-1 font-bold text-white shadow-md">{{ tag.name }}</button>
         </div>
         <div>
             <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
@@ -56,7 +56,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from "../firebase";
 import Event from "@/components/Event.vue";
 import SkeletonEvent from "@/components/SkeletonEvent.vue"
-import Nav from "../components/Nav";
+import Nav from "@/components/Nav.vue";
 
 const db = getFirestore(firebaseApp);
 
@@ -65,7 +65,8 @@ export default {
   components: {
     Event,
     Nav,
-    SkeletonEvent
+    SkeletonEvent,
+    
   },
   data() {
     return {
@@ -73,7 +74,8 @@ export default {
       user: false,
       isLoading: true,
       page1: "event",
-      filters: []
+      filters: [],
+      tags: []
     };
   },
   mounted() {
@@ -83,6 +85,7 @@ export default {
       }
     });
 
+    this.getTags();
     this.getEventsByDate();
   },
   methods: {
@@ -130,6 +133,24 @@ export default {
     removeFilter(tag) {
         const index = this.filters.indexOf(tag);
         this.filters.splice(index, 1)
+    },
+    async getTags() {
+        const tagSnapshot = await getDocs(collection(db, "tags"));
+        tagSnapshot.forEach((doc) => {
+            this.tags.push({
+                name: doc.id,
+                active: false
+            })
+        })
+    },
+    toggleFilter(index) {
+        this.tags[index].active = !this.tags[index].active
+        let tag = this.tags[index].name
+        if (this.tags[index].active) {
+            this.filters.push(tag)
+        } else {
+            this.filters = this.filters.filter(f => f != tag)
+        }
     }
   },
   computed: {
