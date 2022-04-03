@@ -192,7 +192,7 @@ export default {
       const setComment = await setDoc(commentRef, {
 
         //id: 1,
-        user: "test user", //current_user.email,// displayName, //(better option)
+        user: current_user.email,// displayName, //(better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
