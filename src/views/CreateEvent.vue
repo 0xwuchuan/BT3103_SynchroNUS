@@ -3,7 +3,7 @@
     <div class="flex flex-col justify-start h-5/6 ml-10 p-5">
         <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-104 p-5">
             <h3 class="text-3xl font-semibold pl-3">Create a new Event</h3>
-            <form class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
+            <form id="createEventForm" class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
                 <div class="flex flex-col items-left w-full m-3">
                     <div class="flex flex-col items-left w-11/12 my-3">
                         <label for="title">Title</label>
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import {  getFirestore, doc, collection, setDoc, updateDoc, 
-    deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
+import {  getFirestore, doc, collection, addDoc, updateDoc, 
+    deleteDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
 // import router from '../router/index'
@@ -71,9 +71,9 @@ export default {
     },
     methods: {
         async createEvent() {
-            const eventRef = doc(collection(db, "events"));
-            const setEvent = await setDoc(eventRef, {
-                    userId: this.user.uid,
+            const eventRef = collection(db, "events");
+            const setEvent = await addDoc(eventRef, {
+                    userEmail: this.user.email,
                     title: this.title,
                     expiryDate: this.expiryDate,
                     location: this.location,
@@ -84,7 +84,20 @@ export default {
                     participants: [],
                     requesters: []
                 })
-            console.log(setEvent)
+            const docRef = doc(db, "events", setEvent.id);
+            const docSnap = await getDoc(docRef);
+            const userRef = doc(db, "Users", this.user.email);
+            const eventInfo = docSnap.data();
+            eventInfo.id = setEvent.id;
+            const updateUser = updateDoc(userRef, {
+                created: arrayUnion(eventInfo),
+            })
+            console.log(eventInfo)
+            console.log(updateUser)
+            this.$emit("updated")
+            console.log(setEvent.id)
+            document.getElementById('createEventForm').reset();
+            alert("Created event '" + this.title + "'")
         },
         async editEvent(eventId) { // pass in things to edit
             const eventRef = doc(db, "events", eventId);
@@ -105,13 +118,28 @@ export default {
             })
             console.log(request)
         },
-        async acceptApplicant(userId, eventId) {
+        async acceptApplicant(eventId, userEmail) {
             const eventRef = doc(db, "events", eventId);
             const accept = await updateDoc(eventRef, {
-                requesters: arrayRemove(userId),
-                participants: arrayUnion(userId)
+                requesters: arrayRemove(userEmail),
+                participants: arrayUnion(userEmail)
+            })
+            const userRef = doc(db, "Users", userEmail);
+            const userSnap = await getDoc(userRef);
+            const userName = userSnap.name
+
+
+            const docSnap = await getDoc(eventRef);
+            const eventInfo = docSnap.data();
+            eventInfo.id = eventRef.id;
+            const updateUser = updateDoc(userRef, {
+                created: arrayUnion(eventInfo),
             })
             console.log(accept)
+            console.log(updateUser)
+            this.$emit("updated")
+            console.log(eventRef.id)
+            alert("Accepted applicant '" + userName + "'")
         }
 
     }

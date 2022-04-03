@@ -5,11 +5,11 @@
         <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
             <!--title-->
             <div class="name text-gray-800 text-2xl font-medium mt-4 ">
-                <p>Upcoming</p>
+                <p>Saved</p>
             </div>
             <div class="container mx-auto">
                 <div class="flex">
-                    <div v-for="event in userCreated.reverse()" :key="event.title" class="inline-block w-100">
+                    <div v-for="event in userSaved.reverse()" :key="event.title" class="inline-block w-100">
                         <Event
                             :title="event.title"
                             :description="event.description"
@@ -19,7 +19,7 @@
                         />
                     </div>
                 </div>
-            </div>      
+            </div>         
         </div>
     </div>
 </template>
@@ -70,6 +70,7 @@ export default {
                 }
             })
         },
+
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
