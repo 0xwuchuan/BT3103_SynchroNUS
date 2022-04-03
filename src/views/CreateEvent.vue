@@ -117,8 +117,7 @@ export default {
             try {
                 const eventRef = doc(collection(db, "events"));
                 const setEvent = await setDoc(eventRef, {
-                    userId: this.user.uid,
-
+                    userEmail: this.user.email,
                     title: this.title,
                     expiryDate: this.expiryDate,
                     location: this.location,
@@ -130,6 +129,7 @@ export default {
                     requesters: [],
                     tag: this.tag
                 })
+                console.log(setEvent.id)
                 const docRef = doc(db, "events", setEvent.id);
                 const docSnap = await getDoc(docRef);
                 const userRef = doc(db, "Users", this.user.email);
@@ -141,7 +141,6 @@ export default {
                 console.log(eventInfo)
                 console.log(updateUser)
                 this.$emit("updated")
-                console.log(setEvent.id)
                 document.getElementById('createEventForm').reset();
                 alert("Created event '" + this.title + "'")
                 router.push('/home')

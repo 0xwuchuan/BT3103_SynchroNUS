@@ -5,7 +5,7 @@
         <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
             <!--title-->
             <div class="name text-gray-800 text-2xl font-medium mt-4 ">
-                <p>Upcoming</p>
+                <p>Created</p>
             </div>
             <div class="container mx-auto">
                 <div class="flex">
