@@ -35,6 +35,10 @@
                         </div>
                     </div>
                 </div>
+                <CommentSection 
+                :eventid="this.id"
+                :creatorid="this.creator"
+                />
             </div>
         </section>
         
@@ -47,6 +51,7 @@ import { getFirestore } from "firebase/firestore"
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
+import CommentSection from '@/components/CommentSection.vue';
 const db = getFirestore(firebaseApp);
 import router from '../router/index'
 
@@ -64,6 +69,9 @@ export default {
         user: false,
         link: ''
       }
+    },
+    components: {
+      CommentSection,
     },
     props: {
       id: {required:true}
@@ -123,7 +131,7 @@ export default {
           this.numusers = info.numOfParticipants
           this.creator = info.userEmail
           this.link = "/edit/" + this.id
-          console.log("Creator2"+info.userEmail)
+          console.log(this.creator)
           //console.log(this.description)
         })
       }
