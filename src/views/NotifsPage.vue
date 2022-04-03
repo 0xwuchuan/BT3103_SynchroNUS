@@ -1,7 +1,6 @@
 <template>
   <Nav/>
   <h1 class="text-3xl text-center font-bold mt-10 text-white max-w-fit font-mont"><b>Notifications</b></h1> 
-  
   <!-- <div class="flex flex-row justify-center space-x-3">-->
   <div class="flex flex-col justify-left items-center font-mont">
         <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 rounded text-700 bg-50 border-900/10 w-100 font-mont">
@@ -127,7 +126,6 @@ export default {
                     this.ReqList[[event.id, temptt]] = event.requesters
                 }
             });
-            
         }          
                  
     },

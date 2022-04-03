@@ -3,7 +3,6 @@
     <div
     class="p-2 rounded text-700 bg-50 border-900/10 w-100">
     <a :href="link" class="text-black">
-    
     <b>{{ user }}</b> commented on your event: {{ text }} 
     </a>
     </div><hr>
