@@ -29,7 +29,7 @@
                 <a class="username" href="#">@{{ comment.user }}</a>
                 <span
                   span
-                  v-if="!comment.edit == true && comment.user == this.user"
+                  v-if="!comment.edit"
                   v-on:click="editStatus(comment.id)"
                 >
                   <form>{{ comment.text }}</form>
@@ -164,7 +164,6 @@ export default {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user = user;
-        console.log("CREATOR" + this.creatorid);
       }
     });
   },
@@ -400,7 +399,7 @@ hr {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
   background-color: #fff;
 }
 
