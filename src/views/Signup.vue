@@ -102,6 +102,17 @@ export default {
             console.log(this.password);
         },
         async signup() {
+            const auth = getAuth(); 
+            const setUser = await setDoc(doc(db, "Users", this.email), {
+                name: this.name,
+                gender: this.gender,
+                year: this.year,
+                teleHandle: this.teleHandle,
+                upcoming: [],
+                saved: [],
+                created: []
+            });
+            
             createUserWithEmailAndPassword(auth, this.email, this.password)
                     .then((userCredential) => {
                         // Signed in 

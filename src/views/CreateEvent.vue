@@ -4,7 +4,7 @@
         <!-- Create Event Form -->
         <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-108 w-10/12 md:w-104 p-5">
             <h3 class="text-3xl font-semibold pl-3">Create a new Event</h3>
-            <form class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
+            <form id="createEventForm" class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
                 <div class="flex flex-col items-left w-full m-3">
                     <div class="flex flex-col items-left w-11/12 my-2">
                         <label for="title">Title</label>
@@ -117,6 +117,7 @@ export default {
                 const eventRef = doc(collection(db, "events"));
                 const setEvent = await setDoc(eventRef, {
                     userId: this.user.uid,
+
                     title: this.title,
                     expiryDate: this.expiryDate,
                     location: this.location,
@@ -127,6 +128,26 @@ export default {
                     participants: [],
                     requesters: [],
                     tag: this.tag
+                })
+            const docRef = doc(db, "events", setEvent.id);
+            const docSnap = await getDoc(docRef);
+            const userRef = doc(db, "Users", this.user.email);
+            const eventInfo = docSnap.data();
+            eventInfo.id = setEvent.id;
+            const updateUser = updateDoc(userRef, {
+                created: arrayUnion(eventInfo),
+            })
+            console.log(eventInfo)
+            console.log(updateUser)
+            this.$emit("updated")
+            console.log(setEvent.id)
+            document.getElementById('createEventForm').reset();
+            alert("Created event '" + this.title + "'")
+        },
+        async editEvent(eventId) { // pass in things to edit
+            const eventRef = doc(db, "events", eventId);
+            const edit = await updateDoc(eventRef, {
+                    // Stuff to edit
                 })
                 console.log(setEvent)
                 router.push('/home');
@@ -141,6 +162,29 @@ export default {
             this.tags.push(doc.id)
         })
     },
+        async acceptApplicant(eventId, userEmail) {
+            const eventRef = doc(db, "events", eventId);
+            const accept = await updateDoc(eventRef, {
+                requesters: arrayRemove(userEmail),
+                participants: arrayUnion(userEmail)
+            })
+            const userRef = doc(db, "Users", userEmail);
+            const userSnap = await getDoc(userRef);
+            const userName = userSnap.name
+
+
+            const docSnap = await getDoc(eventRef);
+            const eventInfo = docSnap.data();
+            eventInfo.id = eventRef.id;
+            const updateUser = updateDoc(userRef, {
+                created: arrayUnion(eventInfo),
+            })
+            console.log(accept)
+            console.log(updateUser)
+            this.$emit("updated")
+            console.log(eventRef.id)
+            alert("Accepted applicant '" + userName + "'")
+        }
     }
 }
 </script>

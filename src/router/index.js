@@ -11,7 +11,10 @@ import NotifsPage from "../views/NotifsPage.vue";
 import CommentTest from "../views/CommentTest.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
+import Upcoming from "../views/Upcoming.vue";
+import Saved from "../views/Saved.vue";
 import CreateEvent from "../views/CreateEvent.vue";
+import EditEvent from "../views/EditEvent.vue";
 
 const routes = [
   {
@@ -65,6 +68,16 @@ const routes = [
     component: Created,
   },
   {
+    path: "/upcoming",
+    name: "Upcoming",
+    component: Upcoming,
+  },
+  {
+    path: "/saved",
+    name: "Saved",
+    component: Saved,
+  },
+  {
     path: "/eventpage/:id",
     name: "EventPage",
     component: EventPage,
@@ -73,6 +86,11 @@ const routes = [
     path: "/event",
     name: "Event",
     component: Event,
+  },
+  {
+    path: "/edit/:id",
+    name: "EditEvent",
+    component: EditEvent,
   },
   {
     path: "/create",
