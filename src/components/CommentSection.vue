@@ -135,10 +135,13 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { auth, firebaseApp } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 const db = getFirestore(firebaseApp);
+
 const current_user = auth.currentUser;
 console.log("curr user", current_user);
+
 
 export default {
   name: "CommentSection",
@@ -160,6 +163,12 @@ export default {
   },
   mounted() {
     this.getComments();
+
+    onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        })
   },
   props: {
     eventid: {type: String, default: "eventeg"}
@@ -181,6 +190,7 @@ export default {
     async submitComment() {
       const commentRef = doc(collection(db, "comments")); //doc(db, "comments", "event1") set to under one event doc?
       const setComment = await setDoc(commentRef, {
+
         //id: 1,
         user: "test user", //current_user.email,// displayName, //(better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
