@@ -6,7 +6,7 @@
                     <div class="u-layout">
                         <div class="u-layout-row">
                             <div class="u-container-style u-image u-image-round u-layout-cell u-radius-23 u-shading u-size-60 u-image-1" data-image-width="1500" data-image-height="1000">
-                                <div class="u-container-layout u-container-layout-1"><span class="u-icon u-icon-rectangle u-text-white u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 55 55" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-20fb"></use></svg><svg class="u-svg-content" viewBox="0 0 55 55" x="0px" y="0px" id="svg-20fb" style="enable-background:new 0 0 55 55;"><path d="M55,27.5C55,12.337,42.663,0,27.5,0S0,12.337,0,27.5c0,8.009,3.444,15.228,8.926,20.258l-0.026,0.023l0.892,0.752
+                                <div class="u-container-layout u-container-layout-1"><span class="u-icon u-icon-rectangle u-text-white u-icon-1"><svg class="u-svg-link" viewBox="0 0 55 55" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-20fb"></use></svg><svg class="u-svg-content" viewBox="0 0 55 55" x="0px" y="0px" id="svg-20fb" style="enable-background:new 0 0 55 55;"><path d="M55,27.5C55,12.337,42.663,0,27.5,0S0,12.337,0,27.5c0,8.009,3.444,15.228,8.926,20.258l-0.026,0.023l0.892,0.752
                                   c0.058,0.049,0.121,0.089,0.179,0.137c0.474,0.393,0.965,0.766,1.465,1.127c0.162,0.117,0.324,0.234,0.489,0.348
                                   c0.534,0.368,1.082,0.717,1.642,1.048c0.122,0.072,0.245,0.142,0.368,0.212c0.613,0.349,1.239,0.678,1.88,0.98
                                   c0.047,0.022,0.095,0.042,0.142,0.064c2.089,0.971,4.319,1.684,6.651,2.105c0.061,0.011,0.122,0.022,0.184,0.033
@@ -24,10 +24,7 @@
                                   c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path></svg></span>
                             <p class="u-text u-text-1">Joined by {{ this.numusers }} users</p>
                             <h2 class="u-align-center u-text u-text-default u-text-2">{{ this.title }}</h2>
-                            <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-1">Sports</a>
-                            <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-2">Excercise</a>
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-3">Health</a>
-                            <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-4">GYm</a>
                             <p class="u-align-center u-text u-text-3" id = "info"><br>Location: {{ this.location }}<br>Expiry Date: {{ this.expiry }}<br>
                                 <br>{{ this.description }}
                             </p>
@@ -40,6 +37,7 @@
                 </div>
             </div>
         </section>
+        
     </body>
 </template>
 
@@ -127,6 +125,10 @@ export default {
 </script>
 
 <style scoped>
+.u-layout-row {
+  position:relative;
+  overflow:visible;
+}
 .u-section-1 .u-sheet-1 {
   min-height: 753px;
 }
@@ -154,6 +156,8 @@ export default {
 
 .u-section-1 .u-text-1 {
   margin: -29px 341px 0 54px;
+  display:flex;
+  position: relative;
 }
 
 .u-section-1 .u-text-2 {
@@ -184,7 +188,7 @@ export default {
   text-transform: uppercase;
   font-size: 0.875rem;
   letter-spacing: 1px;
-  margin: -46px auto 0 590px;
+  margin:  auto;
 }
 
 .u-section-1 .u-btn-4 {
@@ -205,7 +209,8 @@ export default {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0px;
-  margin: -14px 30px 0 auto;
+  margin: -14px 30px auto auto;
+
 }
 
 .u-section-1 .u-btn-6 {
@@ -238,7 +243,6 @@ export default {
 
   .u-section-1 .u-text-1 {
     margin-right: 194px;
-    margin-left: 0;
   }
 
   .u-section-1 .u-btn-1 {

@@ -29,7 +29,7 @@
                 <a class="username" href="#">@{{ comment.user }}</a>
                 <span
                   span
-                  v-if="!comment.edit"
+                  v-if="!comment.edit == true && comment.user == this.user"
                   v-on:click="editStatus(comment.id)"
                 >
                   <form>{{ comment.text }}</form>
