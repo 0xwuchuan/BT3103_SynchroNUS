@@ -13,11 +13,17 @@ module.exports = {
       spacing: {
         100: "30rem",
         104: "38rem",
+        108: "42rem",
+        120: "46rem"
       },
+      width: {
+          '23/24' : '98.3%'
+      }
     },
     fontFamily: {
       sans: ["Roboto"],
-    },
+      mont: ["Montserrat"]
+    }
   },
   plugins: [require("flowbite/plugin")],
   variants: {
@@ -25,6 +31,7 @@ module.exports = {
       opacity: ["disabled"],
       cursor: ["disabled"],
       backgroundColor: ["disabled"],
+      translate: ['group-hover'],
     },
   },
   

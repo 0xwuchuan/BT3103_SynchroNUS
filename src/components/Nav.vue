@@ -6,14 +6,14 @@
         <router-link v-else class="text-xl" to="/">
             <img class="w-72" src="../assets/3.1.png" alt="Logo">
         </router-link>
-        <div>
+        <div class="flex flex-row items-center font-mont">
             <router-link to="/notifications">
-                <button class="rounded-full py-2 px-4 mx-2 border-2 text-black border-black" v-if="user">Notifications</button>
+                <button class="rounded-lg py-2 px-4 mx-2 text-white font-bold bg-gray-300 bg-opacity-50 hover:bg-gray-100 hover:bg-opacity-50 transition duration-75 ease-linear" v-if="user">Notifications</button>
             </router-link>
             <router-link to="/profile">
-                <button class="rounded-full py-2 px-4 mx-2 border-2 text-black border-black" v-if="user">Profile</button>
+                <button class="rounded-lg py-2 px-4 mx-2 text-white font-bold bg-gray-300 bg-opacity-50 hover:bg-gray-100 hover:bg-opacity-50 transition duration-75 ease-linear" v-if="user">Profile</button>
             </router-link>
-            <button class="rounded-full py-2 px-4 mx-2 border-2 border-black" v-if="user" @click="signout">Sign out</button>
+            <button class="rounded-lg py-2 px-4 mx-2 text-white font-bold bg-gray-300 bg-opacity-50 hover:bg-gray-100 hover:bg-opacity-50 transition duration-75 ease-linear" v-if="user" @click="signout">Sign out</button>
         </div>
     </nav>
 </template>
