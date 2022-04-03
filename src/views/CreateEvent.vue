@@ -129,12 +129,12 @@ export default {
                     requesters: [],
                     tag: this.tag
                 })
-                console.log(eventRef.id)
+                console.log(setEvent)
                 const docRef = doc(db, "events", eventRef.id);
                 const docSnap = await getDoc(docRef);
                 const userRef = doc(db, "Users", this.user.email);
                 const eventInfo = docSnap.data();
-                eventInfo.id = setEvent.id;
+                eventInfo.id = eventRef.id;
                 const updateUser = updateDoc(userRef, {
                     created: arrayUnion(eventInfo),
                 })
