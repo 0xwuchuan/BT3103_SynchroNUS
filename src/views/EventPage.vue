@@ -4,7 +4,9 @@
         <EventDetails 
         :id="this.id"
         />
-        <CommentSection />
+        <CommentSection 
+        :eventid="this.id"
+        />
     </div>
 </template>
 
