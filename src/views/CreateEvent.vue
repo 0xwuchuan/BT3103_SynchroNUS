@@ -122,6 +122,7 @@ export default {
                     expiryDate: this.expiryDate,
                     location: this.location,
                     numOfParticipants: this.numOfParticipants,
+                    currentNumOfParticipants: 1,
                     description: this.description,
                     postDate: new Date().getTime(),
                     comments: [],
