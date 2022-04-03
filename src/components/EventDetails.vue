@@ -5,7 +5,7 @@
                 <div class="u-clearfix u-expanded-width u-gutter-0 u-layout-wrap u-layout-wrap-1">
                     <div class="u-layout">
                         <div class="u-layout-row">
-                            <div class="u-container-style u-image u-image-round u-layout-cell u-radius-23 u-shading u-size-60 u-image-1" data-image-width="1500" data-image-height="1000">
+                            <div v-bind:style="'{ background: `${this.tag}`}'" class="u-container-style u-image u-image-round u-layout-cell u-radius-23 u-shading u-size-60 u-image-1" data-image-width="1500" data-image-height="1000">
                                 <div class="u-container-layout u-container-layout-1"><span class="u-icon u-icon-rectangle u-text-white u-icon-1"><svg class="u-svg-link" viewBox="0 0 55 55" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-20fb"></use></svg><svg class="u-svg-content" viewBox="0 0 55 55" x="0px" y="0px" id="svg-20fb" style="enable-background:new 0 0 55 55;"><path d="M55,27.5C55,12.337,42.663,0,27.5,0S0,12.337,0,27.5c0,8.009,3.444,15.228,8.926,20.258l-0.026,0.023l0.892,0.752
                                   c0.058,0.049,0.121,0.089,0.179,0.137c0.474,0.393,0.965,0.766,1.465,1.127c0.162,0.117,0.324,0.234,0.489,0.348
                                   c0.534,0.368,1.082,0.717,1.642,1.048c0.122,0.072,0.245,0.142,0.368,0.212c0.613,0.349,1.239,0.678,1.88,0.98
@@ -67,7 +67,8 @@ export default {
         numusers: '',
         creator: '',
         user: false,
-        link: ''
+        link: '',
+        tag: ''
       }
     },
     components: {
@@ -132,6 +133,8 @@ export default {
           this.creator = info.userEmail
           this.link = "/edit/" + this.id
           console.log(this.creator)
+          this.tag = info.tag
+          console.log("Creator2"+info.userEmail)
           //console.log(this.description)
         })
       }
@@ -155,7 +158,7 @@ export default {
 
 .u-section-1 .u-image-1 {
   min-height: 406px;
-  background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../assets/gym.jpeg");
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../assets/academic.jpg");
   background-position: 50% 50%;
 }
 
