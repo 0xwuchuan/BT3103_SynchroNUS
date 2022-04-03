@@ -75,7 +75,8 @@
 </template>
 
 <script>
-import {  getFirestore, doc, collection, setDoc, getDocs} from "firebase/firestore"; 
+import {  getFirestore, doc, collection, setDoc, getDocs,
+    updateDoc, getDoc, arrayUnion, arrayRemove} from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
 import router from '../router/index'
@@ -129,32 +130,24 @@ export default {
                     requesters: [],
                     tag: this.tag
                 })
-            const docRef = doc(db, "events", setEvent.id);
-            const docSnap = await getDoc(docRef);
-            const userRef = doc(db, "Users", this.user.email);
-            const eventInfo = docSnap.data();
-            eventInfo.id = setEvent.id;
-            const updateUser = updateDoc(userRef, {
-                created: arrayUnion(eventInfo),
-            })
-            console.log(eventInfo)
-            console.log(updateUser)
-            this.$emit("updated")
-            console.log(setEvent.id)
-            document.getElementById('createEventForm').reset();
-            alert("Created event '" + this.title + "'")
-        },
-        async editEvent(eventId) { // pass in things to edit
-            const eventRef = doc(db, "events", eventId);
-            const edit = await updateDoc(eventRef, {
-                    // Stuff to edit
+                const docRef = doc(db, "events", setEvent.id);
+                const docSnap = await getDoc(docRef);
+                const userRef = doc(db, "Users", this.user.email);
+                const eventInfo = docSnap.data();
+                eventInfo.id = setEvent.id;
+                const updateUser = updateDoc(userRef, {
+                    created: arrayUnion(eventInfo),
                 })
-                console.log(setEvent)
-                router.push('/home');
-            } catch (error) {
-                alert(error);
+                console.log(eventInfo)
+                console.log(updateUser)
+                this.$emit("updated")
+                console.log(setEvent.id)
+                document.getElementById('createEventForm').reset();
+                alert("Created event '" + this.title + "'")
+                router.push('/home')
+            } catch (err) {
+                alert(err);
             }
-            
         },
         async getTags() {
         const tagSnapshot = await getDocs(collection(db, "tags"));

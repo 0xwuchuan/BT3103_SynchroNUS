@@ -102,7 +102,6 @@ export default {
             console.log(this.password);
         },
         async signup() {
-            const auth = getAuth(); 
             const setUser = await setDoc(doc(db, "Users", this.email), {
                 name: this.name,
                 gender: this.gender,
@@ -112,6 +111,7 @@ export default {
                 saved: [],
                 created: []
             });
+            console.log(setUser)
             
             createUserWithEmailAndPassword(auth, this.email, this.password)
                     .then((userCredential) => {
@@ -128,15 +128,6 @@ export default {
                         alert(errorCode, errorMessage);
                         // ..
                     });
-
-
-            const setUser = await setDoc(doc(db, "Users", this.email), {
-                name: this.name,
-                gender: this.gender,
-                year: this.year,
-                teleHandle: this.teleHandle,
-            });
-            console.log(setUser)
         },
     },
 }
