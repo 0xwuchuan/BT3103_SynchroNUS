@@ -1,0 +1,175 @@
+<template>
+    <div class="pt-10 px-10 main grid place-items-start h-fit ">
+    <!--upcoming-->
+        <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
+            <!--title-->
+            <div class="name text-gray-800 text-2xl font-medium mt-4 ">
+                <p>Upcoming</p>
+            </div>
+            <div class="container mx-auto">
+                <div class="flex">
+                    <div v-for="event in userUpcoming.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
+                        <Event
+                            :title="event.title"
+                            :description="event.description"
+                            :date="event.postDate"
+                            :link="'eventpage/'+event.id"
+                            :imageUrl="event.imageUrl"
+                        />
+                    </div>
+                </div>
+            </div> 
+            <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+                See all
+            </button>         
+        </div>
+    </div>
+    <div class="pt-10 px-10 main grid place-items-start h-fit ">
+        <!--saved-->
+        <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
+            <!--title-->
+            <div class="name text-gray-800 text-2xl font-medium mt-4 ">
+                <p>Saved</p>
+            </div>
+            <div class="container mx-auto">
+                <div class="flex">
+                    <div v-for="event in userSaved.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">                        
+                        <Event
+                            :title="event.title"
+                            :description="event.description"
+                            :date="event.postDate"
+                            :link="'eventpage/'+eventid"
+                            :imageUrl="event.imageUrl"
+                        />
+                    </div>
+                </div>
+            </div> 
+            <button @click="seeSaved" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+                See all
+            </button> 
+        </div>
+    </div>
+    <div class="pt-10 px-10 main grid place-items-start h-fit ">
+    <!--created events-->
+    <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
+        <!--title-->
+        <div class="name text-gray-800 text-2xl font-medium mt-4 ">
+            <p>Created</p>
+        </div>
+        <div class="container mx-auto">
+            <div class="flex">
+                <div v-for="event in userCreated.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="event.postDate"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                    />
+                </div>
+            </div>
+        </div> 
+        <button @click="seeCreated" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+                See all
+        </button> 
+    </div>
+    </div>
+    <br>
+</template>
+
+<script>
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore"
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import router from '../router/index'
+import Event from '@/components/Event.vue'
+import { doc, getDoc } from 'firebase/firestore'
+const db = getFirestore(firebaseApp);
+
+export default {
+    name: 'MyEvents',
+
+    components: {
+        Event,
+
+    },
+    data() {
+    return {
+      user: false,
+      userVerified: false,
+      userEmail: "",
+      userName: "",
+      userGender: "",
+      userTeleHandle: "",
+      userYear: "",
+      userUpcoming: [],
+      userSaved: [],
+      userCreated: []
+    }
+  },
+  methods: {
+      checkAuthStatus() {
+            return new Promise( (resolve, reject) => {
+                try{
+                    const auth = getAuth() 
+                    onAuthStateChanged(auth, (user) => {
+                        this.userEmail = user.email
+                        this.userVerified = user.emailVerified
+                        resolve(user)
+                    })
+                } catch (err) {
+                    reject(err)
+                }
+            })
+        },
+        //TO-DO: display cut off at 4 events
+        seeCreated() {
+            router.push('/created')
+        },
+
+        seeSaved() {
+            router.push('/saved')
+        },
+
+        seeUpcoming() {
+            router.push('/upcoming')
+        },
+
+        // async query(collection, attribute, condition, condition2) {
+        //     const queried = []
+        //     const q = query(collection(db, collection), where(attribute, condition, condition2));
+        //     const createdSnapshot = await getDocs(q);
+        //     createdSnapshot.forEach((doc) => {
+        //         queried.push(doc.data());
+        //     });
+        //     return queried
+        // },
+  },
+    async mounted() {
+        this.user = await this.checkAuthStatus()    
+        console.log(this.userVerified)
+        const userRef = await doc(db, "Users", String(this.userEmail))
+        const userDoc = await getDoc(userRef)
+    
+        if (userDoc.exists()) {
+            const userData = await userDoc.data();
+            console.log(userData);
+            this.userName = userData.name
+            this.userGender = userData.gender
+            this.userTeleHandle = userData.teleHandle
+            this.userYear = userData.year
+            this.userUpcoming = userData.upcoming
+            this.userSaved = userData.saved
+            this.userCreated = userData.created
+            console.log(this.userCreated)
+
+        } else {
+            console.log("No such document!");
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>

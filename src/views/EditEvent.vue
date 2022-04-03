@@ -2,12 +2,12 @@
     <Nav />
     <div class="flex flex-col justify-start h-5/6 ml-10 p-5">
         <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-104 p-5">
-            <h3 class="text-3xl font-semibold pl-3">Create a new Event</h3>
-            <form id="createEventForm" class="flex flex-col justify-start w-full" @submit.prevent="createEvent">
+            <h3 class="text-3xl font-semibold pl-3">Edit your Event</h3>
+            <form class="flex flex-col justify-start w-full" @submit.prevent="editEvent(this.id)">
                 <div class="flex flex-col items-left w-full m-3">
                     <div class="flex flex-col items-left w-11/12 my-3">
                         <label for="title">Title</label>
-                        <input v-model="title" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" placeholder="Enter the title of your event" id="title" required>
+                        <input class="inline-block w-full bg-gray-400 rounded-md p-2 border border-gray-200 focus:border-transpt transition ease-linear" type="text" v-bind:placeholder="this.title" id="title" readonly>
                     </div>
                     <div class="flex flex-col items-left w-11/12 my-3">
                         <label for="date">Date</label>
@@ -28,7 +28,7 @@
                         </div>
                     </div>
 
-                    <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-11/12 text-lg my-3 h-10" type="submit">Create</button>
+                    <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-11/12 text-lg my-3 h-10" type="submit">Edit</button>
                 </div>
             </form>
         </div>
@@ -36,10 +36,11 @@
 </template>
 
 <script>
-import {  getFirestore, doc, collection, addDoc, updateDoc, 
+import {  getFirestore, doc, collection, setDoc, updateDoc, 
     deleteDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
+import {useRoute} from 'vue-router';
 // import router from '../router/index'
 
 import Nav from "../components/Nav.vue"
@@ -60,7 +61,36 @@ export default {
             numOfParticipants: "",
             description: "",
             postDate: "", // current Date
+            id: ''
         }
+    },
+    beforeMount(){
+        const route = useRoute();
+        console.warn("route",route.params);
+        this.id = route.params.id;
+        console.log(this.id);
+  
+      async function display(eventid){
+        //console.log("displaying")
+        let eventRef = doc(db, "events", eventid)
+        let eventSnap = await getDoc(eventRef)
+        console.log("Document data:", eventSnap.data());
+        var info = eventSnap.data()
+        return info
+        }
+      if (this.id){
+        console.log(this.id)
+        display(this.id).then( (info) => {
+          //console.log(this.description)
+          this.description = info.description
+          this.location = info.location
+          this.expiryDate = info.expiryDate
+          this.title = info.title
+          this.numOfParticipants = info.numOfParticipants
+          console.log("Creator2"+info.userEmail)
+          //console.log(this.description)
+        })
+      }
     },
     mounted() {
         onAuthStateChanged(auth, (user) => {
@@ -71,8 +101,8 @@ export default {
     },
     methods: {
         async createEvent() {
-            const eventRef = collection(db, "events");
-            const setEvent = await addDoc(eventRef, {
+            const eventRef = doc(collection(db, "events"));
+            const setEvent = await setDoc(eventRef, {
                     userEmail: this.user.email,
                     title: this.title,
                     expiryDate: this.expiryDate,
@@ -84,27 +114,26 @@ export default {
                     participants: [],
                     requesters: []
                 })
-            const docRef = doc(db, "events", setEvent.id);
-            const docSnap = await getDoc(docRef);
-            const userRef = doc(db, "Users", this.user.email);
-            const eventInfo = docSnap.data();
-            eventInfo.id = setEvent.id;
-            const updateUser = updateDoc(userRef, {
-                created: arrayUnion(eventInfo),
-            })
-            console.log(eventInfo)
-            console.log(updateUser)
-            this.$emit("updated")
-            console.log(setEvent.id)
-            document.getElementById('createEventForm').reset();
-            alert("Created event '" + this.title + "'")
+            console.log(setEvent)
         },
         async editEvent(eventId) { // pass in things to edit
             const eventRef = doc(db, "events", eventId);
             const edit = await updateDoc(eventRef, {
                     // Stuff to edit
+                    userEmail: this.user.email,
+                    title: this.title,
+                    expiryDate: this.expiryDate,
+                    location: this.location,
+                    numOfParticipants: this.numOfParticipants,
+                    description: this.description,
+                    postDate: new Date().toLocaleString(),
+                    comments: [],
+                    participants: [],
+                    requesters: []
                 })
             console.log(edit)
+            window.alert("Your event has been edited!")
+            this.$router.push("/home")
         },
         async deleteEvent(eventId) {
             const eventRef = doc(db, "events", eventId);
@@ -118,28 +147,13 @@ export default {
             })
             console.log(request)
         },
-        async acceptApplicant(eventId, userEmail) {
+        async acceptApplicant(userId, eventId) {
             const eventRef = doc(db, "events", eventId);
             const accept = await updateDoc(eventRef, {
-                requesters: arrayRemove(userEmail),
-                participants: arrayUnion(userEmail)
-            })
-            const userRef = doc(db, "Users", userEmail);
-            const userSnap = await getDoc(userRef);
-            const userName = userSnap.name
-
-
-            const docSnap = await getDoc(eventRef);
-            const eventInfo = docSnap.data();
-            eventInfo.id = eventRef.id;
-            const updateUser = updateDoc(userRef, {
-                created: arrayUnion(eventInfo),
+                requesters: arrayRemove(userId),
+                participants: arrayUnion(userId)
             })
             console.log(accept)
-            console.log(updateUser)
-            this.$emit("updated")
-            console.log(eventRef.id)
-            alert("Accepted applicant '" + userName + "'")
         }
 
     }
