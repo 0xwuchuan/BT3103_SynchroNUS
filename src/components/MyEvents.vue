@@ -62,7 +62,7 @@
                     <Event
                         :title="event.title"
                         :description="event.description"
-                        :date="event.postDate"
+                        :date="getRelativeTime(event.postDate)"
                         :link="'eventpage/'+event.id"
                         :imageUrl="event.imageUrl"
                     />
@@ -134,6 +134,34 @@ export default {
         seeUpcoming() {
             router.push('/upcoming')
         },
+
+        getRelativeTime(oldTimestamp) {
+        const date = new Date();
+        const currentTimeStamp = date.getTime();
+        const seconds = Math.floor(currentTimeStamp/1000);
+        const difference = seconds - Math.floor(oldTimestamp/1000)
+        let output = ``;
+        if (difference < 60) {
+            // Less than a minute has passed:
+            output = `${difference} seconds ago`;
+        } else if (difference < 3600) {
+            // Less than an hour has passed:
+            output = `${Math.floor(difference / 60)} minutes ago`;
+        } else if (difference < 86400) {
+            // Less than a day has passed:
+            output = `${Math.floor(difference / 3600)} hours ago`;
+        } else if (difference < 2620800) {
+            // Less than a month has passed:
+            output = `${Math.floor(difference / 86400)} days ago`;
+        } else if (difference < 31449600) {
+            // Less than a year has passed:
+            output = `${Math.floor(difference / 2620800)} months ago`;
+        } else {
+            // More than a year has passed:
+            output = `${Math.floor(difference / 31449600)} years ago`;
+        }
+        return output;
+    },
 
         // async query(collection, attribute, condition, condition2) {
         //     const queried = []
