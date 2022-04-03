@@ -44,10 +44,12 @@
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
 const db = getFirestore(firebaseApp);
+import router from '../router/index'
+
 
 export default {
     name: "EventDetails",
@@ -75,14 +77,20 @@ export default {
         console.log(request)
         console.log("request success")
       },
-      async acceptApplicant(userId, eventId) {
+      async acceptApplicant(userEmail, eventId) {
         const eventRef = doc(db, "events", eventId);
         const accept = await updateDoc(eventRef, {
-            requesters: arrayRemove(userId),
-            participants: arrayUnion(userId)
+            requesters: arrayRemove(userEmail),
+            participants: arrayUnion(userEmail)
         })
         console.log(accept)
-      }
+      },
+      async deleteEvent(eventId) {
+        const eventRef = doc(db, "events", eventId);
+        const del = await deleteDoc(eventRef)
+        console.log(del)
+        router.push('/home')
+      },
     },
     mounted() {
         onAuthStateChanged(auth, (user) => {
