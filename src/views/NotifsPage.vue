@@ -1,12 +1,12 @@
 <!-- change to page with components -->
 <template>
   <Nav/>
-  <h1 class="text-3xl text-center font-bold mt-10 text-white max-w-fit">Notifications</h1> 
+  <h1 class="text-3xl text-center font-bold mt-10 text-white max-w-fit font-mont"><b>Notifications</b></h1> 
   
   <!-- <div class="flex flex-row justify-center space-x-3">-->
-  <div class="flex flex-col justify-left items-center max-h-fit max-w-fit">
-        <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit p-8">
-            <h5> Comments </h5>
+  <div class="flex flex-col justify-left items-center font-mont">
+        <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit p-8 font-mont">
+            <h5 class="font-mont"> Comments </h5>
             <div v-for="comment in CommentList" :key="comment.id" class="items-center object-center position-static ">
                 <div class="object-center"> 
                 <CommNotif
@@ -20,9 +20,9 @@
 
   <br>
 
-  <div class="flex flex-col items-center max-h-fit max-w-fit">
-    <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit p-8">
-        <h5> Requests </h5>
+  <div class="flex flex-col items-center">
+    <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit p-8 font-mont">
+        <h5 class="font-mont"> Requests </h5>
         <div v-for="obj in Object.keys(ReqList)" :key="obj" >     <!-- object.keys creates an array of event names -->
             <div v-for="requester in ReqList[obj]" :key="requester">
             <ReqNotif
@@ -38,11 +38,7 @@
 </template>
 
 <script>
-//import { onAuthStateChanged } from "firebase/auth";
-// import { auth } from '../firebase';
-
 import Nav from '../components/Nav'
-// import NotifPage from '../components/NotifPage'
 import {
   getFirestore,
   collection,
@@ -135,7 +131,6 @@ export default {
         },
 
         async getRequesters() {
-            // check backend for request --> isit just add to the array
             const eventRef = collection(db, "events");
             const q = query(eventRef, orderBy("postDate"));
             const querySnapshot = await getDocs(q);
