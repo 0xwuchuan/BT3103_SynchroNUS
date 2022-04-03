@@ -129,8 +129,8 @@ export default {
                     requesters: [],
                     tag: this.tag
                 })
-                console.log(setEvent.id)
-                const docRef = doc(db, "events", setEvent.id);
+                console.log(eventRef.id)
+                const docRef = doc(db, "events", eventRef.id);
                 const docSnap = await getDoc(docRef);
                 const userRef = doc(db, "Users", this.user.email);
                 const eventInfo = docSnap.data();
