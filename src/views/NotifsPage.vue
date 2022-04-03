@@ -5,6 +5,7 @@
   <div class="flex flex-col justify-left items-center font-mont">
         <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 rounded text-700 bg-50 border-900/10 w-100 font-mont">
             <h5 class="font-mont pl-2"> Comments </h5>
+
             <div v-for="comment in CommentList" :key="comment.id" class="items-center object-center position-static ">
                 <div v-if="comment.user != this.user.email">
                 <div class="object-center"> 

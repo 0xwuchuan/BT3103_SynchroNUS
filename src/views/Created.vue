@@ -5,23 +5,32 @@
         <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
             <!--title-->
             <div class="name text-gray-800 text-2xl font-medium mt-4 ">
-                <p>Upcoming</p>
+                <p>Created</p>
             </div>
             <div class="container mx-auto">
-                <div class="flex">
-                    <div v-for="event in userCreated.reverse()" :key="event.title" class="inline-block w-100">
-                        <Event
-                            :title="event.title"
-                            :description="event.description"
-                            :date="event.postDate"
-                            :link="'eventpage/'+event.id"
-                            :imageUrl="event.imageUrl"
-                        />
-                    </div>
+            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <!-- Skeleton Loader -->
+                <div v-for="template in 3" :key="template" class="col-span-1">
+                    <SkeletonEvent />
                 </div>
-            </div>      
+            </div>
+            <!-- Actual events -->
+            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+                <div v-for="event in userCreated.reverse()" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="getRelativeTime(event.postDate)"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                        :tag="event.tag"
+                    />
+                </div>
+            </div>
         </div>
-    </div>
+        </div>         
+        </div>
+    
 </template>
 
 <script>
@@ -29,6 +38,7 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import Event from '@/components/Event.vue'
+import SkeletonEvent from '@/components/Event.vue'
 import Nav from '@/components/Nav.vue'
 import { doc, getDoc } from 'firebase/firestore'
 const db = getFirestore(firebaseApp);
@@ -39,7 +49,7 @@ export default {
     components: {
         Nav,
         Event,
-
+        SkeletonEvent
     },
     data() {
     return {
@@ -69,6 +79,33 @@ export default {
                     reject(err)
                 }
             })
+        },
+                getRelativeTime(oldTimestamp) {
+            const date = new Date();
+            const currentTimeStamp = date.getTime();
+            const seconds = Math.floor(currentTimeStamp/1000);
+            const difference = seconds - Math.floor(oldTimestamp/1000)
+            let output = ``;
+            if (difference < 60) {
+                // Less than a minute has passed:
+                output = `${difference} seconds ago`;
+            } else if (difference < 3600) {
+                // Less than an hour has passed:
+                output = `${Math.floor(difference / 60)} minutes ago`;
+            } else if (difference < 86400) {
+                // Less than a day has passed:
+                output = `${Math.floor(difference / 3600)} hours ago`;
+            } else if (difference < 2620800) {
+                // Less than a month has passed:
+                output = `${Math.floor(difference / 86400)} days ago`;
+            } else if (difference < 31449600) {
+                // Less than a year has passed:
+                output = `${Math.floor(difference / 2620800)} months ago`;
+            } else {
+                // More than a year has passed:
+                output = `${Math.floor(difference / 31449600)} years ago`;
+            }
+            return output;
         },
   },
     async mounted() {

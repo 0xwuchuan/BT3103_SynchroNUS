@@ -7,10 +7,10 @@
         </div>
         <div class="post-owner">
           <div class="avatar">
-            <img :src="creator.avatar" alt="" />
+            <img src="http://via.placeholder.com/100x100/a74848" alt="" />
           </div>
           <div class="username">
-            <a href="#">@{{ creator.user }}</a>
+            <a href="#">@{{ creatorid }}</a>
           </div>
         </div>
       </div>
@@ -54,21 +54,24 @@
                 </button>
                 <button
                   id="editComment"
-                  v-if="!comment.edit"
+                  v-if="!comment.edit && comment.user == this.user.email"
                   v-on:click="comment.edit = true"
                 >
                   <img src="@/assets/button/edit.png" height="10%" alt="Edit" />
                 </button>
                 <button
                   id="saveEdit"
-                  v-if="comment.edit"
-                  v-on:click="editComment(comment.id, comment.text)"
+                  v-if="comment.edit && comment.user == this.user.email"
+                  v-on:click="
+                    editComment(comment.id, comment.text),
+                      (comment.edit = false)
+                  "
                 >
                   <img src="@/assets/button/tick.png" height="10%" alt="Edit" />
                 </button>
                 <button
                   id="cancelEdit"
-                  v-if="comment.edit"
+                  v-if="comment.edit && comment.user == this.user.email"
                   v-on:click="comment.edit = false"
                 >
                   <img
@@ -79,7 +82,7 @@
                 </button>
                 <button
                   id="deleteComment"
-                  v-if="!comment.edit"
+                  v-if="!comment.edit && comment.user == this.user.email"
                   @click.prevent="deleteComment(comment.id)"
                 >
                   <img src="@/assets/button/delete.png" alt="Delete" />
@@ -93,7 +96,7 @@
         <br />
         <div class="reply">
           <div class="avatar">
-            <img :src="current_user.avatar" alt="" />
+            <img src="http://via.placeholder.com/100x100/a74848" alt="" />
           </div>
           <input
             id="comment-text"
@@ -145,34 +148,34 @@ export default {
     return {
       reply: "",
       edit: false,
-      creator: {
-        avatar: "http://via.placeholder.com/100x100/a74848",
-        user: "eventCreator",
-      },
-      current_user: {
-        avatar: "http://via.placeholder.com/100x100/a74848",
-        user: "user",
-      },
+      avator: "",
+      user: "",
       comments: [],
     };
   },
+  props: {
+    eventid: { type: String, default: "eventeg" },
+    creatorid: { type: String, default: "eventCreator" },
+  },
+
   mounted() {
     this.getComments();
 
     onAuthStateChanged(auth, (user) => {
-            if (user) {
-                this.user = user;
-            }
-        })
-  },
-  props: {
-    eventid: {type: String, default: "eventeg"}
+      if (user) {
+        this.user = user;
+      }
+    });
   },
   methods: {
     async getComments() {
       const commentRef = collection(db, "comments");
-      console.log("event:", this.eventid)
-      const q = await query(commentRef, where("eventid", "==", this.eventid), orderBy("commentedAt"));
+      console.log("event:", this.eventid);
+      const q = await query(
+        commentRef,
+        where("eventid", "==", this.eventid),
+        orderBy("commentedAt")
+      );
       onSnapshot(q, (snapshot) => {
         this.comments = [];
         const comments = this.comments;
@@ -185,7 +188,7 @@ export default {
     async submitComment() {
       const commentRef = doc(collection(db, "comments"));
       const setComment = await setDoc(commentRef, {
-        user: this.user.email,// displayName, //(better option)
+        user: this.user.email, // displayName, //(better option)
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
@@ -204,11 +207,16 @@ export default {
     },
     async editComment(id, newText) {
       const commentRef = doc(db, "comments", id);
-      await updateDoc(commentRef, {
-        text: newText,
-        edit: false,
-      });
-      console.log("comment has been edited");
+      const commentSnap = await getDoc(commentRef);
+      var oldText = commentSnap.data().text;
+      if (newText == oldText) {
+        alert("No edits made!");
+      } else {
+        await updateDoc(commentRef, {
+          text: newText,
+        });
+        console.log("comment has been edited");
+      }
     },
     async deleteComment(id) {
       var toDelete = confirm("Your comment will be deleted");
@@ -222,7 +230,7 @@ export default {
     async replyComment(id) {
       const commentRef = doc(db, "comments", id);
       const commentSnap = await getDoc(commentRef);
-      console.log(commentSnap)
+      console.log(commentSnap);
 
       if (commentSnap.exists()) {
         console.log("Comment data:", commentSnap.data());
@@ -391,7 +399,7 @@ hr {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
   background-color: #fff;
 }
 
@@ -446,7 +454,7 @@ hr {
 
 .reply .reply--button {
   position: absolute;
-  right: -100px;
+  right: -110px;
   border: 1px solid #2a629c;
   background-color: transparent;
   color: #2a629c;
