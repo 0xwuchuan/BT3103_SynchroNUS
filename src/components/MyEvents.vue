@@ -7,18 +7,26 @@
                 <p>Upcoming</p>
             </div>
             <div class="container mx-auto">
-                <div class="flex">
-                    <div v-for="event in userUpcoming.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
-                        <Event
-                            :title="event.title"
-                            :description="event.description"
-                            :date="event.postDate"
-                            :link="'eventpage/'+event.id"
-                            :imageUrl="event.imageUrl"
-                        />
-                    </div>
+            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <!-- Skeleton Loader -->
+                <div v-for="template in 3" :key="template" class="col-span-1">
+                    <SkeletonEvent />
                 </div>
-            </div> 
+            </div>
+            <!-- Actual events -->
+            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+                <div v-for="event in userUpcoming.slice(userUpcoming.length - 4,userUpcoming.length).reverse()" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="getRelativeTime(event.postDate)"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                        :tag="event.tag"
+                    />
+                </div>
+            </div>
+            </div>
             <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
             </button>         
@@ -32,18 +40,26 @@
                 <p>Saved</p>
             </div>
             <div class="container mx-auto">
-                <div class="flex">
-                    <div v-for="event in userSaved.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">                        
-                        <Event
-                            :title="event.title"
-                            :description="event.description"
-                            :date="event.postDate"
-                            :link="'eventpage/'+eventid"
-                            :imageUrl="event.imageUrl"
-                        />
-                    </div>
+            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <!-- Skeleton Loader -->
+                <div v-for="template in 3" :key="template" class="col-span-1">
+                    <SkeletonEvent />
                 </div>
-            </div> 
+            </div>
+            <!-- Actual events -->
+            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+                <div v-for="event in userSaved.slice(userSaved.length - 4,userSaved.length).reverse()" :key="event.title" class="inline-block w-100">
+                    <Event
+                        :title="event.title"
+                        :description="event.description"
+                        :date="getRelativeTime(event.postDate)"
+                        :link="'eventpage/'+event.id"
+                        :imageUrl="event.imageUrl"
+                        :tag="event.tag"
+                    />
+                </div>
+            </div>
+            </div>
             <button @click="seeSaved" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
             </button> 
@@ -57,18 +73,26 @@
             <p>Created</p>
         </div>
         <div class="container mx-auto">
-            <div class="flex">
-                <div v-for="event in userCreated.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
-                    <Event
-                        :title="event.title"
-                        :description="event.description"
-                        :date="event.postDate"
-                        :link="'eventpage/'+event.id"
-                        :imageUrl="event.imageUrl"
-                    />
-                </div>
+        <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+        <!-- Skeleton Loader -->
+            <div v-for="template in 3" :key="template" class="col-span-1">
+                <SkeletonEvent />
             </div>
-        </div> 
+        </div>
+        <!-- Actual events -->
+        <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <div v-for="event in userCreated.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
+                <Event
+                    :title="event.title"
+                    :description="event.description"
+                    :date="getRelativeTime(event.postDate)"
+                    :link="'eventpage/'+event.id"
+                    :imageUrl="event.imageUrl"
+                    :tag="event.tag"
+                />
+            </div>
+        </div>
+        </div>
         <button @click="seeCreated" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
         </button> 
@@ -83,6 +107,7 @@ import { getFirestore } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import router from '../router/index'
 import Event from '@/components/Event.vue'
+import SkeletonEvent from '@/components/Event.vue'
 import { doc, getDoc } from 'firebase/firestore'
 const db = getFirestore(firebaseApp);
 
@@ -91,6 +116,7 @@ export default {
 
     components: {
         Event,
+        SkeletonEvent
 
     },
     data() {
@@ -121,6 +147,33 @@ export default {
                     reject(err)
                 }
             })
+        },
+        getRelativeTime(oldTimestamp) {
+            const date = new Date();
+            const currentTimeStamp = date.getTime();
+            const seconds = Math.floor(currentTimeStamp/1000);
+            const difference = seconds - Math.floor(oldTimestamp/1000)
+            let output = ``;
+            if (difference < 60) {
+                // Less than a minute has passed:
+                output = `${difference} seconds ago`;
+            } else if (difference < 3600) {
+                // Less than an hour has passed:
+                output = `${Math.floor(difference / 60)} minutes ago`;
+            } else if (difference < 86400) {
+                // Less than a day has passed:
+                output = `${Math.floor(difference / 3600)} hours ago`;
+            } else if (difference < 2620800) {
+                // Less than a month has passed:
+                output = `${Math.floor(difference / 86400)} days ago`;
+            } else if (difference < 31449600) {
+                // Less than a year has passed:
+                output = `${Math.floor(difference / 2620800)} months ago`;
+            } else {
+                // More than a year has passed:
+                output = `${Math.floor(difference / 31449600)} years ago`;
+            }
+            return output;
         },
         //TO-DO: display cut off at 4 events
         seeCreated() {
