@@ -1,18 +1,20 @@
-<!-- change to page with components -->
 <template>
   <Nav/>
   <h1 class="text-3xl text-center font-bold mt-10 text-white max-w-fit font-mont"><b>Notifications</b></h1> 
-  
   <!-- <div class="flex flex-row justify-center space-x-3">-->
   <div class="flex flex-col justify-left items-center font-mont">
-        <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit p-8 font-mont">
-            <h5 class="font-mont"> Comments </h5>
+        <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 rounded text-700 bg-50 border-900/10 w-100 font-mont">
+            <h5 class="font-mont pl-2"> Comments </h5>
+
             <div v-for="comment in CommentList" :key="comment.id" class="items-center object-center position-static ">
+                <div v-if="comment.user != this.user.email">
                 <div class="object-center"> 
                 <CommNotif
                     :user="comment.user"
                     :text="comment.text"
+                    :link="'eventpage/'+comment.eventid"
                 />
+                </div>
                 </div>
             </div>   
         </div>
@@ -20,21 +22,21 @@
 
   <br>
 
-  <div class="flex flex-col items-center">
-    <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md max-w-fit max-h-fit p-8 font-mont">
-        <h5 class="font-mont"> Requests </h5>
+  <div class="flex flex-col items-center"> 
+    <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 rounded text-700 bg-50 border-900/10 w-100 font-mont">
+        <h5 class="font-mont pl-2"> Requests </h5>
         <div v-for="obj in Object.keys(ReqList)" :key="obj" >     <!-- object.keys creates an array of event names -->
             <div v-for="requester in ReqList[obj]" :key="requester">
             <ReqNotif
                 :user="requester"
-                :eventname="obj"
+                :link="'eventpage/'+obj.split(',')[0]"
+                :eventname="obj.split(',')[1]"
             />
         </div>
         </div>
     </div>
   </div>
-  
- 
+
 </template>
 
 <script>
@@ -94,33 +96,14 @@ export default {
                     this.EventsByMe.push(event.id);
                 }
             });
-
-            console.log(this.EventsByMe.length)
         },
 
         async notifyComments() {
-            // for now this method is just taking comments from the collection itself
-            // TEMP
-            // later edit to take from if user created the event 
             const comRef = collection(db, "comments");
-            const q = query(comRef, orderBy("commentedAt"));
+            const q = query(comRef, orderBy("commentedAt", "desc"));
             const querySnapshot = await getDocs(q);
 
-            // const eventRef = collection(db, "events");
-            // const temp = query(eventRef)
-            // const eventDoc = await getDocs(temp);
-            
-            // eventDoc.forEach((doc) => {
-            //     let event = doc.data;
-            //     event.id = doc.id;
-                
-            //     if (event.userEmail == this.user.email || event.userId == this.user.uid) { // saved all events i made
-            //         this.EventsByMe.push(event.id);
-            //     }
-            // });
-            // check if changing to comment array in event --> then change method to print out the comments
             querySnapshot.forEach((doc) => {
-                // if this user made the event
                 let comInfo = doc.data();
                 comInfo.id = doc.id;
                 if (this.EventsByMe.includes(comInfo.eventid)) {    // if i made this event, pushes comment info
@@ -139,30 +122,12 @@ export default {
                 
                 let event = doc.data();
                 event.id = doc.id;
-                
-                if (event.userEmail == this.user.email || event.userId == this.user.uid) { // if this user made the event
-                    const temp = event.title;
-                    this.ReqList[temp] = event.requesters
-                // this.ReqList.push(eventInfo);
-                    // let reqArray = event.requesters
-                    // for (let userID of reqArray) {
-                    //     this.ReqList[event.title].push(userID);
-                    // }
+                if (event.userEmail == this.user.email) { // if this user made the event
+                    const temptt = event.title;
+                    this.ReqList[[event.id, temptt]] = event.requesters
                 }
-                console.log(this.ReqList);
             });
-            
-        } 
-        // async getRequesters() {
-        //     const eventRef = collection(db, "events");
-        //     const querySnapshot = await getDocs(eventRef);
-        //     querySnapshot.forEach((doc) => {
-        //         let eventInfo = doc.data();
-        //         eventInfo.forEach((field) => {
-        //             reqArray = eventInfo.requesters;
-        //              reqArray.forEach((userID) => {
-        //                  this.ReqList.push(userID);});});}
-                     
+        }          
                  
     },
 };
