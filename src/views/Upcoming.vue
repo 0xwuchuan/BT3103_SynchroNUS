@@ -16,7 +16,7 @@
             </div>
             <!-- Actual events -->
             <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userUpcoming.reverse()" :key="event.title" class="inline-block w-100">
+                <div v-for="event in userUpcoming.reverse()" :key="event.title" class="inline-block">
                     <Event
                         :title="event.title"
                         :description="event.description"
