@@ -121,7 +121,7 @@ export default {
 
 .u-section-1 .u-image-1 {
   min-height: 406px;
-  background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../assets/58159270-01-9.jpeg");
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../assets/gym.jpeg");
   background-position: 50% 50%;
 }
 
