@@ -7,14 +7,8 @@
                 <p>Upcoming</p>
             </div>
             <div class="container mx-auto">
-            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-            <!-- Skeleton Loader -->
-                <div v-for="template in 3" :key="template" class="col-span-1">
-                    <SkeletonEvent />
-                </div>
-            </div>
             <!-- Actual events -->
-            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
                 <div v-for="event in userUpcoming.slice(userUpcoming.length - 4,userUpcoming.length).reverse()" :key="event.title" class="inline-block w-100">
                     <Event
                         :title="event.title"
@@ -27,44 +21,12 @@
                 </div>
             </div>
             </div>
-            <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+            <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
             </button>         
         </div>
     </div>
-    <div class="pt-10 px-10 main grid place-items-start h-fit ">
-        <!--saved-->
-        <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
-            <!--title-->
-            <div class="name text-gray-800 text-2xl font-medium mt-4 ">
-                <p>Saved</p>
-            </div>
-            <div class="container mx-auto">
-            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-            <!-- Skeleton Loader -->
-                <div v-for="template in 3" :key="template" class="col-span-1">
-                    <SkeletonEvent />
-                </div>
-            </div>
-            <!-- Actual events -->
-            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userSaved.slice(userSaved.length - 4,userSaved.length).reverse()" :key="event.title" class="inline-block w-100">
-                    <Event
-                        :title="event.title"
-                        :description="event.description"
-                        :date="getRelativeTime(event.postDate)"
-                        :link="'eventpage/'+event.id"
-                        :imageUrl="event.imageUrl"
-                        :tag="event.tag"
-                    />
-                </div>
-            </div>
-            </div>
-            <button @click="seeSaved" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
-                See all
-            </button> 
-        </div>
-    </div>
+    
     <div class="pt-10 px-10 main grid place-items-start h-fit ">
     <!--created events-->
     <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
@@ -73,14 +35,8 @@
             <p>Created</p>
         </div>
         <div class="container mx-auto">
-        <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-        <!-- Skeleton Loader -->
-            <div v-for="template in 3" :key="template" class="col-span-1">
-                <SkeletonEvent />
-            </div>
-        </div>
         <!-- Actual events -->
-        <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+        <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
             <div v-for="event in userCreated.slice(userCreated.length - 4,userCreated.length).reverse()" :key="event.title" class="inline-block w-100">
                 <Event
                     :title="event.title"
@@ -93,7 +49,7 @@
             </div>
         </div>
         </div>
-        <button @click="seeCreated" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+        <button @click="seeCreated" class="text-xs bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
         </button> 
     </div>
@@ -107,7 +63,6 @@ import { getFirestore } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import router from '../router/index'
 import Event from '@/components/Event.vue'
-import SkeletonEvent from '@/components/Event.vue'
 import { doc, getDoc } from 'firebase/firestore'
 const db = getFirestore(firebaseApp);
 
@@ -116,7 +71,6 @@ export default {
 
     components: {
         Event,
-        SkeletonEvent
 
     },
     data() {
@@ -178,10 +132,6 @@ export default {
         //TO-DO: display cut off at 4 events
         seeCreated() {
             router.push('/created')
-        },
-
-        seeSaved() {
-            router.push('/saved')
         },
 
         seeUpcoming() {

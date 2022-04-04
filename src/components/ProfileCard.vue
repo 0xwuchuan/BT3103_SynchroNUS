@@ -16,7 +16,7 @@
             </div>
             <!-- edit button -->
             <div class=" mt-8">
-                <button class="inline-block bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="popup-modal">
+                <button class="inline-block bg-secondary hover:bg-opacity-90  py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="popup-modal">
                     Edit Profile 
                 </button>
         
@@ -70,7 +70,7 @@
                         <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" :placeholder="userTeleHandle" v-model="teleHandle"  >
                     </div>
                 </div>
-                <button class="block rounded-md bg-secondary hover:bg-yellow-500 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="button" @click="editUser">Edit</button>
+                <button class="block rounded-md bg-secondary hover:bg-opacity-90 transition ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10" type="button" @click="editUser">Edit</button>
             </form>
         </div>
     </div>

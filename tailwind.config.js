@@ -18,7 +18,7 @@ module.exports = {
       },
       width: {
           '23/24' : '98.3%'
-      }
+      },
     },
     fontFamily: {
       sans: ["Roboto"],

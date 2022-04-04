@@ -1,6 +1,6 @@
 <template>
     <Nav />
-    <div>
+    <div class="flex flex-col h-5/6">
         <EventDetails 
         :id="this.id"
         />
