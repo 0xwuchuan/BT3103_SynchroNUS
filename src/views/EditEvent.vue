@@ -1,7 +1,7 @@
 <template>
     <Nav />
-    <div class="flex flex-col justify-start h-5/6 ml-10 p-5">
-        <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-104 w-10/12 md:w-104 p-5">
+    <div class="flex flex-row justify-start h-5/6 ml-10 p-5">
+        <div class="flex flex-col justify-start bg-white opacity-90 rounded-lg filter drop-shadow-md h-108 w-10/12 md:w-104 p-5">
             <h3 class="text-3xl font-semibold pl-3">Edit your Event</h3>
             <form class="flex flex-col justify-start w-full" @submit.prevent="editEvent(this.id)">
                 <div class="flex flex-col items-left w-full m-3">
@@ -28,27 +28,49 @@
                         </div>
                     </div>
 
-                    <button class="block rounded-md bg-secondary hover:bg-yellow-600 transition ease-linear text-white font-semibold w-11/12 text-lg my-3 h-10" type="submit">Edit</button>
+                    <button class="rounded-md bg-secondary hover:bg-opacity-90 transition ease-linear text-white font-semibold w-11/12 text-lg my-3 h-10" type="submit">Edit</button>
+                    
                 </div>
             </form>
+            <button class="block rounded-md bg-red-500 hover:bg-opacity-90 transition ease-linear text-white font-semibold w-11/12 text-lg my-3 mx-3 h-10" 
+                type="submit" @click="deleteEvent(this.id)">Delete</button>
+        </div>
+        <!-- Preview of event? -->
+        <div class="hidden lg:block h-108 mx-10 transition duration-200 ease-linear">
+            <div class="c-card block bg-white bg-opacity-90 hover:bg-opacity-100 hover:shadow-2xl rounded-lg overflow-hidden transition duration-200 ease-linear">
+                <div class="overflow-hidden h-56">
+                    <img src="https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80">
+                </div>
+                <div class="p-4">
+                    <span class="inline-block px-3 py-2 leading-none bg-orange-200 text-orange-900 
+                        rounded-full font-semibold uppercase tracking-wide text-xs">{{ this.tag ? this.tag : "Sample Tag" }}</span>
+                    <h3 class="mt-2 mb-2 text-2xl font-bold text-black text-opacity-80 max-h-9">{{ this.title ? this.title : "This is the title of your event"}}</h3>
+                    <p class="text-sm">{{ this.description ? this.description : "This is how your description will look like" }}</p>
+                    <div class="mt-3 flex items-center">
+                        <button class="inline-block bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" data-modal-toggle="authentication-modal">
+                                Join
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import {  getFirestore, doc, collection, setDoc, updateDoc, 
-    deleteDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
+import {  getFirestore, doc, updateDoc, 
+    deleteDoc, getDoc, arrayRemove } from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
 import {useRoute} from 'vue-router';
-// import router from '../router/index'
+import router from '../router/index'
 
 import Nav from "../components/Nav.vue"
 
 const db = getFirestore(firebaseApp);
 
 export default {
-    name: 'CreateEvent',
+    name: 'EditEvent',
     components: {
         Nav
     },
@@ -87,7 +109,7 @@ export default {
           this.expiryDate = info.expiryDate
           this.title = info.title
           this.numOfParticipants = info.numOfParticipants
-          console.log("Creator2"+info.userEmail)
+          console.log("Creator"+info.userEmail)
           //console.log(this.description)
         })
       }
@@ -100,22 +122,6 @@ export default {
         })
     },
     methods: {
-        async createEvent() {
-            const eventRef = doc(collection(db, "events"));
-            const setEvent = await setDoc(eventRef, {
-                    userEmail: this.user.email,
-                    title: this.title,
-                    expiryDate: this.expiryDate,
-                    location: this.location,
-                    numOfParticipants: this.numOfParticipants,
-                    description: this.description,
-                    postDate: new Date().toLocaleString(),
-                    comments: [],
-                    participants: [],
-                    requesters: []
-                })
-            console.log(setEvent)
-        },
         async editEvent(eventId) { // pass in things to edit
             const eventRef = doc(db, "events", eventId);
             const edit = await updateDoc(eventRef, {
@@ -126,36 +132,29 @@ export default {
                     location: this.location,
                     numOfParticipants: this.numOfParticipants,
                     description: this.description,
-                    postDate: new Date().toLocaleString(),
                     comments: [],
                     participants: [],
                     requesters: []
                 })
             console.log(edit)
             window.alert("Your event has been edited!")
-            this.$router.push("/home")
+            router.push("/home")
         },
         async deleteEvent(eventId) {
             const eventRef = doc(db, "events", eventId);
-            const del = await deleteDoc(eventRef)
-            console.log(del)
-        },
-        async requestToJoin(eventId) { // this.user should be the one clicking to request
-            const eventRef = doc(db, "events", eventId);
-            const request = await updateDoc(eventRef, {
-                requesters: arrayUnion(this.user.uid)
+            const eventSnap = await getDoc(eventRef);
+            const eventInfo = eventSnap.data();
+            eventInfo.id = eventRef.id;
+            await deleteDoc(eventRef)
+            const userRef = doc(db, "Users", this.user.email)
+            // Supposed to remove from all upcoming but since change to eventId only then it wont appear anyways
+            // Remove from user created
+            await updateDoc(userRef, {
+                created: arrayRemove(eventRef.id),
             })
-            console.log(request)
+            alert("Event deleted successfully")
+            router.push("/home")
         },
-        async acceptApplicant(userId, eventId) {
-            const eventRef = doc(db, "events", eventId);
-            const accept = await updateDoc(eventRef, {
-                requesters: arrayRemove(userId),
-                participants: arrayUnion(userId)
-            })
-            console.log(accept)
-        }
-
     }
 }
 </script>

@@ -2,7 +2,7 @@
     <div class="h-100 p-4 transition duration-200 ease-linear">
         <a :href="link" class="c-card block bg-white bg-opacity-90 hover:bg-opacity-100 hover:shadow-2xl rounded-lg overflow-hidden transition duration-200 ease-linear">
             <div class="overflow-hidden h-56">
-                <img src="https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80">
+                <img :src="require(`@/assets/${tag}.jpg`)">
             </div>
             <div class="p-4">
                 <span class="inline-block px-3 py-2 leading-none bg-orange-200 text-orange-900 rounded-full font-semibold uppercase tracking-wide text-xs">{{ tag }}</span>
@@ -32,6 +32,8 @@
       link: {required: true},
       imageUrl: {required: false},
       tag: {required:true}
+    },
+    methods: {
     }
   }
 </script>

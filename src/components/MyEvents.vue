@@ -7,12 +7,6 @@
                 <p>Upcoming</p>
             </div>
             <div class="container mx-auto">
-            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-            <!-- Skeleton Loader -->
-                <div v-for="template in 3" :key="template" class="col-span-1">
-                    <SkeletonEvent />
-                </div>
-            </div>
             <!-- Actual events -->
             <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
                 <div v-for="event in userUpcoming.slice(userUpcoming.length - 4,userUpcoming.length).reverse()" :key="event.title" class="inline-block">
@@ -27,12 +21,13 @@
                 </div>
             </div>
             </div>
-            <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+            <button @click="seeUpcoming" class="text-xs bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
             </button>         
         </div>
     </div>
-    <div class="pt-10 px-10 main grid place-items-start h-fit ">
+
+  <div class="pt-10 px-10 main grid place-items-start h-fit ">
         <!--saved-->
         <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
             <!--title-->
@@ -65,6 +60,7 @@
             </button> 
         </div>
     </div>
+
     <div class="pt-10 px-10 main grid place-items-start h-fit ">
     <!--created events-->
     <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
@@ -73,12 +69,6 @@
             <p>Created</p>
         </div>
         <div class="container mx-auto">
-        <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-        <!-- Skeleton Loader -->
-            <div v-for="template in 3" :key="template" class="col-span-1">
-                <SkeletonEvent />
-            </div>
-        </div>
         <!-- Actual events -->
         <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-20 lg:grid-cols-3">
             <div v-for="event in userCreated.slice(userCreated.length - 3,userCreated.length).reverse()" :key="event.title" class="inline-block">
@@ -93,7 +83,7 @@
             </div>
         </div>
         </div>
-        <button @click="seeCreated" class="text-xs bg-secondary hover:bg-yellow-500 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
+        <button @click="seeCreated" class="text-xs bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
         </button> 
     </div>
@@ -103,11 +93,10 @@
 
 <script>
 import firebaseApp from '../firebase.js';
-import { getFirestore } from "firebase/firestore"
+import { getFirestore, } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import router from '../router/index'
 import Event from '@/components/Event.vue'
-import SkeletonEvent from '@/components/Event.vue'
 import { doc, getDoc } from 'firebase/firestore'
 const db = getFirestore(firebaseApp);
 
@@ -116,7 +105,6 @@ export default {
 
     components: {
         Event,
-        SkeletonEvent
 
     },
     data() {
@@ -129,8 +117,9 @@ export default {
       userTeleHandle: "",
       userYear: "",
       userUpcoming: [],
-      userSaved: [],
-      userCreated: []
+      userCreated: [],
+      upcoming: [],
+      created: []
     }
   },
   methods: {
@@ -180,13 +169,42 @@ export default {
             router.push('/created')
         },
 
-        seeSaved() {
-            router.push('/saved')
-        },
-
         seeUpcoming() {
             router.push('/upcoming')
         },
+
+        async getUpcomingEvents() {
+            for (let i = 0; i < this.upcoming.length; i++) {
+                let eventId = this.upcoming[0]
+                const eventSnap = await getDoc(doc(db, "events", eventId))
+                if (eventSnap.exists()) {
+                    console.log("Document data:", eventSnap.data());
+                    let eventInfo = eventSnap.data();
+                    eventInfo.id = eventId
+                    // Add to userUpcoming
+                    this.userUpcoming.push(eventInfo)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }
+        },
+        async getCreatedEvents() {
+            for (let i = 0; i < this.created.length; i++) {
+                let eventId = this.created[0]
+                const eventSnap = await getDoc(doc(db, "events", eventId))
+                if (eventSnap.exists()) {
+                    console.log("Document data:", eventSnap.data());
+                    let eventInfo = eventSnap.data();
+                    eventInfo.id = eventId
+                    // Add to userUpcoming
+                    this.userCreated.push(eventInfo)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }
+        }
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
@@ -201,15 +219,16 @@ export default {
             this.userGenpmnder = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
-            this.userUpcoming = userData.upcoming
-            this.userSaved = userData.saved
-            this.userCreated = userData.created
-            console.log(this.userCreated)
-
+            this.upcoming = userData.upcoming
+            this.created = userData.created
         } else {
             console.log("No such document!");
         }
-    }
+
+        // Update userUpcoming and userCreated with eventIds
+        this.getUpcomingEvents()
+        this.getCreatedEvents()
+    },
 }
 </script>
 
