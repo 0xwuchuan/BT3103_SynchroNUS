@@ -8,6 +8,12 @@
             </div>
             <div class="container mx-auto">
             <!-- Actual events -->
+            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <!-- Skeleton Loader -->
+                <div v-for="template in 3" :key="template" class="col-span-1">
+                    <SkeletonEvent />
+                </div>
+            </div>
             <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
                 <div v-for="event in userUpcoming.slice(userUpcoming.length - 4,userUpcoming.length).reverse()" :key="event.title" class="inline-block">
                     <Event
@@ -69,6 +75,12 @@
             <p>Created</p>
         </div>
         <div class="container mx-auto">
+        <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <!-- Skeleton Loader -->
+            <div v-for="template in 3" :key="template" class="col-span-1">
+                <SkeletonEvent />
+            </div>
+        </div>
         <!-- Actual events -->
         <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-20 lg:grid-cols-3">
             <div v-for="event in userCreated.slice(userCreated.length - 3,userCreated.length).reverse()" :key="event.title" class="inline-block">
