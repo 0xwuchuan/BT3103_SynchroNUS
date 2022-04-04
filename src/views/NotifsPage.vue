@@ -3,7 +3,7 @@
   <h1 class="text-3xl text-center font-bold mt-10 text-white max-w-fit font-mont"><b>Notifications</b></h1> 
   <!-- <div class="flex flex-row justify-center space-x-3">-->
   <div class="flex flex-col justify-left items-center font-mont">
-        <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 rounded text-700 bg-50 border-900/10 w-100 font-mont">
+        <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 text-700 bg-50 border-900/10 w-100 font-mont">
             <h5 class="font-mont pl-2"> Comments </h5>
 
             <div v-for="comment in CommentList" :key="comment.id" class="items-center object-center position-static ">
@@ -23,7 +23,7 @@
   <br>
 
   <div class="flex flex-col items-center"> 
-    <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 rounded text-700 bg-50 border-900/10 w-100 font-mont">
+    <div class="flex flex-col bg-white rounded-lg filter drop-shadow-md p-2 text-700 bg-50 border-900/10 w-100 font-mont">
         <h5 class="font-mont pl-2"> Requests </h5>
         <div v-for="obj in Object.keys(ReqList)" :key="obj" >     <!-- object.keys creates an array of event names -->
             <div v-for="requester in ReqList[obj]" :key="requester">

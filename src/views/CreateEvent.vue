@@ -135,11 +135,9 @@ export default {
                 const userRef = doc(db, "Users", this.user.email);
                 const eventInfo = docSnap.data();
                 eventInfo.id = eventRef.id;
-                const updateUser = await updateDoc(userRef, {
-                    created: arrayUnion(eventInfo),
+                await updateDoc(userRef, {
+                    created: arrayUnion(eventRef.id),
                 })
-                console.log(eventInfo)
-                console.log(updateUser)
                 this.$emit("updated")
                 document.getElementById('createEventForm').reset();
                 alert("Created event '" + this.title + "'")

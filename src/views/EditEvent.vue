@@ -147,8 +147,10 @@ export default {
             eventInfo.id = eventRef.id;
             await deleteDoc(eventRef)
             const userRef = doc(db, "Users", this.user.email)
+            // Supposed to remove from all upcoming but since change to eventId only then it wont appear anyways
+            // Remove from user created
             await updateDoc(userRef, {
-                created: arrayRemove(eventInfo),
+                created: arrayRemove(eventRef.id),
             })
             alert("Event deleted successfully")
             router.push("/home")

@@ -40,7 +40,7 @@ export default {
             const eventInfo = eventSnap.data();
             eventInfo.id = eventRef.id;
             await updateDoc(userRef, {
-                upcoming: arrayUnion(eventInfo),
+                upcoming: arrayUnion(eventRef.id),
             })
             alert("User accepted")
             this.$emit("applicantAccepted");
