@@ -187,16 +187,6 @@ export default {
         seeUpcoming() {
             router.push('/upcoming')
         },
-
-        // async query(collection, attribute, condition, condition2) {
-        //     const queried = []
-        //     const q = query(collection(db, collection), where(attribute, condition, condition2));
-        //     const createdSnapshot = await getDocs(q);
-        //     createdSnapshot.forEach((doc) => {
-        //         queried.push(doc.data());
-        //     });
-        //     return queried
-        // },
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
@@ -208,7 +198,7 @@ export default {
             const userData = await userDoc.data();
             console.log(userData);
             this.userName = userData.name
-            this.userGender = userData.gender
+            this.userGenpmnder = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
             this.userUpcoming = userData.upcoming
