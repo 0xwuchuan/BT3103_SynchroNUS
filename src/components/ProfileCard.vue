@@ -186,7 +186,6 @@ export default {
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
             this.userUpcoming = userData.upcoming
-            this.userSaved = userData.saved
             this.userCreated = userData.created
 
         } else {
