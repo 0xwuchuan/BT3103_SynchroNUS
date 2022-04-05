@@ -28,39 +28,48 @@
                             <p class="u-align-center u-text u-text-3" id = "info"><br>Location: {{ this.location }}<br>Expiry Date: {{ this.expiry }}<br>
                                 <br>{{ this.description }}
                             </p>
-                            <router-link :to ="this.link"  v-if = "this.user.email == this.creator" href="https://nicepage.com/joomla-templates" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">EDIT EVENT</router-link>
+                            <router-link :to ="this.link"  v-if="this.user.email == this.creator" href="https://nicepage.com/joomla-templates" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">EDIT EVENT</router-link>
                             <button v-else @click="requestToJoin(this.id)" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-6">Register for Event</button>
                             </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <Requests 
+                v-if="this.user.email == this.creator"
+                :requesters="this.requesters"
+                :eventid ="this.id"
+                @applicantAccepted="updateRequesters"
+                />
                 <CommentSection 
                 :eventid="this.id"
                 :creatorid="this.creator"
                 />
             </div>
         </section>
-        
     </body>
+    
 </template>
 
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore"
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, deleteDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../firebase';
-import CommentSection from '@/components/CommentSection.vue';
-const db = getFirestore(firebaseApp);
 import router from '../router/index'
+
+import CommentSection from '@/components/CommentSection.vue';
+import Requests from '@/components/Requests.vue'
+
+const db = getFirestore(firebaseApp);
 
 
 export default {
     name: "EventDetails",
     data() {
       return {
-        description: 'asd',
+        description: '',
         location: '',
         expiry: '',
         title: '',
@@ -68,31 +77,39 @@ export default {
         creator: '',
         user: false,
         link: '',
-        tag: ''
+        tag: '',
+        currentNumUsers: 0,
+        participants: [],
+        requesters: [],
+        userInfo: null
       }
     },
     components: {
       CommentSection,
+      Requests
     },
     props: {
       id: {required:true}
     },
     methods: {
       async requestToJoin(eventId) { // this.user should be the one clicking to request
+        const userRef = doc(db, "Users", String(this.user.email))
+        const userSnap = await getDoc(userRef)
+        if (userSnap.exists()) {
+            this.userInfo = userSnap.data()
+            this.userInfo.email = this.user.email
+            console.log(userSnap.id)
+        } else {
+            console.log("no such document")
+        }
         const eventRef = doc(db, "events", eventId);
-        const request = await updateDoc(eventRef, {
-            requesters: arrayUnion(this.user.email)
+        await updateDoc(eventRef, {
+            requesters: arrayUnion(this.userInfo)
         })
-        console.log(request)
-        console.log("request success")
-      },
-      async acceptApplicant(userEmail, eventId) {
-        const eventRef = doc(db, "events", eventId);
-        const accept = await updateDoc(eventRef, {
-            requesters: arrayRemove(userEmail),
-            participants: arrayUnion(userEmail)
-        })
-        console.log(accept)
+        alert("request success")
+
+        const eventSnap = await getDoc(doc(db, "events", this.id))
+        this.requesters = eventSnap.data().requesters
       },
       async deleteEvent(eventId) {
         const eventRef = doc(db, "events", eventId);
@@ -100,44 +117,48 @@ export default {
         console.log(del)
         router.push('/home')
       },
+      async updateRequesters() {
+          const eventSnap = await getDoc(doc(db, "events", this.id))
+            this.requesters = eventSnap.data().requesters
+      }
     },
-    mounted() {
-        onAuthStateChanged(auth, (user) => {
+    async mounted() {
+        await onAuthStateChanged(auth, (user) => {
             if (user) {
-              console.log(user)
+                console.log(user)
                 this.user = user;
-                console.log("USER" + this.user.email)
-                console.log("CREATOR" + this.creator)
+                console.log("USER " + this.user.email)
             }
         })
     },
    
-    beforeMount(){
-      async function display(eventid){
-        //console.log("displaying")
-        let eventRef = doc(db, "events", eventid)
-        let eventSnap = await getDoc(eventRef)
-        console.log("Document data:", eventSnap.data());
-        var info = eventSnap.data()
-        return info
+    async beforeMount(){
+        async function display(eventid){
+            //console.log("displaying")
+            let eventRef = doc(db, "events", eventid)
+            let eventSnap = await getDoc(eventRef)
+            console.log("Document data:", eventSnap.data());
+            var info = eventSnap.data()
+            return info
         }
-      if (this.id){
-        console.log(this.id)
-        display(this.id).then( (info) => {
-          //console.log(this.description)
-          this.description = info.description
-          this.location = info.location
-          this.expiry = info.expiryDate
-          this.title = info.title
-          this.numusers = info.numOfParticipants
-          this.creator = info.userEmail
-          this.link = "/edit/" + this.id
-          console.log(this.creator)
-          this.tag = info.tag
-          console.log("Creator2"+info.userEmail)
-          //console.log(this.description)
-        })
-      }
+        if (this.id){
+            console.log(this.id)
+            display(this.id).then( (info) => {
+            //console.log(this.description)
+            this.description = info.description
+            this.location = info.location
+            this.expiry = info.expiryDate
+            this.title = info.title
+            this.numusers = info.numOfParticipants
+            this.currentNumUsers = info.currentNumParticipants
+            this.creator = info.userEmail
+            this.participants = info.participants
+            this.requesters = info.requesters
+            this.link = "/edit/" + this.id
+            this.tag = info.tag
+            //console.log(this.description)
+            })
+        }
     }
     
 }
@@ -158,7 +179,7 @@ export default {
 
 .u-section-1 .u-image-1 {
   min-height: 406px;
-  background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../assets/academic.jpg");
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../assets/Academics.jpg");
   background-position: 50% 50%;
 }
 

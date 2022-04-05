@@ -10,7 +10,7 @@
             <img src="http://via.placeholder.com/100x100/a74848" alt="" />
           </div>
           <div class="username">
-            <a href="#">@{{ creatorid }}</a>
+            <a href="#">Created by {{ creatorname }}</a>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
                 <img :src="comment.avatar" alt="" />
               </div>
               <div class="text">
-                <a class="username" href="#">@{{ comment.user }}</a>
+                <a class="username" href="#">@{{ comment.username }}</a>
                 <span
                   span
                   v-if="!comment.edit"
@@ -150,14 +150,30 @@ export default {
       edit: false,
       avator: "",
       user: "",
+      username: "",
       comments: [],
+      creatorname: this.creatorid,
     };
   },
   props: {
     eventid: { type: String, default: "eventeg" },
     creatorid: { type: String, default: "eventCreator" },
   },
-
+  async updated() {
+    async function getID(creator) {
+      let userRef = doc(db, "Users", creator);
+      let userSnap = await getDoc(userRef);
+      console.log("Document data:", userSnap.data());
+      var info = userSnap.data();
+      return info;
+    }
+    if (this.creatorid) {
+      console.log(this.creatorid);
+      getID(this.creatorid).then((info) => {
+        this.creatorname = info.name;
+      });
+    }
+  },
   mounted() {
     this.getComments();
 
@@ -186,9 +202,18 @@ export default {
       });
     },
     async submitComment() {
+      const userRef = doc(db, "Users", String(this.user.email));
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        this.username = userSnap.data().name;
+      } else {
+        console.log("no such document");
+      }
+      console.log(this.username);
       const commentRef = doc(collection(db, "comments"));
       const setComment = await setDoc(commentRef, {
-        user: this.user.email, // displayName, //(better option)
+        user: this.user.email,
+        username: this.username,
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
@@ -237,7 +262,7 @@ export default {
       } else {
         console.log("No such comment!");
       }
-      this.reply = "@" + commentSnap.data().user;
+      this.reply = "@" + commentSnap.data().username;
     },
   },
 };
@@ -245,6 +270,7 @@ export default {
 
 <style scoped>
 .comment {
+  position: relative;
   display: flex;
   padding: 10px;
   margin-bottom: 10px;
@@ -288,28 +314,28 @@ export default {
 
 #editComment {
   font-size: 90%;
-  position: relative;
-  left: 750px;
+  position: absolute;
+  left: 795px;
 }
 
 #saveEdit {
   font-size: 90%;
-  position: relative;
+  position: absolute;
   left: 770px;
-  top: -13px;
+  top: 47px;
 }
 
 #cancelEdit {
   font-size: 90%;
-  position: relative;
-  left: 780px;
-  top: -13px;
+  position: absolute;
+  left: 800px;
+  top: 47px;
 }
 
 #deleteComment {
   font-size: 90%;
-  position: relative;
-  left: 765px;
+  position: absolute;
+  left: 830px;
 }
 
 #edit-text {
