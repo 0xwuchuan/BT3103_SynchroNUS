@@ -10,7 +10,7 @@
             <img src="http://via.placeholder.com/100x100/a74848" alt="" />
           </div>
           <div class="username">
-            <a href="#">Created by {{ creatorid }}</a>
+            <a href="#">Created by {{ creatorname }}</a>
           </div>
         </div>
       </div>
@@ -152,12 +152,27 @@ export default {
       user: "",
       username: "",
       comments: [],
-      creatorname: "",
+      creatorname: this.creatorid,
     };
   },
   props: {
     eventid: { type: String, default: "eventeg" },
     creatorid: { type: String, default: "eventCreator" },
+  },
+  async updated() {
+    async function getID(creator) {
+      let userRef = doc(db, "Users", creator);
+      let userSnap = await getDoc(userRef);
+      console.log("Document data:", userSnap.data());
+      var info = userSnap.data();
+      return info;
+    }
+    if (this.creatorid) {
+      console.log(this.creatorid);
+      getID(this.creatorid).then((info) => {
+        this.creatorname = info.name;
+      });
+    }
   },
   mounted() {
     this.getComments();
