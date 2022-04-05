@@ -10,7 +10,7 @@
             <img src="http://via.placeholder.com/100x100/a74848" alt="" />
           </div>
           <div class="username">
-            <a href="#">@{{ creatorid }}</a>
+            <a href="#">Created by {{ creatorid }}</a>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
                 <img :src="comment.avatar" alt="" />
               </div>
               <div class="text">
-                <a class="username" href="#">@{{ comment.user }}</a>
+                <a class="username" href="#">@{{ comment.username }}</a>
                 <span
                   span
                   v-if="!comment.edit"
@@ -150,14 +150,15 @@ export default {
       edit: false,
       avator: "",
       user: "",
+      username: "",
       comments: [],
+      creatorname: "",
     };
   },
   props: {
     eventid: { type: String, default: "eventeg" },
     creatorid: { type: String, default: "eventCreator" },
   },
-
   mounted() {
     this.getComments();
 
@@ -186,9 +187,18 @@ export default {
       });
     },
     async submitComment() {
+      const userRef = doc(db, "Users", String(this.user.email));
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        this.username = userSnap.data().name;
+      } else {
+        console.log("no such document");
+      }
+      console.log(this.username);
       const commentRef = doc(collection(db, "comments"));
       const setComment = await setDoc(commentRef, {
-        user: this.user.email, // displayName, //(better option)
+        user: this.user.email,
+        username: this.username,
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
@@ -237,7 +247,7 @@ export default {
       } else {
         console.log("No such comment!");
       }
-      this.reply = "@" + commentSnap.data().user;
+      this.reply = "@" + commentSnap.data().username;
     },
   },
 };
