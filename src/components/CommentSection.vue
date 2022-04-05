@@ -245,6 +245,7 @@ export default {
 
 <style scoped>
 .comment {
+  position: relative;
   display: flex;
   padding: 10px;
   margin-bottom: 10px;
@@ -288,28 +289,28 @@ export default {
 
 #editComment {
   font-size: 90%;
-  position: relative;
-  left: 750px;
+  position: absolute;
+  left: 795px;
 }
 
 #saveEdit {
   font-size: 90%;
-  position: relative;
+  position: absolute;
   left: 770px;
-  top: -13px;
+  top: 47px;
 }
 
 #cancelEdit {
   font-size: 90%;
-  position: relative;
-  left: 780px;
-  top: -13px;
+  position: absolute;
+  left: 800px;
+  top: 47px;
 }
 
 #deleteComment {
   font-size: 90%;
-  position: relative;
-  left: 765px;
+  position: absolute;
+  left: 830px;
 }
 
 #edit-text {
