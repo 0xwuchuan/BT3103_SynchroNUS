@@ -1,36 +1,35 @@
 <template>
 <Nav/>
-<div class="pt-10 px-10 main grid place-items-start h-fit ">
-    <!--upcoming-->
-        <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
-            <!--title-->
-            <div class="name text-gray-800 text-2xl font-medium mt-4 ">
-                <p>Upcoming</p>
-            </div>
-            <div class="container mx-auto">
-            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+    <div class="pt-10 px-10 main grid place-items-start h-fit ">
+    <!--created events-->
+    <div class="card bg-white flex flex-col items-center justify-center p-4 shadow-lg rounded-2xl w-full">
+        <!--title-->
+        <div class="name text-gray-800 text-2xl font-medium mt-4 ">
+            <p>Upcoming</p>
+        </div>
+        <div class="container mx-auto">
+        <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
             <!-- Skeleton Loader -->
-                <div v-for="template in 3" :key="template" class="col-span-1">
-                    <SkeletonEvent />
-                </div>
-            </div>
-            <!-- Actual events -->
-            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userUpcoming.reverse()" :key="event.title" class="inline-block">
-                    <Event
-                        :title="event.title"
-                        :description="event.description"
-                        :date="getRelativeTime(event.postDate)"
-                        :link="'eventpage/'+event.id"
-                        :imageUrl="event.imageUrl"
-                        :tag="event.tag"
-                    />
-                </div>
+            <div v-for="template in 3" :key="template" class="col-span-1">
+                <SkeletonEvent />
             </div>
         </div>
-        </div>         
+        <!-- Actual events -->
+        <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-20 lg:grid-cols-3">
+            <div v-for="event in userUpcoming.reverse()" :key="event.title" class="inline-block">
+                <Event
+                    :title="event.title"
+                    :description="event.description"
+                    :date="getRelativeTime(event.postDate)"
+                    :link="'eventpage/'+event.id"
+                    :imageUrl="event.imageUrl"
+                    :tag="event.tag"
+                />
+            </div>
         </div>
-    
+        </div> 
+    </div>
+</div> 
 </template>
 
 <script>
@@ -44,7 +43,7 @@ import { doc, getDoc } from 'firebase/firestore'
 const db = getFirestore(firebaseApp);
 
 export default {
-    name: 'MyEvents',
+    name: 'Created',
 
     components: {
         Nav,
@@ -60,8 +59,9 @@ export default {
       userGender: "",
       userTeleHandle: "",
       userYear: "",
+      upcoming: [],
+      created: [],
       userUpcoming: [],
-      userSaved: [],
       userCreated: []
     }
   },
@@ -80,7 +80,7 @@ export default {
                 }
             })
         },
-                getRelativeTime(oldTimestamp) {
+        getRelativeTime(oldTimestamp) {
             const date = new Date();
             const currentTimeStamp = date.getTime();
             const seconds = Math.floor(currentTimeStamp/1000);
@@ -107,6 +107,38 @@ export default {
             }
             return output;
         },
+        async getUpcomingEvents() {
+            for (let i = 0; i < this.upcoming.length; i++) {
+                let eventId = this.upcoming[i]
+                const eventSnap = await getDoc(doc(db, "events", eventId))
+                if (eventSnap.exists()) {
+                    console.log("Document data:", eventSnap.data());
+                    let eventInfo = eventSnap.data();
+                    eventInfo.id = eventId
+                    // Add to userUpcoming
+                    this.userUpcoming.push(eventInfo)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }
+        },
+        async getCreatedEvents() {
+            for (let i = 0; i < this.created.length; i++) {
+                let eventId = this.created[i]
+                const eventSnap = await getDoc(doc(db, "events", eventId))
+                if (eventSnap.exists()) {
+                    console.log("Document data:", eventSnap.data());
+                    let eventInfo = eventSnap.data();
+                    eventInfo.id = eventId
+                    // Add to userUpcoming
+                    this.userCreated.push(eventInfo)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }
+        }
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
@@ -121,15 +153,16 @@ export default {
             this.userGender = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
-            this.userUpcoming = userData.upcoming
-            this.userSaved = userData.saved
-            this.userCreated = userData.created
-            console.log(this.userCreated)
-
+            this.upcoming = userData.upcoming
+            this.created = userData.created
         } else {
             console.log("No such document!");
         }
-    }
+
+        // Update userUpcoming and userCreated with eventIds
+        this.getUpcomingEvents()
+        this.getCreatedEvents()
+    },
 }
 </script>
 

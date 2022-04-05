@@ -12,7 +12,6 @@ import CommentTest from "../views/CommentTest.vue";
 import Profile from "../views/Profile.vue";
 import Created from "../views/Created.vue";
 import Upcoming from "../views/Upcoming.vue";
-import Saved from "../views/Saved.vue";
 import CreateEvent from "../views/CreateEvent.vue";
 import EditEvent from "../views/EditEvent.vue";
 
@@ -71,11 +70,6 @@ const routes = [
     path: "/upcoming",
     name: "Upcoming",
     component: Upcoming,
-  },
-  {
-    path: "/saved",
-    name: "Saved",
-    component: Saved,
   },
   {
     path: "/eventpage/:id",

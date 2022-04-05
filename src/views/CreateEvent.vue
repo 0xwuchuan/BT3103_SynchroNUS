@@ -76,7 +76,7 @@
 
 <script>
 import {  getFirestore, doc, collection, setDoc, getDocs,
-    updateDoc, getDoc, arrayUnion, arrayRemove} from "firebase/firestore"; 
+    updateDoc, getDoc, arrayUnion} from "firebase/firestore"; 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firebaseApp } from '../firebase';
 import router from '../router/index'
@@ -136,7 +136,7 @@ export default {
                 const eventInfo = docSnap.data();
                 eventInfo.id = eventRef.id;
                 await updateDoc(userRef, {
-                    created: arrayUnion(eventRef.id),
+                    created: arrayUnion(eventInfo.id),
                 })
                 this.$emit("updated")
                 document.getElementById('createEventForm').reset();
@@ -151,30 +151,8 @@ export default {
         tagSnapshot.forEach((doc) => {
             this.tags.push(doc.id)
         })
-    },
-        async acceptApplicant(eventId, userEmail) {
-            const eventRef = doc(db, "events", eventId);
-            const accept = await updateDoc(eventRef, {
-                requesters: arrayRemove(userEmail),
-                participants: arrayUnion(userEmail)
-            })
-            const userRef = doc(db, "Users", userEmail);
-            const userSnap = await getDoc(userRef);
-            const userName = userSnap.name
+    }
 
-
-            const docSnap = await getDoc(eventRef);
-            const eventInfo = docSnap.data();
-            eventInfo.id = eventRef.id;
-            const updateUser = updateDoc(userRef, {
-                created: arrayUnion(eventInfo),
-            })
-            console.log(accept)
-            console.log(updateUser)
-            this.$emit("updated")
-            console.log(eventRef.id)
-            alert("Accepted applicant '" + userName + "'")
-        }
     }
 }
 </script>

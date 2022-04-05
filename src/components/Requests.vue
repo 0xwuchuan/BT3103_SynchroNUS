@@ -27,26 +27,34 @@ export default {
         requesters: Array,
         eventid: String
     },
-    methods: {
+        methods: {
         async acceptApplicant(user, eventId) {
-            console.log(user, eventId)
             const eventRef = doc(db, "events", eventId);
-            await updateDoc(eventRef, {
+            const accept = await updateDoc(eventRef, {
                 requesters: arrayRemove(user),
                 participants: arrayUnion(user)
             })
-            const eventSnap = await getDoc(doc(db, "events", eventId))
-            const userRef = doc(db, "Users", user.email)
-            const eventInfo = eventSnap.data();
+            const userRef = doc(db, "Users", user.email);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.data();
+            const userName = userData.name
+
+
+            const docSnap = await getDoc(eventRef);
+            const eventInfo = docSnap.data();
             eventInfo.id = eventRef.id;
-            await updateDoc(userRef, {
-                upcoming: arrayUnion(eventRef.id),
+            const updateUser = updateDoc(userRef, {
+                upcoming: arrayUnion(eventInfo.id),
             })
-            alert("User accepted")
+            console.log(accept)
+            console.log(updateUser)
             this.$emit("applicantAccepted");
+            this.$emit("updated")
+            console.log(eventRef.id)
+            alert("Accepted applicant '" + userName + "'")
+        }
       },
     }
-}
 </script>
 
 <style>
