@@ -104,7 +104,6 @@ export default {
       userTeleHandle: "",
       userYear: "",
       userUpcoming: [],
-      userSaved: [],
       userCreated: []
     }
   },

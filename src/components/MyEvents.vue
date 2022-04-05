@@ -7,23 +7,23 @@
                 <p>Upcoming</p>
             </div>
             <div class="container mx-auto">
-            <!-- Actual events -->
             <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
             <!-- Skeleton Loader -->
-                <div v-for="template in 3" :key="template" class="col-span-1">
+                <div v-for="template in 6" :key="template" class="col-span-1">
                     <SkeletonEvent />
                 </div>
             </div>
+            <!-- Actual events -->
             <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userUpcoming.slice(userUpcoming.length - 3,userUpcoming.length).reverse()" :key="event.title" class="inline-block">
-                    <Event
-                        :title="event.title"
-                        :description="event.description"
-                        :date="getRelativeTime(event.postDate)"
-                        :link="'eventpage/'+event.id"
-                        :imageUrl="event.imageUrl"
-                        :tag="event.tag"
-                    />
+                <div v-for="event in userUpcoming.slice(userUpcoming.length - 3,userUpcoming.length).reverse()" :key="event.title" class="col-span-1 ">
+                <Event
+                    :title="event.title"
+                    :description="event.description"
+                    :date="getRelativeTime(event.postDate)"
+                    :link="'eventpage/'+event.id"
+                    :imageUrl="event.imageUrl"
+                    :tag="event.tag"
+                />
                 </div>
             </div>
             </div>
@@ -43,13 +43,13 @@
         <div class="container mx-auto">
         <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
             <!-- Skeleton Loader -->
-            <div v-for="template in 3" :key="template" class="col-span-1">
-                <SkeletonEvent />
+                <div v-for="template in 6" :key="template" class="col-span-1">
+                    <SkeletonEvent />
+                </div>
             </div>
-        </div>
-        <!-- Actual events -->
-        <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-20 lg:grid-cols-3">
-            <div v-for="event in userCreated.slice(userCreated.length - 3,userCreated.length).reverse()" :key="event.title" class="inline-block">
+            <!-- Actual events -->
+            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+                <div v-for="event in userCreated.slice(userCreated.length - 3,userCreated.length).reverse()" :key="event.title" class="col-span-1 ">
                 <Event
                     :title="event.title"
                     :description="event.description"
@@ -58,9 +58,9 @@
                     :imageUrl="event.imageUrl"
                     :tag="event.tag"
                 />
+                </div>
             </div>
-        </div>
-        </div>
+            </div>
         <button @click="seeCreated" class="text-xs bg-secondary hover:bg-opacity-90 py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg">
                 See all
         </button> 
@@ -169,22 +169,6 @@ export default {
                 }
             }
         },
-        // async getCreatedEvents() {
-        //     for (let i = 0; i < this.created.length; i++) {
-        //         let eventId = this.created[i]
-        //         const eventSnap = await getDoc(doc(db, "events", eventId))
-        //         if (eventSnap.exists()) {
-        //             console.log("Document data:", eventSnap.data());
-        //             let eventInfo = eventSnap.data();
-        //             eventInfo.id = eventId
-        //             // Add to userUpcoming
-        //             this.userCreated.push(eventInfo)
-        //         } else {
-        //             // doc.data() will be undefined in this case
-        //             console.log("No such document!");
-        //         }
-        //     }
-        // }
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
@@ -199,15 +183,11 @@ export default {
             this.userGender = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
-            this.upcoming = userData.upcoming
-            this.created = userData.created
+            this.userUpcoming = userData.upcoming
+            this.userCreated = userData.created
         } else {
             console.log("No such document!");
         }
-
-        // Update userUpcoming and userCreated with eventIds
-        this.getUpcomingEvents()
-        //this.getCreatedEvents()
     },
 }
 </script>

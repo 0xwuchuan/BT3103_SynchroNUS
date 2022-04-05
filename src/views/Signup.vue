@@ -108,7 +108,6 @@ export default {
                 year: this.year,
                 teleHandle: this.teleHandle,
                 upcoming: [],
-                saved: [],
                 created: []
             });
             console.log(setUser)

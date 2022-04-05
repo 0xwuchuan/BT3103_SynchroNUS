@@ -17,7 +17,6 @@
         <!-- Actual events -->
         <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-20 lg:grid-cols-3">
             <div v-for="event in userCreated.reverse()" :key="event.title" class="inline-block">
-                console.log(event)
                 <Event
                     :title="event.title"
                     :description="event.description"
@@ -61,7 +60,6 @@ export default {
       userTeleHandle: "",
       userYear: "",
       userUpcoming: [],
-      userSaved: [],
       userCreated: []
     }
   },
@@ -107,38 +105,6 @@ export default {
             }
             return output;
         },
-        async getUpcomingEvents() {
-            for (let i = 0; i < this.upcoming.length; i++) {
-                let eventId = this.upcoming[0]
-                const eventSnap = await getDoc(doc(db, "events", eventId))
-                if (eventSnap.exists()) {
-                    console.log("Document data:", eventSnap.data());
-                    let eventInfo = eventSnap.data();
-                    eventInfo.id = eventId
-                    // Add to userUpcoming
-                    this.userUpcoming.push(eventInfo)
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }
-        },
-        async getCreatedEvents() {
-            for (let i = 0; i < this.created.length; i++) {
-                let eventId = this.created[0]
-                const eventSnap = await getDoc(doc(db, "events", eventId))
-                if (eventSnap.exists()) {
-                    console.log("Document data:", eventSnap.data());
-                    let eventInfo = eventSnap.data();
-                    eventInfo.id = eventId
-                    // Add to userUpcoming
-                    this.userCreated.push(eventInfo)
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            }
-        }
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
@@ -153,15 +119,11 @@ export default {
             this.userGender = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
-            this.upcoming = userData.upcoming
-            this.created = userData.created
+            this.userUpcoming = userData.upcoming
+            this.userCreated = userData.created
         } else {
             console.log("No such document!");
         }
-
-        // Update userUpcoming and userCreated with eventIds
-        this.getUpcomingEvents()
-        this.getCreatedEvents()
     },
 }
 </script>
