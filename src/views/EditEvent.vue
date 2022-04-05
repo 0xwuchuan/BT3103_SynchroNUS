@@ -60,7 +60,6 @@ export default {
             location: "",
             numOfParticipants: "",
             description: "",
-            postDate: "", // current Date
             id: ''
         }
     },
@@ -109,7 +108,6 @@ export default {
                     location: this.location,
                     numOfParticipants: this.numOfParticipants,
                     description: this.description,
-                    postDate: new Date().toLocaleString(),
                     comments: [],
                     participants: [],
                     requesters: []
@@ -126,7 +124,6 @@ export default {
                     location: this.location,
                     numOfParticipants: this.numOfParticipants,
                     description: this.description,
-                    postDate: new Date().toLocaleString(),
                     comments: [],
                     participants: [],
                     requesters: []
