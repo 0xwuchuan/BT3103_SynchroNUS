@@ -22,7 +22,7 @@
                                   s-7.024,1.065-8.867,3.168c-2.119,2.416-1.935,5.346-1.883,5.864v4.667c-0.568,0.661-0.887,1.502-0.887,2.369v3.545
                                   c0,1.101,0.494,2.128,1.34,2.821c0.81,3.173,2.477,5.575,3.093,6.389v2.894c0,0.816-0.445,1.566-1.162,1.958l-7.907,4.313
                                   c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path></svg></span>
-                            <p class="u-text u-text-1">Joined by {{ this.numusers }} users</p>
+                            <p class="u-text u-text-1">Joined by {{ this.currentNumUsers }} users</p>
                             <h2 class="u-align-center u-text u-text-default u-text-2">{{ this.title }}</h2>
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-3">Health</a>
                             <p class="u-align-center u-text u-text-3" id = "info"><br>Location: {{ this.location }}<br>Expiry Date: {{ this.expiry }}<br>
@@ -150,13 +150,13 @@ export default {
             this.expiry = info.expiryDate
             this.title = info.title
             this.numusers = info.numOfParticipants
-            this.currentNumUsers = info.currentNumParticipants
+            this.currentNumUsers = info.participants.length
             this.creator = info.userEmail
             this.participants = info.participants
             this.requesters = info.requesters
             this.link = "/edit/" + this.id
             this.tag = info.tag
-            //console.log(this.description)
+            console.log("NUMUSERS" + this.currentNumUsers)
             })
         }
     }
