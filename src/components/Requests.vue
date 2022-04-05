@@ -44,7 +44,7 @@ export default {
             const eventInfo = docSnap.data();
             eventInfo.id = eventRef.id;
             const updateUser = updateDoc(userRef, {
-                upcoming: arrayUnion(eventInfo),
+                upcoming: arrayUnion(eventInfo.id),
             })
             console.log(accept)
             console.log(updateUser)

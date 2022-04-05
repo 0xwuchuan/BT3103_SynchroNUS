@@ -136,7 +136,7 @@ export default {
                 const eventInfo = docSnap.data();
                 eventInfo.id = eventRef.id;
                 await updateDoc(userRef, {
-                    created: arrayUnion(eventInfo),
+                    created: arrayUnion(eventInfo.id),
                 })
                 this.$emit("updated")
                 document.getElementById('createEventForm').reset();

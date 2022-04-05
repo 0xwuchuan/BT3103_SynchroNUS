@@ -59,6 +59,8 @@ export default {
       userGender: "",
       userTeleHandle: "",
       userYear: "",
+      upcoming: [],
+      created: [],
       userUpcoming: [],
       userCreated: []
     }
@@ -105,38 +107,38 @@ export default {
             }
             return output;
         },
-        // async getUpcomingEvents() {
-        //     for (let i = 0; i < this.upcoming.length; i++) {
-        //         let eventId = this.upcoming[0]
-        //         const eventSnap = await getDoc(doc(db, "events", eventId))
-        //         if (eventSnap.exists()) {
-        //             console.log("Document data:", eventSnap.data());
-        //             let eventInfo = eventSnap.data();
-        //             eventInfo.id = eventId
-        //             // Add to userUpcoming
-        //             this.userUpcoming.push(eventInfo)
-        //         } else {
-        //             // doc.data() will be undefined in this case
-        //             console.log("No such document!");
-        //         }
-        //     }
-        // },
-        // async getCreatedEvents() {
-        //     for (let i = 0; i < this.created.length; i++) {
-        //         let eventId = this.created[0]
-        //         const eventSnap = await getDoc(doc(db, "events", eventId))
-        //         if (eventSnap.exists()) {
-        //             console.log("Document data:", eventSnap.data());
-        //             let eventInfo = eventSnap.data();
-        //             eventInfo.id = eventId
-        //             // Add to userUpcoming
-        //             this.userCreated.push(eventInfo)
-        //         } else {
-        //             // doc.data() will be undefined in this case
-        //             console.log("No such document!");
-        //         }
-        //     }
-        // }
+        async getUpcomingEvents() {
+            for (let i = 0; i < this.upcoming.length; i++) {
+                let eventId = this.upcoming[i]
+                const eventSnap = await getDoc(doc(db, "events", eventId))
+                if (eventSnap.exists()) {
+                    console.log("Document data:", eventSnap.data());
+                    let eventInfo = eventSnap.data();
+                    eventInfo.id = eventId
+                    // Add to userUpcoming
+                    this.userUpcoming.push(eventInfo)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }
+        },
+        async getCreatedEvents() {
+            for (let i = 0; i < this.created.length; i++) {
+                let eventId = this.created[i]
+                const eventSnap = await getDoc(doc(db, "events", eventId))
+                if (eventSnap.exists()) {
+                    console.log("Document data:", eventSnap.data());
+                    let eventInfo = eventSnap.data();
+                    eventInfo.id = eventId
+                    // Add to userUpcoming
+                    this.userCreated.push(eventInfo)
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                }
+            }
+        }
   },
     async mounted() {
         this.user = await this.checkAuthStatus()    
@@ -151,15 +153,15 @@ export default {
             this.userGender = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
-            this.userUpcoming = userData.upcoming
-            this.userCreated = userData.created
+            this.upcoming = userData.upcoming
+            this.created = userData.created
         } else {
             console.log("No such document!");
         }
 
         // Update userUpcoming and userCreated with eventIds
-        // this.getUpcomingEvents()
-        // this.getCreatedEvents()
+        this.getUpcomingEvents()
+        this.getCreatedEvents()
     },
 }
 </script>

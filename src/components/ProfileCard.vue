@@ -103,8 +103,6 @@ export default {
       userGender: "",
       userTeleHandle: "",
       userYear: "",
-      userUpcoming: [],
-      userCreated: []
     }
   },
   methods: {
@@ -184,9 +182,6 @@ export default {
             this.userGender = userData.gender
             this.userTeleHandle = userData.teleHandle
             this.userYear = userData.year
-            this.userUpcoming = userData.upcoming
-            this.userCreated = userData.created
-
         } else {
             console.log("No such document!");
         }
