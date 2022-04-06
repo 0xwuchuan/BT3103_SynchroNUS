@@ -2,9 +2,9 @@
 
     <div
     class="p-2 rounded text-700 bg-50 border-900/10 w-100">
-    
+    <a :href="link" class="text-black">
     You have been invited to join <b>{{ eventname }}</b>! You can contact the host at @{{ creatortele }}.
-
+    </a>
     </div><hr>
 
 </template>
@@ -14,8 +14,8 @@ export default {
     name: 'AcceptedNotif',
     props: {
         eventname: {required: true, type: String},
-        creatortele: {},
-        
+        creatortele: {required: true},
+        link: {required: true}
     }
 
    

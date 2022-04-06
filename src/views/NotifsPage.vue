@@ -10,6 +10,7 @@
                 <AcceptedNotif
                     :eventname="Participants[obj][0]"
                     :creatortele="Participants[obj][1]"
+                    :link="'eventpage/'+Participants[obj][2]"
                 />
             </div> 
             </div>
@@ -173,7 +174,7 @@ export default {
                     
                     for (let person of event.participants) {
                         console.log(person)
-                        this.Participants[person.email] = [event.title, creatorHandle]
+                        this.Participants[person.email] = [event.title, creatorHandle, event.id]
                     
                     }
                     console.log(this.Participants)
