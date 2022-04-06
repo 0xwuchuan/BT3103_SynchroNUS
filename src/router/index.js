@@ -120,6 +120,7 @@ router.beforeEach(async (to, from, next) => {
   ) {
       console.log("TEST2")
       //console.log(auth.currentUser)
+      window.alert("please sign in to continue!")
       next("/login");
       return;
   }
