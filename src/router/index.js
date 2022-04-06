@@ -31,7 +31,7 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    //meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: "/signup",
@@ -129,6 +129,7 @@ router.beforeEach(async (to, from, next) => {
   ) {
     console.log("ASLDUHASUICH")
     console.log(auth.currentUser.emailVerified)
+    auth.signOut()
     window.alert("please verify your email to proceed!")
     next("/login");
     return;
