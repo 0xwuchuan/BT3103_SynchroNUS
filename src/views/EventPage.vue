@@ -1,7 +1,7 @@
 <template>
     <Nav />
     <div class="flex flex-col h-5/6">
-        <EventDetails 
+        <EventDetails v-if="!isloading"
         :id="this.id"
         />
     </div>
@@ -23,7 +23,8 @@ export default {
   data() {
     return {
       id: '',
-      user: false
+      user: false,
+      isloading: true
     }
   },
   mounted() {
@@ -39,6 +40,8 @@ export default {
     console.warn("route",route.params);
     this.id = route.params.id;
     console.log(this.id);
-  }
+    this.isloading = false;
+  },
+  
 }
 </script>

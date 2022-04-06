@@ -86,7 +86,8 @@ export default {
         currentNumUsers: 0,
         participants: [],
         requesters: [],
-        userInfo: null
+        userInfo: null,
+        loading: true
       }
     },
     components: {
@@ -172,6 +173,8 @@ export default {
             console.log("NUMUSERS" + this.currentNumUsers)
             })
         }
+        this.loading = false
+
     },
 }
 </script>
