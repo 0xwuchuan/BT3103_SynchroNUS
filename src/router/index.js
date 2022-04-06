@@ -31,7 +31,7 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    meta: { requiresAuth: true }
+    //meta: { requiresAuth: true }
   },
   {
     path: "/signup",
@@ -125,13 +125,15 @@ router.beforeEach(async (to, from, next) => {
   }
   if (
     await to.matched.some((record) => record.meta.requiresAuth) &&
-    !await firebaseApp.getCurrentUser() && !auth.currentUser.emailVerified 
+    await firebaseApp.getCurrentUser() && !auth.currentUser.emailVerified 
   ) {
+    console.log("ASLDUHASUICH")
     console.log(auth.currentUser.emailVerified)
-    window.alert("please verify your email to access this page!")
+    window.alert("please verify your email to proceed!")
     next("/login");
     return;
   }
+  
 
   next();
 });
