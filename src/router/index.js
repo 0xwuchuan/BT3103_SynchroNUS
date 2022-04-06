@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { auth } from "../firebase";
+import { firebaseApp } from "../firebase";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
@@ -22,11 +23,6 @@ const routes = [
     component: Landing,
   },
   {
-    path: "/home",
-    name: "Home",
-    component: Home,
-  },
-  {
     path: "/login",
     name: "Login",
     component: Login,
@@ -35,6 +31,7 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
+    meta: { requiresAuth: true }
   },
   {
     path: "/signup",
@@ -50,6 +47,7 @@ const routes = [
     path: "/notifications",
     name: "NotifsPage",
     component: NotifsPage,
+    meta: { requiresAuth: true }
   },
   {
     path: "/testpage-comments",
@@ -60,6 +58,7 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: Profile,
+    meta: { requiresAuth: true }
   },
   {
     path: "/created",
@@ -75,6 +74,7 @@ const routes = [
     path: "/eventpage/:id",
     name: "EventPage",
     component: EventPage,
+    meta: { requiresAuth: true }
   },
   {
     path: "/event",
@@ -85,11 +85,13 @@ const routes = [
     path: "/edit/:id",
     name: "EditEvent",
     component: EditEvent,
+    meta: { requiresAuth: true }
   },
   {
     path: "/create",
     name: "CreateEvent",
     component: CreateEvent,
+    meta: { requiresAuth: true }
   },
 ];
 
@@ -98,7 +100,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.path == "/login" && auth.currentUser) {
     // Only when router.push if user types in /login they still can access page
     next("/home");
@@ -113,9 +115,20 @@ router.beforeEach((to, from, next) => {
     return;
   }
   if (
-    to.matched.some((record) => record.meta.requiresAuth) &&
-    !auth.currentUser
+    await to.matched.some((record) => record.meta.requiresAuth) &&
+    !await firebaseApp.getCurrentUser()
   ) {
+      console.log("TEST2")
+      //console.log(auth.currentUser)
+      next("/login");
+      return;
+  }
+  if (
+    await to.matched.some((record) => record.meta.requiresAuth) &&
+    !await firebaseApp.getCurrentUser() && !auth.currentUser.emailVerified 
+  ) {
+    console.log(auth.currentUser.emailVerified)
+    window.alert("please verify your email to access this page!")
     next("/login");
     return;
   }

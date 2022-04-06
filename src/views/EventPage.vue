@@ -11,6 +11,8 @@
 import Nav from "../components/Nav";
 import EventDetails from "../components/EventDetails";
 import {useRoute} from 'vue-router';
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default {
   name: 'EventPage',
@@ -20,8 +22,17 @@ export default {
   },
   data() {
     return {
-      id: ''
+      id: '',
+      user: false
     }
+  },
+  mounted() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.user = user;
+        console.log(this.user)
+      }
+    })
   },
   beforeMount(){
     const route = useRoute();
