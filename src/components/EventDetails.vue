@@ -22,13 +22,13 @@
                                   s-7.024,1.065-8.867,3.168c-2.119,2.416-1.935,5.346-1.883,5.864v4.667c-0.568,0.661-0.887,1.502-0.887,2.369v3.545
                                   c0,1.101,0.494,2.128,1.34,2.821c0.81,3.173,2.477,5.575,3.093,6.389v2.894c0,0.816-0.445,1.566-1.162,1.958l-7.907,4.313
                                   c-0.252,0.137-0.502,0.297-0.752,0.476C5.276,41.792,2,35.022,2,27.5z"></path></svg></span>
-                            <p class="u-text u-text-1">Joined by {{ this.currentNumUsers }} users</p>
+                            <p class="u-text u-text-1">Joined by {{ this.currentNumUsers }} / {{numusers}} users</p>
                             <h2 class="u-align-center u-text u-text-default u-text-2">{{ this.title }}</h2>
                             <a href="https://nicepage.com/html5-template" class="u-border-2 u-border-hover-palette-1-base u-border-white u-btn u-btn-round u-button-style u-hover-palette-1-base u-none u-radius-50 u-btn-3">Health</a>
                             <p class="u-align-center u-text u-text-3" id = "info"><br>Location: {{ this.location }}<br>Expiry Date: {{ this.expiry }}<br>
                                 <br>{{ this.description }}
                             </p>
-                            <router-link :to ="this.link"  v-if="this.user.email == this.creator" href="https://nicepage.com/joomla-templates" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">EDIT EVENT</router-link>
+                            <router-link :to ="this.link"  v-if="isCreator(this.user.email)" href="https://nicepage.com/joomla-templates" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">EDIT EVENT</router-link>
                             <button v-else @click="requestToJoin(this.id)" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-6">Register for Event</button>
                             </div>
                             </div>
@@ -36,10 +36,14 @@
                     </div>
                 </div>
                 <Requests 
-                v-if="this.user.email == this.creator"
+                v-if="isCreator(this.user.email)"
                 :requesters="this.requesters"
                 :eventid ="this.id"
-                @applicantAccepted="updateRequesters"
+                @applicantAccepted="update"
+                />
+                <Participants 
+                v-if="isCreator(this.user.email)"
+                :participants="this.participants"
                 />
                 <CommentSection 
                 :eventid="this.id"
@@ -61,6 +65,7 @@ import router from '../router/index'
 
 import CommentSection from '@/components/CommentSection.vue';
 import Requests from '@/components/Requests.vue'
+import Participants from '@/components/Participants.vue'
 
 const db = getFirestore(firebaseApp);
 
@@ -86,41 +91,49 @@ export default {
     },
     components: {
       CommentSection,
-      Requests
+      Requests,
+      Participants
     },
     props: {
       id: {required:true}
     },
     methods: {
-      async requestToJoin(eventId) { // this.user should be the one clicking to request
-        const userRef = doc(db, "Users", String(this.user.email))
-        const userSnap = await getDoc(userRef)
-        if (userSnap.exists()) {
-            this.userInfo = userSnap.data()
-            this.userInfo.email = this.user.email
-            console.log(userSnap.id)
-        } else {
-            console.log("no such document")
-        }
-        const eventRef = doc(db, "events", eventId);
-        await updateDoc(eventRef, {
-            requesters: arrayUnion(this.userInfo)
-        })
-        alert("request success")
+        async requestToJoin(eventId) { // this.user should be the one clicking to request
+            const userRef = doc(db, "Users", String(this.user.email))
+            const userSnap = await getDoc(userRef)
+            if (userSnap.exists()) {
+                this.userInfo = userSnap.data()
+                this.userInfo.email = this.user.email
+                console.log(userSnap.id)
+            } else {
+                console.log("no such document")
+            }
+            const eventRef = doc(db, "events", eventId);
+            await updateDoc(eventRef, {
+                requesters: arrayUnion(this.userInfo)
+            })
+            alert("request success")
 
-        const eventSnap = await getDoc(doc(db, "events", this.id))
-        this.requesters = eventSnap.data().requesters
-      },
-      async deleteEvent(eventId) {
-        const eventRef = doc(db, "events", eventId);
-        const del = await deleteDoc(eventRef)
-        console.log(del)
-        router.push('/home')
-      },
-      async updateRequesters() {
-          const eventSnap = await getDoc(doc(db, "events", this.id))
+            const eventSnap = await getDoc(doc(db, "events", this.id))
             this.requesters = eventSnap.data().requesters
-      }
+        },
+        async deleteEvent(eventId) {
+            const eventRef = doc(db, "events", eventId);
+            const del = await deleteDoc(eventRef)
+            console.log(del)
+            router.push('/home')
+        },
+        async update() {
+            const eventSnap = await getDoc(doc(db, "events", this.id))
+            this.requesters = eventSnap.data().requesters
+            this.participants = eventSnap.data().participants
+        },
+        isCreator(userEmail) {
+            if (userEmail == this.creator) {
+                return true;
+            }
+            return false
+        }
     },
     async mounted() {
         await onAuthStateChanged(auth, (user) => {
@@ -159,8 +172,7 @@ export default {
             console.log("NUMUSERS" + this.currentNumUsers)
             })
         }
-    }
-    
+    },
 }
 </script>
 
