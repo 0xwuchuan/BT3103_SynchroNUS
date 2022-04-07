@@ -36,10 +36,10 @@
                 type="submit" @click="deleteEvent(this.id)">Delete</button>
         </div>
         <!-- Preview of event? -->
-        <div class="hidden lg:block h-108 mx-10 transition duration-200 ease-linear">
+        <div class="hidden lg:block h-108 w-108 mx-10 transition duration-200 ease-linear">
             <div class="c-card block bg-white bg-opacity-90 hover:bg-opacity-100 hover:shadow-2xl rounded-lg overflow-hidden transition duration-200 ease-linear">
                 <div class="overflow-hidden h-56">
-                    <img src="https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80">
+                    <img :src="require(`@/assets/${this.tag ? this.tag : 'Default'}.jpg`)">
                 </div>
                 <div class="p-4">
                     <span class="inline-block px-3 py-2 leading-none bg-orange-200 text-orange-900 
@@ -82,7 +82,8 @@ export default {
             location: "",
             numOfParticipants: "",
             description: "",
-            id: ''
+            id: '',
+            tag: ''
         }
     },
     beforeMount(){
@@ -108,6 +109,7 @@ export default {
           this.expiryDate = info.expiryDate
           this.title = info.title
           this.numOfParticipants = info.numOfParticipants
+          this.tag = info.tag
           console.log("Creator"+info.userEmail)
           //console.log(this.description)
         })
