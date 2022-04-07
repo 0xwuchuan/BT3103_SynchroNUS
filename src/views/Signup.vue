@@ -8,7 +8,9 @@
                     <div class="flex flex-row items-center">
                         <label for="name">Name</label>
                     </div>
-                    <input v-model="name" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="name" placeholder="Enter your full name" id="name" required>
+                    <input v-model="name" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" 
+                        type="name" placeholder="Enter your full name" id="name" required>
                 </div>
                 <div class="flex flex-col items-left w-10/12 m-3">
                     <div class="flex flex-row items-center">
@@ -17,7 +19,9 @@
                         </svg>
                         <label for="email">Email</label>
                     </div>
-                    <input v-model="email" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="email" placeholder="Enter your NUS email" id="email" required>
+                    <input v-model="email" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" 
+                        type="email" placeholder="Enter your NUS email" id="email" pattern=".+@u.nus\.edu" required>
                 </div>
                 <div class="flex flex-col items-left w-10/12 m-3">
                     <div class="flex flex-row items-center">
@@ -26,7 +30,9 @@
                         </svg>
                         <label for="password">Password</label>
                     </div>
-                    <input v-model="password" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Enter your password" id="password" required>
+                    <input v-model="password" class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  
+                        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" 
+                        type="password" placeholder="Enter your password" id="password" required>
                 </div>
                 <div class="flex flex-col items-left w-10/12 m-3">
                     <div class="flex flex-row items-center">
@@ -35,12 +41,15 @@
                         </svg>
                         <label for="cfmPassword">Confirm Password</label>
                     </div>
-                    <input class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="password" placeholder="Confirm your password" id="cfmPassword" required>
+                    <input class="w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200  
+                        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" 
+                        type="password" placeholder="Confirm your password" id="cfmPassword" required>
                 </div>
                 <div class="flex flex-row items-left w-10/12 m-3">
                     <div class="flex flex-col w-1/4 m-1">
                         <label for="gender">Gender</label>
-                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" v-model="gender" required>
+                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none 
+                            focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" v-model="gender" required>
                             <option disabled selected value="">Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -49,7 +58,8 @@
                     </div>
                     <div class="flex flex-col w-1/4 m-1">
                         <label for="year">Year</label>
-                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" v-model="year" required>
+                        <select class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none 
+                            focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" v-model="year" required>
                             <option disabled selected value="">Year</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -60,11 +70,14 @@
                     </div>
                     <div class="flex flex-col w-2/4 m-1">
                         <label for="teleHandle">Telegram Handle</label>
-                        <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" v-model="teleHandle" required>
+                        <input class="bg-gray-100 rounded-md p-2 border border-gray-200 focus:bg-white focus:outline-none 
+                            focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="text" v-model="teleHandle" required>
                     </div>
                 </div>
-                <button class="block rounded-md bg-secondary hover:bg-opacity-90 transition duration-100 ease-linear text-white font-semibold w-10/12 text-lg m-3 h-10">Get Started</button>
-                <router-link class="text-sm text-secondary hover:text-opacity-90 transition duration-100 ease-linear m-5" to="/login">Already have an account? Login here</router-link>
+                <button class="block rounded-md bg-secondary hover:bg-opacity-90 transition duration-100 ease-linear 
+                    text-white font-semibold w-10/12 text-lg m-3 h-10">Get Started</button>
+                <router-link class="text-sm text-secondary hover:text-opacity-90 
+                    transition duration-100 ease-linear m-5" to="/login">Already have an account? Login here</router-link>
             </form>
         </div>
     </div>

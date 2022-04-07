@@ -11,7 +11,9 @@
                         </svg>
                         <label for="email">Email</label>
                     </div>
-                    <input v-model="email" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" type="email" placeholder="Enter your email" id="email" required>
+                    <input v-model="email" class="inline-block w-full bg-gray-100 focus:bg-white rounded-md p-2 border border-gray-200 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition ease-linear" 
+                        type="email" placeholder="Enter your email" id="email" pattern=".+@u.nus\.edu" required>
                 </div>
                 <div class="flex flex-col items-left w-10/12 m-3">
                     <div class="flex flex-row items-center">
