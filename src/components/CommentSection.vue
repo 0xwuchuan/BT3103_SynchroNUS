@@ -116,6 +116,16 @@
             Comment
           </button>
         </div>
+        <div class="check">
+              <br>
+              <input
+                type="checkbox"
+                id="anon"
+                name="anonComment"
+                value="Comment Anon?"
+              />
+              <label id="anonlabel" for="anon"> Comment Anonymously? </label>
+            </div>
       </div>
     </div>
   </div>
@@ -211,9 +221,16 @@ export default {
       }
       console.log(this.username);
       const commentRef = doc(collection(db, "comments"));
+      var checkbox = document.getElementById("anon")
+      var displayName = ""
+      if (checkbox.checked == true) {
+        displayName = "Anonymous";
+      } else {
+        displayName = this.username;
+      }
       const setComment = await setDoc(commentRef, {
         user: this.user.email,
-        username: this.username,
+        username: displayName,
         avatar: "http://via.placeholder.com/100x100/a74848", //current_user.photoURL,
         text: this.reply,
         commentedAt: serverTimestamp(),
@@ -444,7 +461,7 @@ hr {
   align-items: center;
   background-color: #ebebeb;
   border-radius: 30px;
-  padding: 5px 10px;
+  padding: 10px 10px;
   overflow: hidden;
 }
 
@@ -464,23 +481,15 @@ hr {
   margin-right: 10px;
   border: 0;
   color: #333;
-  width: 90%;
+  width: 88%;
   outline: 0;
   background-color: transparent;
   box-shadow: none;
 }
 
-.reply input.reply--text:valid {
-  margin-right: 71px;
-}
-
-.reply input.reply--text:valid + .reply--button {
-  right: 10px;
-}
-
 .reply .reply--button {
   position: absolute;
-  right: -110px;
+  right: 20px;
   border: 1px solid #2a629c;
   background-color: transparent;
   color: #2a629c;
@@ -506,14 +515,23 @@ hr {
   background-color: #2a629c;
 }
 
-.reply .reply--button:focus,
-.reply .reply--button:active {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+hr {
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
-hr {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.check {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
 }
+
+#anonlabel {
+  color: #ebebeb;
+  font-weight: 400;
+  font-family: "Montserrat";
+  font-size: 90%;
+}
+
 </style>
 
