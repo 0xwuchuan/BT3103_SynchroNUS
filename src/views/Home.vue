@@ -105,7 +105,7 @@ export default {
   methods: {
     async getEventsByDate() {
       const eventRef = collection(db, "events");
-      const q = query(eventRef, orderBy("postDate"));
+      const q = query(eventRef, orderBy("postDate", "desc"));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         let eventInfo = doc.data();
