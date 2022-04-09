@@ -156,6 +156,7 @@ export default {
             this.userYear = userData.year
             this.upcoming = userData.upcoming
             this.created = userData.created
+            console.log(this.created)
         } else {
             console.log("No such document!");
         }

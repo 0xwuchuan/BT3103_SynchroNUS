@@ -9,7 +9,7 @@
             <div class="container mx-auto">
             <!-- Actual events -->
             <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userUpcoming.slice(userUpcoming.length - 3,userUpcoming.length).reverse()" :key="event.title" class="col-span-1 ">
+                <div v-for="event in userUpcoming.reverse().slice(0,3).reverse()" :key="event.title" class="col-span-1 ">
                 <Event
                     :title="event.title"
                     :description="event.description"
@@ -37,7 +37,7 @@
         <div class="container mx-auto">
             <!-- Actual events -->
             <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userCreated.slice(userCreated.length - 3,userCreated.length).reverse()" :key="event.title" class="col-span-1 ">
+                <div v-for="event in userCreated.reverse().slice(0,3).reverse()" :key="event.title" class="col-span-1 ">
                 <Event
                     :title="event.title"
                     :description="event.description"
@@ -140,6 +140,7 @@ export default {
         },
 
         async getUpcomingEvents() {
+            console.log(this.upcoming.length)
             for (let i = 0; i < this.upcoming.length; i++) {
                 let eventId = this.upcoming[i]
                 const eventSnap = await getDoc(doc(db, "events", eventId))
@@ -149,6 +150,7 @@ export default {
                     eventInfo.id = eventId
                     // Add to userUpcoming
                     this.userUpcoming.push(eventInfo)
+                    console.log(this.userUpcoming.length)
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -165,6 +167,8 @@ export default {
                     eventInfo.id = eventId
                     // Add to userUpcoming
                     this.userCreated.push(eventInfo)
+                    console.log("asdas"+this.userCreated.length)
+                    console.log(this.userCreated.slice(this.userCreated.length - 3,this.userCreated.length))
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
