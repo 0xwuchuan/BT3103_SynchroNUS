@@ -7,14 +7,8 @@
                 <p>Upcoming</p>
             </div>
             <div class="container mx-auto">
-            <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-            <!-- Skeleton Loader -->
-                <div v-for="template in 6" :key="template" class="col-span-1">
-                    <SkeletonEvent />
-                </div>
-            </div>
             <!-- Actual events -->
-            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
                 <div v-for="event in userUpcoming.slice(userUpcoming.length - 3,userUpcoming.length).reverse()" :key="event.title" class="col-span-1 ">
                 <Event
                     :title="event.title"
@@ -41,14 +35,8 @@
             <p>Created</p>
         </div>
         <div class="container mx-auto">
-        <div v-if="isLoading" class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-            <!-- Skeleton Loader -->
-                <div v-for="template in 6" :key="template" class="col-span-1">
-                    <SkeletonEvent />
-                </div>
-            </div>
             <!-- Actual events -->
-            <div v-else class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
+            <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
                 <div v-for="event in userCreated.slice(userCreated.length - 3,userCreated.length).reverse()" :key="event.title" class="col-span-1 ">
                 <Event
                     :title="event.title"
@@ -75,7 +63,6 @@ import { getFirestore, } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import router from '../router/index'
 import Event from '@/components/Event.vue'
-import SkeletonEvent from '@/components/Event.vue'
 import { doc, getDoc } from 'firebase/firestore'
 const db = getFirestore(firebaseApp);
 
@@ -84,7 +71,6 @@ export default {
 
     components: {
         Event,
-        SkeletonEvent
 
     },
     data() {

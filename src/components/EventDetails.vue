@@ -28,7 +28,7 @@
                             <p class="u-align-center u-text u-text-3" id = "info"><br>Location: {{ this.location }}<br>Expiry Date: {{ this.expiry }}<br>
                                 <br>{{ this.description }}
                             </p>
-                            <router-link :to ="this.link"  v-if="isCreator(this.user.email)" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">EDIT EVENT</router-link>
+                            <router-link :to ="this.link"  v-if="isCreator(this.user.email) && !isParticipant(this.user.email)" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-5">EDIT EVENT</router-link>
                             <button v-else @click="requestToJoin(this.id)" class="u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-14 u-text-hover-black u-btn-6">Register for Event</button>
                             </div>
                             </div>
@@ -134,6 +134,14 @@ export default {
                 return true;
             }
             return false
+        },
+        isParticipant(userEmail) {
+            for (let i = 0 ; i < this.participants.length; i++) {
+                if (this.participants[i].email == userEmail) {
+                    return true;
+                }
+            }
+            return false;
         }
     },
     async mounted() {
