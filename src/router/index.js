@@ -16,6 +16,7 @@ import Upcoming from "../views/Upcoming.vue";
 import CreateEvent from "../views/CreateEvent.vue";
 import EditEvent from "../views/EditEvent.vue";
 import EditProfile from "../views/EditProfile.vue";
+import NotFound from "../views/NotFound.vue"
 
 const routes = [
   {
@@ -99,6 +100,11 @@ const routes = [
     component: CreateEvent,
     meta: { requiresAuth: true },
   },
+  {
+      path: '/:catchAll(.*)',
+      name: 'NotFound',
+      component: NotFound
+  }
 ];
 
 const router = createRouter({
