@@ -9,7 +9,7 @@
             <div class="container mx-auto">
             <!-- Actual events -->
             <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userUpcoming.reverse().slice(0,3).reverse()" :key="event.title" class="col-span-1 ">
+                <div v-for="event in this.userUpcoming.slice(-3)" :key="event" class="col-span-1 ">
                 <Event
                     :title="event.title"
                     :description="event.description"
@@ -37,7 +37,7 @@
         <div class="container mx-auto">
             <!-- Actual events -->
             <div class="mb-10 grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3">
-                <div v-for="event in userCreated.reverse().slice(0,3).reverse()" :key="event.title" class="col-span-1 ">
+                <div v-for="event in this.userCreated.slice(-3)" :key="event" class="col-span-1 ">
                 <Event
                     :title="event.title"
                     :description="event.description"
@@ -174,6 +174,7 @@ export default {
                     console.log("No such document!");
                 }
             }
+            console.log(this.userCreated)
         }
   },
     async mounted() {
