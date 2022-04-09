@@ -21,11 +21,9 @@
                 <button @click="toEdit" class="inline-block bg-secondary hover:bg-opacity-90  py-2 px-4 text-white w-full font-semibold rounded-lg shadow-lg" type="button" >
                     Edit Profile 
                 </button>
-        
-        
-</div>
-</div>
-</div>  
+            </div>
+        </div>
+  </div>  
 <br>
 
 </template>

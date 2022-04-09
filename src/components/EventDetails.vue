@@ -100,6 +100,10 @@ export default {
     },
     methods: {
         async requestToJoin(eventId) { // this.user should be the one clicking to request
+            if (this.isParticipant(this.user.email)) {
+                alert("You have already registered")
+                return false
+            }
             const userRef = doc(db, "Users", String(this.user.email))
             const userSnap = await getDoc(userRef)
             if (userSnap.exists()) {
@@ -134,6 +138,14 @@ export default {
                 return true;
             }
             return false
+        },
+        isParticipant(userEmail) {
+            for (let i = 0 ; i < this.participants.length; i++) {
+                if (this.participants[i].email == userEmail) {
+                    return true;
+                }
+            }
+            return false;
         }
     },
     async mounted() {
