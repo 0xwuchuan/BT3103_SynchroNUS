@@ -15,6 +15,7 @@ import Created from "../views/Created.vue";
 import Upcoming from "../views/Upcoming.vue";
 import CreateEvent from "../views/CreateEvent.vue";
 import EditEvent from "../views/EditEvent.vue";
+import EditProfile from "../views/EditProfile.vue";
 
 const routes = [
   {
@@ -31,7 +32,7 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/signup",
@@ -47,7 +48,7 @@ const routes = [
     path: "/notifications",
     name: "NotifsPage",
     component: NotifsPage,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/testpage-comments",
@@ -58,7 +59,7 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: Profile,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/created",
@@ -74,7 +75,7 @@ const routes = [
     path: "/eventpage/:id",
     name: "EventPage",
     component: EventPage,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/event",
@@ -85,13 +86,18 @@ const routes = [
     path: "/edit/:id",
     name: "EditEvent",
     component: EditEvent,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/editprofile",
+    name: "EditProfile",
+    component: EditProfile,
   },
   {
     path: "/create",
     name: "CreateEvent",
     component: CreateEvent,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
 ];
 
@@ -115,27 +121,27 @@ router.beforeEach(async (to, from, next) => {
     return;
   }
   if (
-    await to.matched.some((record) => record.meta.requiresAuth) &&
-    !await firebaseApp.getCurrentUser()
+    (await to.matched.some((record) => record.meta.requiresAuth)) &&
+    !(await firebaseApp.getCurrentUser())
   ) {
-      console.log("TEST2")
-      //console.log(auth.currentUser)
-      window.alert("please sign in to continue!")
-      next("/login");
-      return;
-  }
-  if (
-    await to.matched.some((record) => record.meta.requiresAuth) &&
-    await firebaseApp.getCurrentUser() && !auth.currentUser.emailVerified 
-  ) {
-    console.log("ASLDUHASUICH")
-    console.log(auth.currentUser.emailVerified)
-    auth.signOut()
-    window.alert("please verify your email to proceed!")
+    console.log("TEST2");
+    //console.log(auth.currentUser)
+    window.alert("please sign in to continue!");
     next("/login");
     return;
   }
-  
+  if (
+    (await to.matched.some((record) => record.meta.requiresAuth)) &&
+    (await firebaseApp.getCurrentUser()) &&
+    !auth.currentUser.emailVerified
+  ) {
+    console.log("ASLDUHASUICH");
+    console.log(auth.currentUser.emailVerified);
+    auth.signOut();
+    window.alert("please verify your email to proceed!");
+    next("/login");
+    return;
+  }
 
   next();
 });
