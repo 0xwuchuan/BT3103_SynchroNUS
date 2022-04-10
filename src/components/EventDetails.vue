@@ -100,7 +100,7 @@ export default {
     },
     methods: {
         async requestToJoin(eventId) { // this.user should be the one clicking to request
-            if (this.isParticipant(this.user.email)) {
+            if (this.isParticipant(this.user.email) || this.isRegistered(this.user.email)) {
                 alert("You have already registered")
                 return false
             }
@@ -142,6 +142,14 @@ export default {
         isParticipant(userEmail) {
             for (let i = 0 ; i < this.participants.length; i++) {
                 if (this.participants[i].email == userEmail) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        isRegistered(userEmail) {
+            for (let i = 0 ; i < this.requesters.length; i++) {
+                if (this.requesters[i].email == userEmail) {
                     return true;
                 }
             }

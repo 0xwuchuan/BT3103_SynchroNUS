@@ -42,19 +42,15 @@ export default {
         }
     },
     methods : {
-        resetPassword() {
-            sendPasswordResetEmail(auth, this.email)
-            .then(() => {
-                // Password reset email sent!
-                this.emailSent = true;
-                // ..
-            })
-            .catch((error) => {
+        async resetPassword() {
+            try {
+                await sendPasswordResetEmail(auth, this.email)
+                this.emailSent = true
+            } catch (error) {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 alert(errorCode, errorMessage)
-                // ..
-            });
+            }
         },
     },
     computed : {
