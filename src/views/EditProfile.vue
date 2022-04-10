@@ -144,6 +144,7 @@ export default {
                 this.year = null
             }
             document.getElementById('editForm').reset();
+            router.push('/profile')
         }
   },
 
