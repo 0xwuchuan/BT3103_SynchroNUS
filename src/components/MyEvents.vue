@@ -142,7 +142,7 @@ export default {
         async getUpcomingEvents() {
             console.log(this.upcoming.length)
             for (let i = 0; i < this.upcoming.length; i++) {
-                let eventId = this.upcoming[i]
+                let eventId = this.upcoming.reverse()[i]
                 const eventSnap = await getDoc(doc(db, "events", eventId))
                 if (eventSnap.exists()) {
                     console.log("Document data:", eventSnap.data());
@@ -159,7 +159,7 @@ export default {
         },
         async getCreatedEvents() {
             for (let i = 0; i < this.created.length; i++) {
-                let eventId = this.created[i]
+                let eventId = this.created.reverse()[i]
                 const eventSnap = await getDoc(doc(db, "events", eventId))
                 if (eventSnap.exists()) {
                     console.log("Document data:", eventSnap.data());
